@@ -25,10 +25,17 @@ class NormalSignUpForm extends React.Component {
 	render() {
 		const { errors, touched } = this.props
 		return (
+<<<<<<< HEAD
 			<div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 {this.renderDrawer()}
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
+=======
+			<div style={{backgroundColor: "#d6dbd7", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div className="container">
+                    <div className= "column is-offset-2 is-8" style={{display: "flex", flexDirection:"column"}}>
+                        <div className= "card" style={{height: "80vh", flexDirection: "column"}}>
+>>>>>>> 744c40ade87a819fa6100415409ac31f2c0d9398
                             <div className="column is-centered">
                                 <Welcome/>
                             </div>
