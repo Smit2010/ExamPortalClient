@@ -20,11 +20,11 @@ class App extends React.Component{
                     <Route>
                         <NavBar/>
                         <Switch>
+                            <Route exact path="/">
+                                <Dashboard type="student"/>
+                            </Route>
                             <Route path="/home">
                                 <Home/>
-                            </Route>
-                            <Route path="/dashboard">
-                                <Dashboard type="student"/>
                             </Route>
                             <Route path="/login">
                                 <Login/>

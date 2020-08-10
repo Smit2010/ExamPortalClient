@@ -74,7 +74,7 @@ class NormalLoginForm extends React.Component {
 
 	render() {
 		if (this.props.isAuthenticated) {
-			return <Redirect to="/dashboard" />;
+			return <Redirect to="/" />;
 		}
 		const { errors, touched } = this.props;
 		return (
