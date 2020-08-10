@@ -4,9 +4,12 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { withRouter, Redirect } from "react-router-dom";
 import Welcome from '../../Welcome/Welcome.js';
+import SideBar from '../../SideBar';
 
 //import { login, sendResetPasswordEmail } from '../../../actions/auth';
 import { toast } from "react-toastify";
+
+const list = [{"item" : "1"}, {"item": "2"}];
 
 class NormalLoginForm extends React.Component {
 	constructor(props) {
@@ -70,7 +73,17 @@ class NormalLoginForm extends React.Component {
                 </div>,
             ];
         }
-	};
+    };
+    
+    renderDrawer = () => {
+        if(this.props.isDrawerOpen){
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px"}}>
+                    <SideBar list = {list}/>
+                </div>
+            );
+        }
+    }
 
 	render() {
 		if (this.props.isAuthenticated) {
@@ -78,10 +91,10 @@ class NormalLoginForm extends React.Component {
 		}
 		const { errors, touched } = this.props;
 		return (
-            <div style={{backgroundColor: "#d6dbd7", height:"93vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                {this.renderDrawer()}
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
-                        <div className= "card" style={{height: "80vh"}}>
                             <div className="column is-centered">
                                 <Welcome/>
                             </div>
@@ -136,7 +149,6 @@ class NormalLoginForm extends React.Component {
                             <div className="column is-offset-3 is-centered is-6" style={{marginTop: 20}}>
                                     {this.renderForgotPasswordPanel()}
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -163,7 +175,8 @@ const LoginForm = withFormik({
 })(NormalLoginForm);
 
 const mapStateToProps = (state) => ({
-	isAuthenticated: state.auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
+    isDrawerOpen: state.drawer.isDrawerOpen,
 });
 
 const mapDispatchToProps = (dispatch) => {

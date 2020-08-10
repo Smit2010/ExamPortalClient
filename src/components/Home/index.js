@@ -32,7 +32,7 @@ class LandingPage extends React.Component{
     render(){
         const isAuthenticated = this.props.isAuthenticated;
         return(
-            <div style={{backgroundColor: "#d6dbd7", height:"100vh"}}>
+            <div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div className="container" style={{paddingTop: 20}}>
                     <div className="column is-centered">
                         <Welcome/>

@@ -4,6 +4,11 @@ export const AUTH = {
 	SET_CURRENT_USER: 'SET_CURRENT_USER'
 }
 
+export const DRAWER = {
+    DRAWER_OPEN: 'DRAWER_OPEN',
+    DRAWER_CLOSED: 'DRAWER_CLOSED'
+}
+
 export const INIT = {
 	INIT: 'INIT'
 } 
