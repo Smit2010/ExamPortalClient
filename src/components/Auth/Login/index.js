@@ -9,8 +9,12 @@ import SideBar from '../../SideBar';
 //import { login, sendResetPasswordEmail } from '../../../actions/auth';
 import { toast } from "react-toastify";
 
-const list = [{"item" : "1"}, {"item": "2"}];
-
+const list = [
+    {"icon" : "fas fa-bars fa-lg",
+    "title" : "Profile"},
+    {"icon" : "fas fa-bars fa-lg",
+    "title" : "Create new exam"},
+]
 class NormalLoginForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -78,7 +82,13 @@ class NormalLoginForm extends React.Component {
     renderDrawer = () => {
         if(this.props.isDrawerOpen){
             return(
-                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px"}}>
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
+                    <SideBar list = {list}/>
+                </div>
+            );
+        } else{
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
                     <SideBar list = {list}/>
                 </div>
             );
@@ -95,10 +105,6 @@ class NormalLoginForm extends React.Component {
                 {this.renderDrawer()}
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
-<<<<<<< HEAD
-=======
-                        <div className= "card" style={{height: "80vh", flexDirection: "column"}}>
->>>>>>> 744c40ade87a819fa6100415409ac31f2c0d9398
                             <div className="column is-centered">
                                 <Welcome/>
                             </div>

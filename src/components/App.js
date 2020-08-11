@@ -10,7 +10,7 @@ import './style.css'
 import Login from './Auth/Login';
 import Home from './Home';
 import SignUp from './Auth/SignUp';
-import Dashboard from './MainPage/Dashboard'
+import Dashboard from './Dashboard'
 
 class App extends React.Component{
     render(){
@@ -21,10 +21,10 @@ class App extends React.Component{
                         <NavBar/>
                         <Switch>
                             <Route exact path="/">
-                                <Dashboard type="student"/>
-                            </Route>
-                            <Route path="/home">
                                 <Home/>
+                            </Route>
+                            <Route path="/dashboard">
+                                <Dashboard type="student"/>
                             </Route>
                             <Route exact path="/home">
                                 <Home/>
