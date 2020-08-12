@@ -14,6 +14,6 @@ export default function (state = initialState, action) {
 		case DRAWER.DRAWER_CLOSED:
 			return initialState;
 		default:
-			return initialState;
+			return state;
 	}
 }

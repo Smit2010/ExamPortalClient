@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
 		case AUTH.LOGOUT:
 			return initialState;
 		default:
-			return initialState;
+			return state;
 	}
 
 }
