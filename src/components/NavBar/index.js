@@ -36,7 +36,7 @@ const NavBar = ({ isAuthenticated, logoutUser, isDrawerOpen, toggleDrawer }) => 
         const handleClick = () => {
             toggleDrawer(isDrawerOpen);
         }
-        if(!isAuthenticated){
+        if(isAuthenticated){
             return(    
                 <div className="column is-narrow" style={{display: "flex", justifyContent: "center", marginLeft: 20}}>
                     <IconButton aria-label="open drawer" edge="start" onClick={handleClick}>

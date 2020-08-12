@@ -2,10 +2,10 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import Welcome from '../../Welcome/Welcome.js';
 import SideBar from '../../SideBar';
-//import { createUser } from '../../../actions/auth';
+import { createUser } from '../../../actions/auth';
 
 const list = [
     {"icon" : "fas fa-bars fa-lg",
@@ -32,6 +32,9 @@ class NormalSignUpForm extends React.Component {
     }
 
 	render() {
+        if (this.props.isAuthenticated) {
+			return <Redirect to="/dashboard" />;
+		}
 		const { errors, touched } = this.props
 		return (
 			<div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -110,8 +113,8 @@ const SignUp = withFormik({
 		})
 	},
 	handleSubmit(values, { props, resetForm }) {
-		//props.createUser(values.email, values.password, values.firstName, values.lastName);
-		//resetForm();
+		props.createUser(values.email, values.password, values.firstName, values.lastName);
+		resetForm();
 	},
 	validationSchema: Yup.object().shape({
 		email: Yup.string().email('Please enter a valid email').required(),
@@ -131,7 +134,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	//createUser: (email, password, firstName, lastName) => dispatch(createUser(email, password, firstName, lastName))
+	createUser: (email, password, firstName, lastName, history) => dispatch(createUser(email, password, firstName, lastName, history))
 })
 
 

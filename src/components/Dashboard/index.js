@@ -1,6 +1,6 @@
 import React from 'react';
-import Divider from '@material-ui/core/Divider';
 import SideBar from '../SideBar';
+import ExamCard from './examCard';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux'
 
@@ -42,21 +42,7 @@ class Dashboard extends React.Component {
             );
         }
     };
-    RenderExamCard = (exam) => {
-        return[
-                <div className="columns is-centered" style={{height: 200, padding: 0, width: "100%", margin: 0}}>
-                    <div className="column is-narrow" style={{display: "flex", justifyContent: "center", flexDirection: "column", padding: "0 5%"}}>
-                        <img src={exam.photo} className="card__photo" style={{height: 150}} />
-                    </div>
-                    <div className="column" style={{marginTop: 25}}>
-                        <p>Subject : {exam.name}</p>
-                        <p>Duration : {exam.duration}</p>
-                        <p>Date : {exam.date}</p>
-                    </div>
-                </div>,
-            <Divider variant="middle"/>
-        ];
-    }
+
     render(){
         return(
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
@@ -66,13 +52,13 @@ class Dashboard extends React.Component {
                     <h1 className="title">Upcoming Exams</h1>
                         <div className="card" style={{padding: 0}}>
                             {sampleExam.map((exam) => (
-                                this.RenderExamCard(exam)
+                                <ExamCard exam={exam}/>
                             ))}
                         </div>    
                     <h1 className="title" style={{marginTop: 20}}>Past Exams</h1>
                         <div className="card" style={{padding: 0}}>
                             {sampleExam.map((exam) => (
-                                this.RenderExamCard(exam)
+                                <ExamCard exam={exam}/>
                             ))}
                         </div>    
                     </div>

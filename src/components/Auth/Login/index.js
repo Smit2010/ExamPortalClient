@@ -6,7 +6,7 @@ import { withRouter, Redirect } from "react-router-dom";
 import Welcome from '../../Welcome/Welcome.js';
 import SideBar from '../../SideBar';
 
-//import { login, sendResetPasswordEmail } from '../../../actions/auth';
+import { login, sendResetPasswordEmail } from '../../../actions/auth';
 import { toast } from "react-toastify";
 
 const list = [
@@ -97,7 +97,7 @@ class NormalLoginForm extends React.Component {
 
 	render() {
 		if (this.props.isAuthenticated) {
-			return <Redirect to="/" />;
+			return <Redirect to="/dashboard" />;
 		}
 		const { errors, touched } = this.props;
 		return (
@@ -174,10 +174,10 @@ const LoginForm = withFormik({
 			forgetPassword: "",
 		};
 	},
-	/* handleSubmit(values, {props, resetForm}) {
+	handleSubmit(values, {props, resetForm}) {
     props.login(values.email, values.password, props.history)
     resetForm()
-  }, */
+  },
 	validationSchema: Yup.object().shape({
 		email: Yup.string().email("Please enter a valid email").required(),
 		password: Yup.string().required(),
@@ -191,7 +191,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		//login: (email, password, history) => dispatch(login(email, password, history)),
+		login: (email, password, history) => dispatch(login(email, password, history)),
 		//resetPassword: (email) => dispatch(sendResetPasswordEmail(email))
 	};
 };
