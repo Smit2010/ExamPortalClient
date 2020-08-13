@@ -1,14 +1,22 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect, useHistory } from "react-router-dom";
 import './styles.css'
 
 const SideBar = ({list}) => {
+    const history = useHistory();
+    const handleClick = (item) => {
+        if(item === "Profile"){
+            history.push('/me');
+        } else{
+            
+        }
+    }
     return (
         <div className="card" style={{position: "fixed", height: "100%", width: "240px"}}>
             <div className="column" style={{padding: 0}}>
                 {list.map((listItem) => (
-                    <div className="listButton columns is-vcentered" style={{ height: 60, margin:0, padding: "5% 0"}} >
+                    <div className="listButton columns is-vcentered" style={{ height: 60, margin:0, padding: "5% 0"}} onClick={() => handleClick(listItem.title)} >
                         <div className="column is-narrow" style={{height: "100%", alignItems: "center", justifyContent: "center", display: "flex", padding: "5% 0", marginLeft: 20}}>
                             <div>
                                 <span className="icon">

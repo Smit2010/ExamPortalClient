@@ -5,12 +5,14 @@ import {
     Switch,
     Route,
   } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import NavBar from './NavBar';
 import './style.css'
 import Login from './Auth/Login';
 import Home from './Home';
 import SignUp from './Auth/SignUp';
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard';
+import Profile from './Profile';
 
 class App extends React.Component{
     render(){
@@ -35,9 +37,13 @@ class App extends React.Component{
                             <Route exact path="/signUp">
                                 <SignUp/>
                             </Route>
+                            <Route exact path="/me">
+                                <Profile/>
+                            </Route>
                         </Switch>
                     </Route>
                 </Switch>
+                <ToastContainer position="bottom-right" />
             </Router>
         )
     }
