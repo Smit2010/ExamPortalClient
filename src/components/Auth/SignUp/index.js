@@ -4,17 +4,8 @@ import * as Yup from 'yup'
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import Welcome from '../../Welcome/Welcome.js';
-import SideBar from '../../SideBar';
 import { createUser } from '../../../actions/auth';
 import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-
-const list = [
-    {"icon" : "fas fa-bars fa-lg",
-    "title" : "Profile"},
-    {"icon" : "fas fa-bars fa-lg",
-    "title" : "Create new exam"},
-];
 
 const FormRadio = ({
     field,
@@ -31,22 +22,6 @@ const FormRadio = ({
 
 class NormalSignUpForm extends React.Component {
 
-    renderDrawer = () => {
-        if(this.props.isDrawerOpen  && this.props.isAuthenticated){
-            return(
-                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
-                    <SideBar list = {list}/>
-                </div>
-            );
-        } else{
-            return(
-                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
-                    <SideBar list = {list}/>
-                </div>
-            );
-        }
-    }
-
 	render() {
         if (this.props.isAuthenticated) {
 			return <Redirect to="/dashboard" />;
@@ -54,7 +29,6 @@ class NormalSignUpForm extends React.Component {
 		const { errors, touched } = this.props
 		return (
 			<div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                {this.renderDrawer()}
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
                             <div className="column is-centered">
@@ -176,7 +150,6 @@ const SignUp = withFormik({
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    isDrawerOpen: state.drawer.isDrawerOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({

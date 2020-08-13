@@ -1,25 +1,25 @@
 import React from 'react';
 
 const examData = [
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
-    {"date" : "12-12-12", "subject" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
+    {"date" : "12-12-12", "course" : "Maths", "marks" : "100", "average" : "100"},
 ]
 
-const ProfilePage = ({name,photo,student_id,email}) => {
+const StudentProfile = ({name,photo,student_id,email}) => {
     
     window.onscroll = () => {
         if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
@@ -72,7 +72,7 @@ const ProfilePage = ({name,photo,student_id,email}) => {
                         <thead>
                             <tr>
                                 <th style={{textAlign:"center", fontSize:"22px"}}>DATE</th>
-                                <th style={{textAlign:"center", fontSize:"22px"}}>SUBJECT</th>
+                                <th style={{textAlign:"center", fontSize:"22px"}}>COURSE</th>
                                 <th style={{textAlign:"center", fontSize:"22px"}}>MARKS</th>
                                 <th style={{textAlign:"center", fontSize:"22px"}}>AVERAGE</th>
                             </tr>
@@ -81,7 +81,7 @@ const ProfilePage = ({name,photo,student_id,email}) => {
                             {examData.map((data) => (
                                 <tr>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.date}</td>
-                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.subject}</td>
+                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.course}</td>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.marks}</td>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.average}</td>
                                 </tr>
@@ -95,4 +95,4 @@ const ProfilePage = ({name,photo,student_id,email}) => {
     )
 }
 
-export default ProfilePage;
+export default StudentProfile;

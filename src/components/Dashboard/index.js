@@ -19,25 +19,20 @@ const sampleExam = [
     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"},
 ];
 
-const list = [
-    {"icon" : "fas fa-bars fa-lg",
-    "title" : "Profile"},
-    {"icon" : "fas fa-bars fa-lg",
-    "title" : "Create new exam"},
-]
-
 class Dashboard extends React.Component {
     renderDrawer = () => {
         if(this.props.isDrawerOpen){
             return(
-                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
-                    <SideBar list={list}/>
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
+                    <SideBar/>
                 </div>
             );
         } else{
             return(
-                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
-                    <SideBar list={list}/>
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
+                    <SideBar/>
                 </div>
             );
         }
