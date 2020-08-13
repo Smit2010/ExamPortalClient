@@ -1,21 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, Redirect } from "react-router-dom";
 import Welcome from '../Welcome/Welcome.js';
 
 class LandingPage extends React.Component{
-
-    AuthenticatedUser = () => {
-        return [
-            <div className="column is-offset-5 is-centered is-2">
-                <div class="control is-centered">
-                    <button class="button is-rounded is-centered is-fullwidth" type="submit" style={{backgroundColor: "DarkSlateBlue"}}>
-                    <p style={{color: "white"}}>Go to Chats</p>
-                    </button>
-                </div>
-            </div>,
-        ];
-    }
     
     NonAuthenticatedUser = () => {
         return [
@@ -37,7 +25,7 @@ class LandingPage extends React.Component{
                     <div className="column is-centered">
                         <Welcome/>
                     </div>
-                    {isAuthenticated ? this.AuthenticatedUser() : this.NonAuthenticatedUser()}
+                    {isAuthenticated ? <Redirect to="/dashboard"/> : this.NonAuthenticatedUser()}
                 </div>
             </div>
         );

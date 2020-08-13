@@ -1,7 +1,7 @@
 import { DRAWER } from '../actions/types';
 
 const initialState = {
-	isDrawerOpen: false
+	isDrawerOpen: true
 }
 
 export default function (state = initialState, action) {

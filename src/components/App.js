@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
   } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import NavBar from './NavBar';
@@ -23,7 +24,7 @@ class App extends React.Component{
                         <NavBar/>
                         <Switch>
                             <Route exact path="/">
-                                <Home/>
+                                <Redirect to="/home"/>
                             </Route>
                             <Route path="/dashboard">
                                 <Dashboard type="student"/>
@@ -34,7 +35,7 @@ class App extends React.Component{
                             <Route exact path="/login">
                                 <Login/>
                             </Route>
-                            <Route exact path="/signUp">
+                            <Route exact path="/signup">
                                 <SignUp/>
                             </Route>
                             <Route exact path="/me">

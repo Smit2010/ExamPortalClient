@@ -5,8 +5,7 @@ import * as Yup from "yup";
 import { withRouter, Redirect } from "react-router-dom";
 import Welcome from '../../Welcome/Welcome.js';
 import SideBar from '../../SideBar';
-
-import { login, sendResetPasswordEmail } from '../../../actions/auth';
+import { login } from '../../../actions/auth';
 import { toast } from "react-toastify";
 
 const list = [
@@ -80,7 +79,7 @@ class NormalLoginForm extends React.Component {
     };
     
     renderDrawer = () => {
-        if(this.props.isDrawerOpen){
+        if(this.props.isDrawerOpen && this.props.isAuthenticated){
             return(
                 <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
                     <SideBar list = {list}/>

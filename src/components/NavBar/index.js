@@ -4,8 +4,6 @@ import { Link, withRouter} from "react-router-dom";
 import { logoutUser } from '../../actions/auth';
 import { drawerOpen, drawerClose } from '../../actions/drawer';
 import IconButton from '@material-ui/core/IconButton';
-
-const drawerWidth = 240;
  
 const NavBar = ({ isAuthenticated, logoutUser, isDrawerOpen, toggleDrawer }) => {
 
@@ -20,7 +18,7 @@ const NavBar = ({ isAuthenticated, logoutUser, isDrawerOpen, toggleDrawer }) => 
             return (
                 <div className="navbar-item" key='end'>
 					<div className="buttons" style={{marginTop: 5, marginBottom: 0}}>
-						<Link to='/signUp' className="button is-link is-light" key='signup'>
+						<Link to='/signup' className="button is-link is-light" key='signup'>
 							<strong>Sign up</strong>
 						</Link>
 						<Link to='/login' className="button is-link is-light" key='login'>

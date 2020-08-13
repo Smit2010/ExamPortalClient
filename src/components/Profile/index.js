@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ProfilePage from './ProfilePage';
 import SideBar from '../SideBar';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 
 const list = [
@@ -14,7 +14,7 @@ const list = [
 class Profile extends Component {
 
     renderDrawer = () => {
-        if(this.props.isDrawerOpen){
+        if(this.props.isDrawerOpen && this.props.isAuthenticated){
             return(
                 <div className="column is-narrow" style={{height: "100vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
                     <SideBar list = {list}/>
@@ -30,6 +30,11 @@ class Profile extends Component {
     }
 
     render() {
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
         return (
             <div className="columns" style={{backgroundColor: "#fff", display: "flex"}}>
                 <div className="column is-narrow">
@@ -37,12 +42,16 @@ class Profile extends Component {
                 </div>
                 <div className="column">
                     <div className="container">
-                        <ProfilePage name={this.props.user.firstName + " " + this.props.user.lastName} photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 
-                        student_id={this.props.user.studentId} email={this.props.user.email} />
+                        {this.props.user.type === 'student' ?
+                        <ProfilePage name={this.props.user.firstName + " " + this.props.user.lastName} 
+                        photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 
+                        student_id={this.props.user.studentId} email={this.props.user.email} /> : 
+                        <div></div>
+                        }
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 

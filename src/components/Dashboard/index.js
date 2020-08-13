@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from '../SideBar';
 import ExamCard from './examCard';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
 
 const sampleExam = [
@@ -44,6 +44,11 @@ class Dashboard extends React.Component {
     };
 
     render(){
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
         return(
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}

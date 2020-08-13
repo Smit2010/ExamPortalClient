@@ -68,9 +68,9 @@ export const resetPassword = (password,token,history) => {
   }
 }
 
-export const createUser = (email, password, firstName, lastName, history) => {
+export const createUser = (email, password, firstName, lastName, type, history) => {
   return(dispatch) => {
-    axios.post(`${SERVER_URL}/signup`, {email, password, firstName, lastName}).then(res => {
+    axios.post(`${SERVER_URL}/signup`, {email, password, firstName, lastName, type}).then(res => {
       //toast.success('User Has Been SuccessFully Created Please Verify Your Email');
       const { user, token } = res.data;
       // Set token to ls

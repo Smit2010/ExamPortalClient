@@ -6,17 +6,33 @@ import { withRouter, Redirect } from 'react-router-dom';
 import Welcome from '../../Welcome/Welcome.js';
 import SideBar from '../../SideBar';
 import { createUser } from '../../../actions/auth';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 const list = [
     {"icon" : "fas fa-bars fa-lg",
     "title" : "Profile"},
     {"icon" : "fas fa-bars fa-lg",
     "title" : "Create new exam"},
-]
+];
+
+const FormRadio = ({
+    field,
+    form: { setFieldValue, setFieldTouched, values },
+    ...props
+}) => (
+    <Radio
+        checked={values.type===props.label}
+        color="primary"
+        onChange={() => setFieldValue("type", props.label)}
+        onBlur={() => setFieldTouched("type", true)}
+    />
+);
+
 class NormalSignUpForm extends React.Component {
 
     renderDrawer = () => {
-        if(this.props.isDrawerOpen){
+        if(this.props.isDrawerOpen  && this.props.isAuthenticated){
             return(
                 <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
                     <SideBar list = {list}/>
@@ -81,6 +97,34 @@ class NormalSignUpForm extends React.Component {
                                         </div>
                                         {touched.confirmPassword && errors.confirmPassword ? <p class="help is-danger">{errors.confirmPassword}</p> : null }
                                     </div>
+                                    <div class="field">
+                                        <label class="label" style={{margin: 0}}>You are a</label>
+                                        {touched.type && errors.type ? <p class="help is-danger">{errors.type}</p> : null }
+                                        <div class="columns is-vcentered is-centered">
+                                            <div class="column is-centered" style={{display: "flex", justifyContent: "center", padding: 10}}>
+                                                <div class="control">
+                                                    <Field
+                                                        class="input"
+                                                        name="type"
+                                                        label="student"
+                                                        component={FormRadio}
+                                                    />
+                                                    <label>Student</label>
+                                                </div>
+                                            </div>
+                                            <div class="column is-centered" style={{display: "flex", justifyContent: "center", padding: 10}}>
+                                                <div class="control">
+                                                    <Field
+                                                        class="input"
+                                                        name="type"
+                                                        label="faculty"
+                                                        component={FormRadio}
+                                                    />
+                                                    <label>Faculty</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="field">
                                         <div className="column is-offset-3 is-centered is-6">
                                             <div class="control is-centered">
@@ -109,22 +153,24 @@ const SignUp = withFormik({
 			lastName: '',
 			confirmPassword: '',
 			email: '',
-			password: ''
+            password: '',
+            type: ''
 		})
 	},
 	handleSubmit(values, { props, resetForm }) {
-		props.createUser(values.email, values.password, values.firstName, values.lastName);
+		props.createUser(values.email, values.password, values.firstName, values.lastName, values.type);
 		resetForm();
 	},
 	validationSchema: Yup.object().shape({
-		email: Yup.string().email('Please enter a valid email').required(),
-		password: Yup.string().required('Please Enter your password').matches(
+		email: Yup.string().email('Please enter a valid Email').required('Please enter your Email'),
+		password: Yup.string().required('Please enter your password').matches(
 		  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
 		  "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
 		),
-		firstName: Yup.string().required('first name cannot be empty'),
-		lastName: Yup.string().required('last name cannot be empty'),
-		confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+		firstName: Yup.string().required('Please enter your First name'),
+		lastName: Yup.string().required('Please enter your Last name'),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+        type: Yup.string().required('Please select any of the option')
 	})
 })(NormalSignUpForm);
 
@@ -134,7 +180,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	createUser: (email, password, firstName, lastName, history) => dispatch(createUser(email, password, firstName, lastName, history))
+	createUser: (email, password, firstName, lastName, type, history) => dispatch(createUser(email, password, firstName, lastName, type, history))
 })
 
 
