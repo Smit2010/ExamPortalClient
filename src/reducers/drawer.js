@@ -6,12 +6,12 @@ const initialState = {
 
 export default function (state = initialState, action) {
 	switch(action.type) {
-		case DRAWER.DRAWER_OPEN:
+		case DRAWER.DRAWER_CLOSED:
 			return {
 				...state,
-				isDrawerOpen: true
+				isDrawerOpen: false
 			}
-		case DRAWER.DRAWER_CLOSED:
+		case DRAWER.DRAWER_OPEN:
 			return initialState;
 		default:
 			return state;
