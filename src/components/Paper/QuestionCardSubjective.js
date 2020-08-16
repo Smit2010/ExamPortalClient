@@ -13,20 +13,11 @@ import {removeQuestion, swapQuestion } from '../../actions/question';
 class QuestionCardSubjective extends Component {
 
     check = (flag) => {
-        let {num,total,len} = this.props
-        if(flag) {
-            if(num > total) {
-                this.props.swapQuestion(...this.props.calcId("multiple",num,num-1))
-            }
-        } else {
-            if(num + 1 < total + len) {
-                this.props.swapQuestion(...this.props.calcId("multiple",num,num+1))
-            }
-        }
+
+        this.props.swapQuestion(...this.props.calcId("SUBJECTIVE",this.props.id,flag))
     }
 
     show = (str) => {
-        console.log(str)
         return {
             __html: str
         }
@@ -43,7 +34,7 @@ class QuestionCardSubjective extends Component {
                     </div>
                 </div>
                 <div>
-                    {/* {console.log(this.props.num, this.props.total)} */}
+                    
                     <div onClick={() => this.props.removeQuestion(this.props.id)} style={{display: "inline-block", cursor: "pointer"}}><DeleteIcon /></div>
                     <div onClick={() => this.check(true)} style={{display: "inline-block", cursor: "pointer"}}><ArrowUpwardIcon /></div>
                     <div onClick={() => this.check(false)} style={{display: "inline-block", cursor: "pointer"}}><ArrowDownwardIcon /></div>
@@ -78,7 +69,7 @@ class QuestionCardSubjective extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        questions: state.question.question_set
+        question_set: state.question.question_set
     }
 }
 
