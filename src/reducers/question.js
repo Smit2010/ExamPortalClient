@@ -24,6 +24,7 @@ export default function (state = initialState, action) {
                 alternative: "",
                 width: "",
                 height: "",
+                answer: new Set(),
                 optionList: new Map()
             })
             return {...state, question_set: newMap, currQuestionId: parseInt(newCurrQuestionId)}
@@ -37,6 +38,21 @@ export default function (state = initialState, action) {
                 output: action.output
             })
             return {...state, question_set: newMap1}
+
+        case QUESTIONS.SET_ANSWER:
+            let newMap24 = new Map(state.question_set)
+            let currQuestionId24 = (action.id).toString()
+            let set24 = newMap24.get(currQuestionId24).answer
+            if(set24.has(action.ans)) {
+                set24.delete(action.ans)
+            } else {
+                set24.add(action.ans)
+            }
+            newMap24.set(currQuestionId24, {
+                ...newMap24.get(currQuestionId24),
+                answer: set24
+            })
+            return {...state, question_set: newMap24}
 
         case QUESTIONS.SET_QUESTION_TYPE:
             let newMap23 = new Map(state.question_set)
