@@ -150,7 +150,7 @@ class CommonCard extends Component {
 
     render() {
         return (
-            <div className="box">
+            <div className="box" style={{width: "100%"}}>
                 {
                     this.props.optionId === "" ? (
                         <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
