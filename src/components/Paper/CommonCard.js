@@ -125,24 +125,28 @@ class CommonCard extends Component {
         }
     }
 
-    // // handle image upload button click
-    // handleImageUpload = () => {
-    //     this.props.toggleQuestionModal(this.props.id.toString())
-    //     let str_question = this.props.question_set.get(this.props.id.toString()).question
-    //     let img_src = this.props.question_set.get(this.props.id.toString()).img_src
-    //     let alternative = this.props.question_set.get(this.props.id.toString()).alternative
-    //     let height = this.props.question_set.get(this.props.id.toString()).height
-    //     let width = this.props.question_set.get(this.props.id.toString()).width
-    //     let str_output = this.props.question_set.get(this.props.id.toString()).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
-    //     this.props.setQuestion(this.props.id.toString(), str_question, str_output)
-        // this.setState(prevState => {
-        //     this.setState({visible: false})
-        //     return {
-        //         ...prevState,
-        //         output: prevState.output + `<img src="${this.state.img_src}" alt="${this.state.alternative}" width="${this.state.width}px" height="${this.state.height}px" /><br />`
-        //     }
-        // })
-    // }
+    // handle image upload button click
+    handleImageUpload = () => {
+        if(this.props.optionId === "") {
+            this.props.toggleQuestionModal(this.props.questionId.toString())
+            let str_question = this.props.question_set.get(this.props.questionId.toString()).question
+            let img_src = this.props.question_set.get(this.props.questionId.toString()).img_src
+            let alternative = this.props.question_set.get(this.props.questionId.toString()).alternative
+            let height = this.props.question_set.get(this.props.questionId.toString()).height
+            let width = this.props.question_set.get(this.props.questionId.toString()).width
+            let str_output = this.props.question_set.get(this.props.questionId.toString()).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
+            this.props.setQuestion(this.props.questionId.toString(), str_question, str_output)
+        } else {
+            this.props.toggleOptionModal(this.props.questionId.toString(), this.props.optionId)
+            let str_question = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).question
+            let img_src = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).img_src
+            let alternative = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).alternative
+            let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
+            let width = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width
+            let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
+            this.props.setOption(this.props.questionId.toString(), this.props.optionId, str_question, str_output)
+        }
+    }
 
     render() {
         return (
@@ -182,30 +186,59 @@ class CommonCard extends Component {
                 <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "20px"}}></div>
 
                 {/* modal */}
-                {/* <div className={`modal is-clipped ${this.props.question_set.get(this.props.id).visible ? "is-active" : ""}`}>
-                    <div className="modal-background"></div>
-                    <div className="modal-card">
-                        <header className="modal-card-head">
-                            <p className="modal-card-title">Upload Image</p>
-                            <button className="delete" aria-label="close" onClick={this.props.toggleQuestionModal(this.props.id)}></button>
-                        </header>
-                        <section className="modal-card-body is-flex">
-                            <div className="column is-flex" style={{flex: "0.2"}}>
-                                <div style={{cursor: "pointer"}}>Upload from URL</div>
+                {
+                    this.props.optionId === "" ? (
+                        <div className={`modal is-clipped ${this.props.question_set.get(this.props.questionId.toString()).visible ? "is-active" : ""}`}>
+                            <div className="modal-background"></div>
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <p className="modal-card-title">Upload Image</p>
+                                    <button className="delete" aria-label="close" onClick={() => this.props.toggleQuestionModal(this.props.questionId)}></button>
+                                </header>
+                                <section className="modal-card-body is-flex">
+                                    <div className="column is-flex" style={{flex: "0.2"}}>
+                                        <div style={{cursor: "pointer"}}>Upload from URL</div>
+                                    </div>
+                                    <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
+                                        <input className="input" type="text" placeholder="Enter URL" value={this.props.question_set.get(this.props.questionId.toString()).img_src} onChange={e => this.props.setQuestionImgSrc(this.props.questionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter alternative name" value={this.props.question_set.get(this.props.questionId.toString()).alternative} onChange={e => this.props.setQuestionAlternative(this.props.questionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter height" value={this.props.question_set.get(this.props.questionId.toString()).height} onChange={e => this.props.setQuestionHeight(this.props.questionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter width" value={this.props.question_set.get(this.props.questionId.toString()).width} onChange={e => this.props.setQuestionWidth(this.props.questionId, e.target.value)} />
+                                    </div>
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <button className="button is-success" onClick={this.handleImageUpload}>Save changes</button>
+                                    <button className="button" onClick={() => this.props.toggleQuestionModal(this.props.questionId.toString())}>Cancel</button>
+                                </footer>
                             </div>
-                            <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
-                                <input className="input" type="text" placeholder="Enter URL" value={this.props.question_set.get(this.props.id).img_src} onChange={e => this.props.setQuestionImgSrc(this.props.id, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter alternative name" value={this.props.question_set.get(this.props.id).alternative} onChange={e => this.props.setQuestionAlternative(this.props.id, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter height" value={this.props.question_set.get(this.props.id).height} onChange={e => this.props.setQuestionHeight(this.props.id, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter width" value={this.props.question_set.get(this.props.id).width} onChange={e => this.props.setQuestionWidth(this.props.id, e.target.value)} />
+                        </div>
+                    ) : (
+                        <div className={`modal is-clipped ${this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).visible ? "is-active" : ""}`}>
+                            <div className="modal-background"></div>
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <p className="modal-card-title">Upload Image</p>
+                                    <button className="delete" aria-label="close" onClick={() => this.props.toggleOptionModal(this.props.questionId,this.props.optionId)}></button>
+                                </header>
+                                <section className="modal-card-body is-flex">
+                                    <div className="column is-flex" style={{flex: "0.2"}}>
+                                        <div style={{cursor: "pointer"}}>Upload from URL</div>
+                                    </div>
+                                    <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
+                                        <input className="input" type="text" placeholder="Enter URL" value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).img_src} onChange={e => this.props.setOptionImgSrc(this.props.questionId, this.props.optionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter alternative name" value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).alternative} onChange={e => this.props.setOptionAlternative(this.props.questionId, this.props.optionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter height" value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height} onChange={e => this.props.setOptionHeight(this.props.questionId, this.props.optionId, e.target.value)} />
+                                        <input className="input" type="text" placeholder="Enter width" value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width} onChange={e => this.props.setOptionWidth(this.props.questionId, this.props.optionId, e.target.value)} />
+                                    </div>
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <button className="button is-success" onClick={this.handleImageUpload}>Save changes</button>
+                                    <button className="button" onClick={() => this.props.toggleQuestionModal(this.props.questionId.toString())}>Cancel</button>
+                                </footer>
                             </div>
-                        </section>
-                        <footer className="modal-card-foot">
-                            <button className="button is-success" onClick={this.handleImageUpload}>Save changes</button>
-                            <button className="button" onClick={this.props.toggleQuestionModal(this.props.id)}>Cancel</button>
-                        </footer>
-                    </div>
-                </div> */}
+                        </div>
+                    )
+                }
     
             </div>
         )
