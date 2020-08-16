@@ -63,8 +63,11 @@ class Question extends Component {
                             </select>
                         </div>
                     </div>
-                    <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button>
-                </div>
+                    {
+                        this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ?
+                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button> : ""
+                    }      
+                    </div>
 
                 <div id="options" className="box">
                     {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
@@ -79,31 +82,6 @@ class Question extends Component {
                 </div>
                 
                 <ToastContainer />
-                {/* modal */}
-                {/* <div className={`modal is-clipped ${this.props.question_set.get(this.props.currQuestionId).visible ? "is-active" : ""}`}>
-                    <div className="modal-background"></div>
-                    <div className="modal-card">
-                        <header className="modal-card-head">
-                            <p className="modal-card-title">Upload Image</p>
-                            <button className="delete" aria-label="close" onClick={this.props.toggleQuestionModal(this.props.currQuestionId)}></button>
-                        </header>
-                        <section className="modal-card-body is-flex">
-                            <div className="column is-flex" style={{flex: "0.2"}}>
-                                <div style={{cursor: "pointer"}}>Upload from URL</div>
-                            </div>
-                            <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
-                                <input className="input" type="text" placeholder="Enter URL" value={this.props.question_set.get(this.props.currQuestionId).img_src} onChange={e => this.props.setQuestionImgSrc(this.props.currQuestionId, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter alternative name" value={this.props.question_set.get(this.props.currQuestionId).alternative} onChange={e => this.props.setQuestionAlternative(this.props.currQuestionId, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter height" value={this.props.question_set.get(this.props.currQuestionId).height} onChange={e => this.props.setQuestionHeight(this.props.currQuestionId, e.target.value)} />
-                                <input className="input" type="text" placeholder="Enter width" value={this.props.question_set.get(this.props.currQuestionId).width} onChange={e => this.props.setQuestionWidth(this.props.currQuestionId, e.target.value)} />
-                            </div>
-                        </section>
-                        <footer className="modal-card-foot">
-                            <button className="button is-success" onClick={this.handleImageUpload}>Save changes</button>
-                            <button className="button" onClick={this.props.toggleQuestionModal(this.props.currQuestionId)}>Cancel</button>
-                        </footer>
-                    </div>
-                </div> */}
             </div>
         )
     }
