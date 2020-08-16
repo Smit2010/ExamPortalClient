@@ -13,20 +13,10 @@ import {removeQuestion, swapQuestion } from '../../actions/question';
 class QuestionCardDiagram extends Component {
 
     check = (flag) => {
-        let {num,total,len} = this.props
-        if(flag) {
-            if(num > total) {
-                this.props.swapQuestion(...this.props.calcId("multiple",num,num-1))
-            }
-        } else {
-            if(num + 1 < total + len) {
-                this.props.swapQuestion(...this.props.calcId("multiple",num,num+1))
-            }
-        }
+        this.props.swapQuestion(...this.props.calcId("DIAGRAM",this.props.id,flag))
     }
 
     show = (str) => {
-        console.log(str)
         return {
             __html: str
         }
@@ -45,7 +35,7 @@ class QuestionCardDiagram extends Component {
                         return ( 
                         <div className="control" >
                             <label className="checkbox is-flex" >
-                                <div style={{display: "flex", alignItems: "center"}}><input type="checkbox" id={elem.id} name={this.props.id} style={{margin: "0 10px"}} /></div>
+                                <div style={{display: "flex", alignItems: "center"}}><input type="radio" id={elem.id} name={this.props.id} checked={this.props.question_set.get(this.props.id.toString()).answer.has(elem.id)} disabled style={{margin: "0 10px"}}/></div>
                                 <div dangerouslySetInnerHTML={this.show(elem.output)}></div>
                             </label>
                         </div>)
@@ -87,7 +77,7 @@ class QuestionCardDiagram extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        questions: state.question.question_set
+        question_set: state.question.question_set
     }
 }
 
