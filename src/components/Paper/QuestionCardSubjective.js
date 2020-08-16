@@ -25,20 +25,22 @@ class QuestionCardSubjective extends Component {
         }
     }
 
+    show = (str) => {
+        console.log(str)
+        return {
+            __html: str
+        }
+    }
+
     render() {
 
         return (
             this.props.show ? ( <div className="box question is-flex" style={{marginTop: "20px", justifyContent: "space-between"}}>
                 <div style={{flexDirection: "column"}}>
-                    {<p style={{fontSize:"20px", marginBottom: "10px"}}>{this.props.num}. {this.props.output}</p>}
-                    {Array.from(this.props.optionList.values()).map(elem => {
-                        return ( 
-                        <div className="control" >
-                            <label className="checkbox" >
-                                <input type="checkbox" id={elem.id} name={this.props.id} style={{margin: "0 10px"}}/>{elem.output}
-                            </label>
-                        </div>)
-                    })}
+                    <div className="is-flex">
+                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{this.props.num}</div>
+                        <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
+                    </div>
                 </div>
                 <div>
                     {/* {console.log(this.props.num, this.props.total)} */}
@@ -47,7 +49,7 @@ class QuestionCardSubjective extends Component {
                     <div onClick={() => this.check(false)} style={{display: "inline-block", cursor: "pointer"}}><ArrowDownwardIcon /></div>
                 </div>
             </div>) : (<div className="control is-flex" >
-                <label className="checkbox is-flex" style={{width: "100%"}}>
+                {/* <label className="checkbox is-flex" style={{width: "100%"}}>
                     <div className="is-flex" style={{alignItems: "center", marginRight: "20px"}}>
                         <input type="checkbox" id={this.props.id} name={this.props.curr} />
                     </div>
@@ -68,7 +70,7 @@ class QuestionCardSubjective extends Component {
                         <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>Output : </p>
                         <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "20px"}}></div>
                     </div>
-                </label>
+                </label> */}
             </div>)
         )
     }
@@ -76,8 +78,7 @@ class QuestionCardSubjective extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        questions: state.question.question_set,
-        curr: state.question.curr
+        questions: state.question.question_set
     }
 }
 
