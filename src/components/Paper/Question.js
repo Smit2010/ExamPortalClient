@@ -2,20 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import QuestionCardMultiple from './QuestionCardMultiple';
-import { removeQuestion, toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, setQuestionType, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, addOption } from '../../actions/question';
+import { removeQuestion, toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, setQuestionType, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, addOption, setAnswer } from '../../actions/question';
 import CommonCard from './CommonCard'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 class Question extends Component {
 
-    notify = () => {
-        toast("Please Choose Question Type")
-    }
-
     handleAddOption = () => {
         if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
-            this.notify()
+            toast("Please Choose Question Type")
         else
             this.props.addOption(this.props.currQuestionId.toString())
     }
@@ -37,15 +33,37 @@ class Question extends Component {
         this.props.setQuestionType(this.props.currQuestionId, e.target.value)
     }
 
+    handleAnswer = (e) => {
+        this.props.setAnswer(e.target.id.split(".")[0],e.target.id)
+    }
+
     handleSave = () => {
-        if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
-            this.notify()
+        if(this.props.question_set.get(this.props.currQuestionId.toString()).question === "")
+            toast("Please Enter Question")
+        else if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
+            toast("Please Choose Question Type")
+        else if(this.props.question_set.get(this.props.currQuestionId.toString()).answer.size == 0 && this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE")
+            toast("Please Choose Correct Answer")
         else
             this.props.history.replace('/question-paper')
         // return <Redirect to="/question-paper" />
     }
 
+    handleCancel = () => {
+        this.props.removeQuestion(this.props.currQuestionId)
+        this.props.history.replace('/question-paper')
+    }
+
     render() {
+
+        const findType = () => {
+            if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "SUBJECTIVE")
+                return "none"
+            else if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "MULTIPLE")
+                return "checkbox"
+            return "radio"
+        }
+
         return (
             <div className="is-flex" style={{flexDirection: "column", margin: "100px 40px"}}>
                 <CommonCard questionId={this.props.currQuestionId} optionId="" />
@@ -67,18 +85,22 @@ class Question extends Component {
                         this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ?
                         <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button> : ""
                     }      
-                    </div>
-
+                </div>
+                    
                 <div id="options" className="box">
                     {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
                     {
                         Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).map(elem => {
-                        return <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} />
+                        return (<div className="is-flex">
+                            <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div>
+                            <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} />
+                        </div>)
                     })}
                 </div>
 
-                <div className="is-flex" style={{justifyContent: "center"}}>
-                    <button className="button is-outlined is-link is-rounded" onClick={this.handleSave}>Save</button>
+                <div className="is-flex" style={{justifyContent: "space-evenly"}}>
+                    <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
+                    <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
                 </div>
                 
                 <ToastContainer />
@@ -101,7 +123,7 @@ const mapDispatchToProps = (dispatch) => {
         toggleQuestionBoldFlag: (id) => dispatch(toggleQuestionBoldFlag(id)),
         toggleQuestionItalicFlag: (id) => dispatch(toggleQuestionItalicFlag(id)),
         toggleQuestionUnderlineFlag: (id) => dispatch(toggleQuestionUnderlineFlag(id)),
-        // toggleQuestionModal: (id) => dispatch(toggleQuestionModal(id)),
+        setAnswer: (id, ans) => dispatch(setAnswer(id, ans)),
         setQuestionType: (id,questionType) => dispatch(setQuestionType(id,questionType)),
         setQuestion: (id, question, output) => dispatch(setQuestion(id, question, output)),
         setQuestionImgSrc: (id,value) => dispatch(setQuestionImgSrc(id,value)),
