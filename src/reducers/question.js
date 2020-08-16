@@ -198,8 +198,8 @@ export default function (state = initialState, action) {
         case QUESTIONS.SET_QUESTION_ALTERNATIVE:
             let newMap16 = new Map(state.question_set)
             let currQuestionId16 = (action.id).toString()
-            newMap8.set(currQuestionId16,{
-                ...newMap8.get(currQuestionId16),
+            newMap16.set(currQuestionId16,{
+                ...newMap16.get(currQuestionId16),
                 alternative: action.value
             })
             return {...state, question_set: newMap16}
@@ -218,7 +218,7 @@ export default function (state = initialState, action) {
             let currQuestionId18 = (action.id).toString()
             newMap18.set(currQuestionId18,{
                 ...newMap18.get(currQuestionId18),
-                width: this.value
+                width: action.value
             })
             return {...state, question_set: newMap18}
 
@@ -227,8 +227,8 @@ export default function (state = initialState, action) {
             let currQuestionId19 = (action.questionId).toString()
             let newCurrOptionId19 = action.optionId
             let existingQuestion19 = newMap19.get(currQuestionId19)
-            existingQuestion19.set(newCurrOptionId19,{
-                ...existingQuestion19.get(newCurrOptionId19),
+            existingQuestion19.optionList.set(newCurrOptionId19,{
+                ...existingQuestion19.optionList.get(newCurrOptionId19),
                 img_src: action.value
             })
             newMap19.set(currQuestionId19,existingQuestion19)
@@ -239,8 +239,8 @@ export default function (state = initialState, action) {
             let currQuestionId20 = (action.questionId).toString()
             let newCurrOptionId20 = action.optionId
             let existingQuestion20 = newMap20.get(currQuestionId20)
-            existingQuestion20.set(newCurrOptionId20,{
-                ...existingQuestion20.get(newCurrOptionId20),
+            existingQuestion20.optionList.set(newCurrOptionId20,{
+                ...existingQuestion20.optionList.get(newCurrOptionId20),
                 alternative: action.value
             })
             newMap20.set(currQuestionId20,existingQuestion20)
@@ -251,8 +251,8 @@ export default function (state = initialState, action) {
             let currQuestionId21 = (action.questionId).toString()
             let newCurrOptionId21 = action.optionId
             let existingQuestion21 = newMap21.get(currQuestionId21)
-            existingQuestion21.set(newCurrOptionId21,{
-                ...existingQuestion21.get(newCurrOptionId21),
+            existingQuestion21.optionList.set(newCurrOptionId21,{
+                ...existingQuestion21.optionList.get(newCurrOptionId21),
                 height: action.value
             })
             newMap21.set(currQuestionId21,existingQuestion21)
@@ -263,8 +263,8 @@ export default function (state = initialState, action) {
             let currQuestionId22 = (action.questionId).toString()
             let newCurrOptionId22 = action.optionId
             let existingQuestion22 = newMap22.get(currQuestionId22)
-            existingQuestion22.set(newCurrOptionId22,{
-                ...existingQuestion22.get(newCurrOptionId22),
+            existingQuestion22.optionList.set(newCurrOptionId22,{
+                ...existingQuestion22.optionList.get(newCurrOptionId22),
                 width: action.value
             })
             newMap22.set(currQuestionId22,existingQuestion22)
