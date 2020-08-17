@@ -116,12 +116,12 @@ class Question extends Component {
                     <div className="is-flex">
                         {
                             this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ? (
-                                <div id="options" className="box">
+                                <div id="options" className="box is-flex" style={{width: "100%"}}>
                                     <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div> 
                                     <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} title="Option"/>
                                 </div>
                             ) : (
-                                <div id="options" className="box" style={{width: "100%"}}>
+                                <div id="options" className="box is-flex" style={{width: "100%"}}>
                                     <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} title="Answer"/>
                                 </div>
                             )
