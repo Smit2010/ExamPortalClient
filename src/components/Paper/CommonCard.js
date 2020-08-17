@@ -5,7 +5,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import { toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, toggleOptionBoldFlag, toggleOptionItalicFlag, toggleOptionUnderlineFlag, toggleOptionModal, setOption, setOptionImgSrc, setOptionAlternative, setOptionHeight, setOptionWidth } from '../../actions/question';
+import { toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, toggleOptionBoldFlag, toggleOptionItalicFlag, toggleOptionUnderlineFlag, toggleOptionModal, setOption, setOptionImgSrc, setOptionAlternative, setOptionHeight, setOptionWidth, setAnswer } from '../../actions/question';
 
 class CommonCard extends Component {
 
@@ -45,9 +45,9 @@ class CommonCard extends Component {
                     }
                     pos = pos - 1
                     len = len + 1
-                    if(flag === 1)
+                    if(flag == 1)
                         count = count + 1
-                    else if(flag === 0)
+                    else if(flag == 0)
                         count = count - 1
                 }
                 else {
@@ -93,6 +93,14 @@ class CommonCard extends Component {
             if(this.props.optionId === "") {
                 this.props.setQuestion(this.props.questionId, str, prev_output + temp)
             } else {
+                if(this.props.title === "Answer") {
+                    if(this.props.question_set.get(this.props.questionId).answer.size == 0) {
+                        this.props.setAnswer(this.props.questionId, prev_output + temp)
+                    } else {
+                        this.props.setAnswer(this.props.questionId, this.props.question_set.get(this.props.questionId).answer.values().next().value)
+                        this.props.setAnswer(this.props.questionId, prev_output + temp)
+                    }
+                }
                 this.props.setOption(this.props.questionId, this.props.optionId, str, prev_output + temp)
             }
         }
@@ -150,11 +158,11 @@ class CommonCard extends Component {
 
     render() {
         return (
-            <div style={{width: "100%"}}>
+            <div className="box" style={{width: "100%"}}>
                 {
                     this.props.optionId === "" ? (
                         <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
-                            <p className="subtitle" style={{margin: "auto 0", marginLeft: "10px"}}>Question</p>
+                            <p className="subtitle" style={{margin: "auto 0", marginLeft: "10px"}}>{this.props.title}</p>
                             <div className="container is-flex" style={{justifyContent: "flex-end", alignItems: "center", padding: "10px"}}>
                                 <button onClick={() => this.props.toggleQuestionModal(this.props.questionId)}><ImageIcon /></button>
                                 <button onClick={() => this.props.toggleQuestionBoldFlag(this.props.questionId)}><FormatBoldIcon/></button>
@@ -164,7 +172,7 @@ class CommonCard extends Component {
                         </div>
                     ) : (
                         <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
-                            <p className="subtitle" style={{margin: "auto 0", marginLeft: "10px"}}>Option</p>
+                            <p className="subtitle" style={{margin: "auto 0", marginLeft: "10px"}}>{this.props.title}</p>
                             <div className="container is-flex" style={{justifyContent: "flex-end", alignItems: "center", padding: "10px"}}>
                                 <button onClick={() => this.props.toggleOptionModal(this.props.questionId, this.props.optionId)}><ImageIcon /></button>
                                 <button onClick={() => this.props.toggleOptionBoldFlag(this.props.questionId, this.props.optionId)}><FormatBoldIcon/></button>
@@ -182,10 +190,9 @@ class CommonCard extends Component {
                         : <textarea id="text" className="textarea" placeholder="Write option here..." onKeyPress={this.handleKeyPress} onChange={this.handleChange} value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId.toString()).option}/>
                     }
                 </div>
-                <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>{"Output : "}
-                    <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "0px"}}></div>
-                </p>
-                
+                <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>Output : </p>
+                <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "20px"}}></div>
+
                 {/* modal */}
                 {
                     this.props.optionId === "" ? (
@@ -263,7 +270,7 @@ const mapDispatchToProps = (dispatch) => {
         setQuestionAlternative: (id,value) => dispatch(setQuestionAlternative(id,value)),
         setQuestionHeight: (id,value) => dispatch(setQuestionHeight(id,value)),
         setQuestionWidth: (id,value) => dispatch(setQuestionWidth(id,value)),
-        
+        setAnswer: (id, ans) => dispatch(setAnswer(id, ans)),
         toggleOptionBoldFlag: (id1, id2) => dispatch(toggleOptionBoldFlag(id1, id2)),
         toggleOptionItalicFlag: (id1, id2) => dispatch(toggleOptionItalicFlag(id1, id2)),
         toggleOptionUnderlineFlag: (id1, id2) => dispatch(toggleOptionUnderlineFlag(id1, id2)),
