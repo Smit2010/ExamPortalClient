@@ -28,9 +28,6 @@ class App extends React.Component{
                             <Route exact path="/">
                                 <Redirect to="/home"/>
                             </Route>
-                            <Route path="/edit-question">
-                                <EditQuestion />
-                            </Route>
                             <Route path="/question-paper">
                                 <Paper />
                             </Route>
