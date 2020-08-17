@@ -31,7 +31,7 @@ class Paper extends Component {
 
     handleAddQuestion = () => {
         this.props.addQuestion()
-        this.props.history.replace(`/add-question`)
+        this.props.history.push(`/add-question`)
     }
 
     handleCreatePaper = () => {
