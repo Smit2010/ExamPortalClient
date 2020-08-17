@@ -34,9 +34,9 @@ const check = () => {
 const StudentProfile = ({name,photo,student_id,email}) => {
     
     useEffect(() => {
-        window.addEventListener('scroll' , check())
+        window.addEventListener('scroll' , check)
         return () => {
-            window.removeEventListener('scroll', check())
+            window.removeEventListener('scroll', check)
         }
     }, [])
 
