@@ -43,11 +43,18 @@ export default function (state = initialState, action) {
             let newMap24 = new Map(state.question_set)
             let currQuestionId24 = (action.id).toString()
             let set24 = newMap24.get(currQuestionId24).answer
-            if(set24.has(action.ans)) {
-                set24.delete(action.ans)
+            // console.log(action.flag)
+            if(action.flag == true) {
+                if(action.questionType !== "MULTIPLE") {
+                    set24.clear()
+                }
+                // console.log(action.ans)
+                if(action.ans !== "")
+                    set24.add(action.ans)
             } else {
-                set24.add(action.ans)
+                set24.delete(action.ans)
             }
+            // console.log(set24)
             newMap24.set(currQuestionId24, {
                 ...newMap24.get(currQuestionId24),
                 answer: set24
@@ -120,9 +127,14 @@ export default function (state = initialState, action) {
         case QUESTIONS.REMOVE_OPTION:
             let newMap6 = new Map(state.question_set)
             let currQuestionId6 = (action.questionId).toString()
+            if(newMap6.get(currQuestionId6).type === "SUBJECTIVE") {
+                newMap6.get(currQuestionId6).answer.clear()
+            } else {
+                newMap6.get(currQuestionId6).answer.delete(action.optionId)
+            }
             let newCurrOptionId6 = action.optionId
             let existingQuestion6 = newMap6.get(currQuestionId6)
-            existingQuestion6.delete(newCurrOptionId6)
+            existingQuestion6.optionList.delete(newCurrOptionId6)
             newMap6.set(currQuestionId6, existingQuestion6)
             return {...state, question_set: newMap6}
 
