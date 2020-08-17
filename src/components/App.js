@@ -14,6 +14,8 @@ import Home from './Home';
 import SignUp from './Auth/SignUp';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
+import Paper from './Paper';
+import Question from './Paper/Question';
 
 class App extends React.Component{
     render(){
@@ -40,6 +42,12 @@ class App extends React.Component{
                             </Route>
                             <Route exact path="/me">
                                 <Profile/>
+                            </Route>
+                            <Route exact path="/question-paper">
+                                <Paper/>
+                            </Route>
+                            <Route exact path="/add-question">
+                                <Question/>
                             </Route>
                         </Switch>
                     </Route>

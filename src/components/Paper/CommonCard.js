@@ -45,9 +45,9 @@ class CommonCard extends Component {
                     }
                     pos = pos - 1
                     len = len + 1
-                    if(flag == 1)
+                    if(flag === 1)
                         count = count + 1
-                    else if(flag == 0)
+                    else if(flag === 0)
                         count = count - 1
                 }
                 else {
@@ -150,7 +150,7 @@ class CommonCard extends Component {
 
     render() {
         return (
-            <div className="box" style={{width: "100%"}}>
+            <div style={{width: "100%"}}>
                 {
                     this.props.optionId === "" ? (
                         <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
@@ -182,9 +182,10 @@ class CommonCard extends Component {
                         : <textarea id="text" className="textarea" placeholder="Write option here..." onKeyPress={this.handleKeyPress} onChange={this.handleChange} value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId.toString()).option}/>
                     }
                 </div>
-                <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>Output : </p>
-                <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "20px"}}></div>
-
+                <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>{"Output : "}
+                    <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "0px"}}></div>
+                </p>
+                
                 {/* modal */}
                 {
                     this.props.optionId === "" ? (

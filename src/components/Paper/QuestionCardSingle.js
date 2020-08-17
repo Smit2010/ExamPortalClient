@@ -28,18 +28,20 @@ class QuestionCardSingle extends Component {
             this.props.show ? ( <div className="box question is-flex" style={{marginTop: "20px", justifyContent: "space-between"}}>
                 <div style={{flexDirection: "column"}}>
                     <div className="is-flex">
-                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{this.props.num}</div>
+                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{"Q"+this.props.num}</div>
                         <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
                     </div>
+                    <div>
                     {Array.from(this.props.optionList.values()).map(elem => {
                         return ( 
-                        <div className="control" >
+                        <div className="control" style={{display: "flex", justifyContent: "center"}}>
                             <label className="checkbox is-flex" >
                                 <div style={{display: "flex", alignItems: "center"}}><input type="radio" id={elem.id} name={this.props.id} checked={this.props.question_set.get(this.props.id.toString()).answer.has(elem.id)} disabled style={{margin: "0 10px"}}/></div>
                                 <div dangerouslySetInnerHTML={this.show(elem.output)}></div>
                             </label>
                         </div>)
                     })}
+                    </div>
                 </div>
                 <div>
                     {/* {console.log(this.props.num, this.props.total)} */}

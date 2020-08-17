@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
             let newCurrQuestionId = (state.currQuestionId + 1).toString()
             newMap.set(newCurrQuestionId, {
                 id: newCurrQuestionId,
-                type: "",
+                type: "NONE",
                 question: "",
                 output: "",
                 boldFlag: false,

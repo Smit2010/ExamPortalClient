@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter, Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux';
+import SideBar from '../SideBar';
 import QuestionCardSingle from './QuestionCardSingle';
 import QuestionCardMultiple from './QuestionCardMultiple';
 import QuestionCardSubjective from './QuestionCardSubjective';
@@ -9,6 +10,24 @@ import { Divider } from '@material-ui/core';
 import { addQuestion } from '../../actions/question';
 
 class Paper extends Component {
+
+    renderDrawer = () => {
+        if(this.props.isDrawerOpen){
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
+                    <SideBar/>
+                </div>
+            );
+        } else{
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
+                    <SideBar/>
+                </div>
+            );
+        }
+    };
 
     handleAddQuestion = () => {
         this.props.addQuestion()
@@ -92,6 +111,8 @@ class Paper extends Component {
         // console.log(this.state)
 
         return (
+            <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
+            {this.renderDrawer()}
             <div className="container" style={{marginTop:"100px"}}>
                 <h1 className="title">Generate Question Paper</h1>
                 <div className="container">
@@ -133,7 +154,7 @@ class Paper extends Component {
                     {/* Show diagram based questions */}
 
                     {diagram.length > 0 && <div className="box">
-                        <p className="subtitle">Diagram Based Questions</p>
+                        <p className="subtitle">Diagram Bquestionased Questions</p>
                         <Divider />
                             {diagram.map(elem => {
                                 count = count + 1
@@ -145,10 +166,11 @@ class Paper extends Component {
                 </div>
 
                 {/* Button to add question and create paper*/}
-                <div className="is-flex" style={{justifyContent: "center", marginBottom: "20px"}}>
+                <div className="is-flex" style={{justifyContent: "start", marginBottom: "20px"}}>
                     <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px"}} onClick={this.handleAddQuestion}>Add Question</button>
                     <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px", marginLeft: "40px"}} onClick={this.handleCreatePaper}>Create Paper</button>
                 </div>
+            </div>
             </div>
         )
     }
@@ -157,7 +179,8 @@ class Paper extends Component {
 const mapStateToProps = (state) => {
     return {
         question_set: state.question.question_set,
-        currQuestionId: state.question.currQuestionId
+        currQuestionId: state.question.currQuestionId,
+        isDrawerOpen: state.drawer.isDrawerOpen,
     }
 }
 

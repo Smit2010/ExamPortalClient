@@ -1,20 +1,39 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Redirect } from 'react-router-dom'
+import SideBar from '../SideBar';
+import { withRouter } from 'react-router-dom'
 import QuestionCardMultiple from './QuestionCardMultiple';
 import { removeQuestion, toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, setQuestionType, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, addOption, setAnswer } from '../../actions/question';
 import CommonCard from './CommonCard'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 class Question extends Component {
 
     handleAddOption = () => {
-        if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
-            toast("Please Choose Question Type")
+        if( this.props.question_set.get(this.props.currQuestionId.toString()).type === "NONE")
+            toast.error("Please Choose Question Type")
         else
             this.props.addOption(this.props.currQuestionId.toString())
     }
+
+    renderDrawer = () => {
+        if(this.props.isDrawerOpen){
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "0px", transition: "margin 0.7s"}}>
+                    <SideBar/>
+                </div>
+            );
+        } else{
+            return(
+                <div className="column is-narrow" style={{height: "93vh", justifyContent: "start", 
+                    padding: 0, marginTop: "7vh", width: "240px", marginLeft: "-240px", transition: "margin 0.7s"}}>
+                    <SideBar/>
+                </div>
+            );
+        }
+    };
 
     // handleDeleteOption = (id) => {
     //     console.log(this.state.optionList.get(parseInt(id)).children)
@@ -39,11 +58,11 @@ class Question extends Component {
 
     handleSave = () => {
         if(this.props.question_set.get(this.props.currQuestionId.toString()).question === "")
-            toast("Please Enter Question")
-        else if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
-            toast("Please Choose Question Type")
-        else if(this.props.question_set.get(this.props.currQuestionId.toString()).answer.size == 0 && this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE")
-            toast("Please Choose Correct Answer")
+            toast.error("Please Enter Question")
+        else if(this.props.question_set.get(this.props.currQuestionId.toString()).type === "NONE")
+            toast.error("Please Choose Question Type")
+        else if(this.props.question_set.get(this.props.currQuestionId.toString()).answer.size === 0 && this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE")
+            toast.error("Please Choose Correct Answer")
         else
             this.props.history.replace('/question-paper')
         // return <Redirect to="/question-paper" />
@@ -65,45 +84,51 @@ class Question extends Component {
         }
 
         return (
-            <div className="is-flex" style={{flexDirection: "column", margin: "100px 40px"}}>
-                <CommonCard questionId={this.props.currQuestionId} optionId="" />
-                
-                {/* question type */}
-                <div className="box is-flex" style={{justifyContent: "space-between"}}>
-                    <div className="control is-flex" style={{marginTop: "10px", justifyContent: "center"}}>
-                        <div className="select" style={{marginLeft: "50px"}}>
-                            <select onChange={this.handleType}>
-                                <option>None</option>
-                                <option value="MULTIPLE">Multiple choise question</option>
-                                <option value="SINGLE">Single choice question</option>
-                                <option value="SUBJECTIVE">Subjective question</option>
-                                <option value="DIAGRAM">Diagram based question</option>
-                            </select>
-                        </div>
+            <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
+            {this.renderDrawer()}
+            <div className="container">
+                <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", marginTop: "10vh"}}>
+                    <div style={{justifyContent: "space-between"}}>
+                        <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
+                            <div className="select" style={{marginBottom: 10}}>
+                                <select onChange={this.handleType} placeholder="Select Question type">
+                                    <option value="" disabled selected>Select Question type</option>
+                                    <option value="MULTIPLE">Multiple choise question</option>
+                                    <option value="SINGLE">Single choice question</option>
+                                    <option value="SUBJECTIVE">Subjective question</option>
+                                    <option value="DIAGRAM">Diagram based question</option>
+                                </select>
+                            </div>
+                        </div>      
                     </div>
-                    {
-                        this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ?
-                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button> : ""
-                    }      
-                </div>
+                    <CommonCard questionId={this.props.currQuestionId} optionId="" />
+                        {
+                            (this.props.question_set.get(this.props.currQuestionId.toString()).type === "MULTIPLE" ||
+                            this.props.question_set.get(this.props.currQuestionId.toString()).type === "SINGLE" ) ?
+                            <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{width: "150px", marginBottom: 20}}>Add option</button> : ""
+                        }
                     
-                <div id="options" className="box">
-                    {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
-                    {
-                        Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).map(elem => {
-                        return (<div className="is-flex">
-                            <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div>
-                            <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} />
-                        </div>)
-                    })}
-                </div>
+                    {/* question type */}
+                    
+                    {Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).length ?
+                        <div id="options">
+                            {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
+                            {
+                                Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).map(elem => {
+                                return (<div className="is-flex">
+                                    <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div>
+                                    <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} />
+                                </div>)
+                            })}
+                        </div> : ""
+                    }
 
-                <div className="is-flex" style={{justifyContent: "space-evenly"}}>
-                    <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
-                    <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
+                    <div className="is-flex" style={{justifyContent: "space-evenly"}}>
+                        <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
+                        <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
+                    </div>
                 </div>
-                
-                <ToastContainer />
+            </div>
             </div>
         )
     }
@@ -113,7 +138,8 @@ const mapStateToProps = (state) => {
     return {
         question_set: state.question.question_set,
         currQuestionId: state.question.currQuestionId,
-        currOptionId: state.question.currOptionId
+        currOptionId: state.question.currOptionId,
+        isDrawerOpen: state.drawer.isDrawerOpen,
     }
 }
 

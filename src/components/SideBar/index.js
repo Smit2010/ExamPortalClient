@@ -28,8 +28,8 @@ const SideBar = ({list, user}) => {
     const handleClick = (item) => {
         if(item === "Profile"){
             history.push('/me');
-        } else{
-            
+        } else if(item === "Create New Exam"){
+            history.push('/question-paper');
         }
     }
     
