@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const examData = [
     {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
@@ -13,19 +13,26 @@ const examData = [
     {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
 ]
 
+const check = () => {
+    if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
+        document.getElementById("profile-image").style.height = "100px";
+        document.getElementById("profile-image").style.width = "100px";
+        document.getElementById("profile-image").style.transition = "all 0.4s ease-in-out";
+    } else {
+        document.getElementById("profile-image").style.height = "200px";
+        document.getElementById("profile-image").style.width = "200px";
+        document.getElementById("profile-image").style.transition = "all 0.4s ease-in-out";
+    }
+}
+
 const FacultyProfile = ({name,photo,student_id,email}) => {
     
-    window.onscroll = () => {
-        if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
-            document.getElementById("profile-image").style.height = "100px";
-            document.getElementById("profile-image").style.width = "100px";
-            document.getElementById("profile-image").style.transition = "all 0.4s ease-in-out";
-        } else {
-            document.getElementById("profile-image").style.height = "200px";
-            document.getElementById("profile-image").style.width = "200px";
-            document.getElementById("profile-image").style.transition = "all 0.4s ease-in-out";
+    useEffect(() => {
+        window.addEventListener('scroll' , check())
+        return () => {
+            window.removeEventListener('scroll', check())
         }
-    }
+    }, [])
 
     return (
         <div className="column" style={{display: "flex", justifyContent: "center", alignItems: "stretch", flexDirection: "column"}}>
