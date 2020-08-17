@@ -84,51 +84,56 @@ class Question extends Component {
         }
 
         return (
-            <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
-            {this.renderDrawer()}
-            <div className="container">
-                <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", marginTop: "10vh"}}>
-                    <div style={{justifyContent: "space-between"}}>
-                        <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
-                            <div className="select" style={{marginBottom: 10}}>
-                                <select onChange={this.handleType} placeholder="Select Question type">
-                                    <option value="" disabled selected>Select Question type</option>
-                                    <option value="MULTIPLE">Multiple choise question</option>
-                                    <option value="SINGLE">Single choice question</option>
-                                    <option value="SUBJECTIVE">Subjective question</option>
-                                    <option value="DIAGRAM">Diagram based question</option>
-                                </select>
-                            </div>
-                        </div>      
+            <div className="is-flex" style={{flexDirection: "column", margin: "100px 40px"}}>
+                <CommonCard questionId={this.props.currQuestionId} optionId="" title="Question" />
+                
+                {/* question type */}
+                <div className="box is-flex" style={{justifyContent: "space-between"}}>
+                    <div className="control is-flex" style={{marginTop: "10px", justifyContent: "center"}}>
+                        <div className="select" style={{marginLeft: "50px"}}>
+                            <select onChange={this.handleType}>
+                                <option>None</option>
+                                <option value="MULTIPLE">Multiple choise question</option>
+                                <option value="SINGLE">Single choice question</option>
+                                <option value="SUBJECTIVE">Subjective question</option>
+                                <option value="DIAGRAM">Diagram based question</option>
+                            </select>
+                        </div>
                     </div>
-                    <CommonCard questionId={this.props.currQuestionId} optionId="" />
-                        {
-                            (this.props.question_set.get(this.props.currQuestionId.toString()).type === "MULTIPLE" ||
-                            this.props.question_set.get(this.props.currQuestionId.toString()).type === "SINGLE" ) ?
-                            <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{width: "150px", marginBottom: 20}}>Add option</button> : ""
-                        }
-                    
-                    {/* question type */}
-                    
-                    {Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).length ?
-                        <div id="options">
-                            {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
-                            {
-                                Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).map(elem => {
-                                return (<div className="is-flex">
-                                    <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div>
-                                    <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} />
-                                </div>)
-                            })}
-                        </div> : ""
-                    }
-
-                    <div className="is-flex" style={{justifyContent: "space-evenly"}}>
-                        <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
-                        <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
-                    </div>
+                    {
+                        this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ?
+                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button> : 
+                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add answer</button>
+                    }      
                 </div>
-            </div>
+                    
+                
+                    {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
+                {
+                    Array.from(this.props.question_set.get(this.props.currQuestionId.toString()).optionList.values()).map(elem => {
+                    return (
+                    <div className="is-flex">
+                        {
+                            this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ? (
+                                <div id="options" className="box">
+                                    <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.props.currQuestionId} type={findType()} onChange={this.handleAnswer} /></div> 
+                                    <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} title="Option"/>
+                                </div>
+                            ) : (
+                                <div id="options" className="box" style={{width: "100%"}}>
+                                    <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} title="Answer"/>
+                                </div>
+                            )
+                        }
+                    </div>)
+                })}
+
+                <div className="is-flex" style={{justifyContent: "space-evenly", marginTop: "10px"}}>
+                    <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
+                    <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
+                </div>
+                
+                <ToastContainer />
             </div>
         )
     }
