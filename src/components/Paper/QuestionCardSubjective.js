@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import './style.css'
-import ImageIcon from '@material-ui/icons/Image';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { connect } from 'react-redux'
 import {removeQuestion, swapQuestion } from '../../actions/question';
+import { withRouter } from 'react-router-dom';
 
 class QuestionCardSubjective extends Component {
 
@@ -24,16 +22,20 @@ class QuestionCardSubjective extends Component {
         }
     }
 
+    handleEdit = () => {
+        this.props.history.replace(`add-question?${this.props.id}`)
+    }
+
     render() {
 
         return (
             this.props.show ? ( <div className="box question is-flex" style={{marginTop: "20px", justifyContent: "space-between"}}>
                 <div style={{flexDirection: "column"}}>
                     <div className="is-flex">
-                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{"Q"+this.props.num}</div>
+                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{this.props.num}</div>
                         <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
                     </div>
-                    {Array.from(this.props.optionList.values()).map(elem => {
+                     {Array.from(this.props.optionList.values()).map(elem => {
                         return ( 
                         <div className="control" >
                             <label className="checkbox is-flex" >
@@ -43,7 +45,7 @@ class QuestionCardSubjective extends Component {
                     })}
                 </div>
                 <div>
-                    
+                    <div onClick={this.handleEdit} style={{display: "inline-block", cursor: "pointer"}}><EditIcon /></div>
                     <div onClick={() => this.props.removeQuestion(this.props.id)} style={{display: "inline-block", cursor: "pointer"}}><DeleteIcon /></div>
                     <div onClick={() => this.check(true)} style={{display: "inline-block", cursor: "pointer"}}><ArrowUpwardIcon /></div>
                     <div onClick={() => this.check(false)} style={{display: "inline-block", cursor: "pointer"}}><ArrowDownwardIcon /></div>
@@ -89,4 +91,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionCardSubjective)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(QuestionCardSubjective))
