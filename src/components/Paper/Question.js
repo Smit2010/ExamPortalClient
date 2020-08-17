@@ -85,6 +85,7 @@ class Question extends Component {
 
         return (
             <div className="is-flex" style={{flexDirection: "column", margin: "100px 40px"}}>
+                {this.renderDrawer()}
                 <CommonCard questionId={this.props.currQuestionId} optionId="" title="Question" />
                 
                 {/* question type */}
@@ -132,8 +133,6 @@ class Question extends Component {
                     <button className="button is-outlined is-link is-rounded" style={{width: "150px"}} onClick={this.handleSave}>Save</button>
                     <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
                 </div>
-                
-                <ToastContainer />
             </div>
         )
     }
