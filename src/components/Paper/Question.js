@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 class Question extends Component {
 
     handleAddOption = () => {
-        if( this.props.question_set.get(this.props.currQuestionId.toString()).type === "NONE")
+        if( this.props.question_set.get(this.props.currQuestionId.toString()).type === "")
             toast.error("Please Choose Question Type")
         else
             this.props.addOption(this.props.currQuestionId.toString())
@@ -84,29 +84,30 @@ class Question extends Component {
         }
 
         return (
-            <div className="is-flex" style={{flexDirection: "column", margin: "100px 40px"}}>
+           <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}
-                <CommonCard questionId={this.props.currQuestionId} optionId="" title="Question" />
-                
-                {/* question type */}
-                <div className="box is-flex" style={{justifyContent: "space-between"}}>
-                    <div className="control is-flex" style={{marginTop: "10px", justifyContent: "center"}}>
-                        <div className="select" style={{marginLeft: "50px"}}>
-                            <select onChange={this.handleType}>
-                                <option value="" disabled selected>Select Question type</option>
-                                <option value="MULTIPLE">Multiple choise question</option>
-                                <option value="SINGLE">Single choice question</option>
-                                <option value="SUBJECTIVE">Subjective question</option>
-                                <option value="DIAGRAM">Diagram based question</option>
-                            </select>
+                 <div className="container">
+                     <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", margin: "10px", width:"100%", marginTop: "10vh"}}>
+                         <div style={{justifyContent: "space-between"}}>
+                             <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
+                                 <div className="select" style={{marginBottom: 10}}>
+                                     <select onChange={this.handleType} placeholder="Select Question type">
+                                         <option value="" disabled selected>Select Question type</option>
+                                         <option value="MULTIPLE">Multiple choise question</option>
+                                         <option value="SINGLE">Single choice question</option>
+                                         <option value="SUBJECTIVE">Subjective question</option>
+                                         <option value="DIAGRAM">Diagram based question</option>
+                                    </select>
+                                  </div>
+                            </div>  
                         </div>
-                    </div>
+                        <CommonCard questionId={this.props.currQuestionId} optionId="" title="Question" />	
+                                            
                     {
                         this.props.question_set.get(this.props.currQuestionId.toString()).type !== "SUBJECTIVE" ?
                         <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add option</button> : 
                         <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{marginRight: "50px"}}>Add answer</button>
-                    }      
-                </div>
+                    } 
                     
                 
                     {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
@@ -134,6 +135,8 @@ class Question extends Component {
                     <button className="button is-outlined is-danger is-rounded" style={{width: "150px"}} onClick={this.handleCancel}>Cancel</button>
                 </div>
             </div>
+        </div>
+        </div>
         )
     }
 }
