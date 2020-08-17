@@ -5,7 +5,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import { toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, toggleOptionBoldFlag, toggleOptionItalicFlag, toggleOptionUnderlineFlag, toggleOptionModal, setOption, setOptionImgSrc, setOptionAlternative, setOptionHeight, setOptionWidth, setAnswer } from '../../actions/question';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, toggleOptionBoldFlag, toggleOptionItalicFlag, toggleOptionUnderlineFlag, toggleOptionModal, setOption, removeOption, setOptionImgSrc, setOptionAlternative, setOptionHeight, setOptionWidth, setAnswer } from '../../actions/question';
 
 class CommonCard extends Component {
 
@@ -26,6 +27,7 @@ class CommonCard extends Component {
             italicFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).italicFlag
             underlineFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).underlineFlag
         }
+        // console.log(prev_str,str)
         // console.log(this.props.questionId, this.props.optionId)
         if(prev_str.length > str.length) {
             let len = 0, pos = prev_output.length - 1, diff = prev_str.length - str.length
@@ -68,12 +70,18 @@ class CommonCard extends Component {
                 len = len + 1
                 count = count - 1
             }
+            //console.log(this.props.optionId)
             if(this.props.optionId === "") {
                 this.props.setQuestion(this.props.questionId, prev_str.substring(0,str.length), prev_output.substring(0,prev_output.length - len))
             } else {
                 this.props.setOption(this.props.questionId, this.props.optionId, prev_str.substring(0,str.length), prev_output.substring(0,prev_output.length - len))
+                let questionType = this.props.question_set.get(this.props.questionId).type
+                // console.log(this.props.questionId, true, questionType)
+                if(questionType === "SUBJECTIVE") {
+                    //let ans = this.props.question_set.get(this.props.questionId).optionList.get(this.props.optionId).output
+                    this.props.setAnswer(this.props.questionId, prev_output.substring(0,prev_output.length - len), true, questionType)
+                }
             }
-
         } else if(prev_str.length < str.length) {
             
             let temp = ""
@@ -94,15 +102,12 @@ class CommonCard extends Component {
             if(this.props.optionId === "") {
                 this.props.setQuestion(this.props.questionId, str, prev_output + temp)
             } else {
-                if(this.props.title === "Answer") {
-                    if(this.props.question_set.get(this.props.questionId).answer.size == 0) {
-                        this.props.setAnswer(this.props.questionId, prev_output + temp)
-                    } else {
-                        this.props.setAnswer(this.props.questionId, this.props.question_set.get(this.props.questionId).answer.values().next().value)
-                        this.props.setAnswer(this.props.questionId, prev_output + temp)
-                    }
-                }
                 this.props.setOption(this.props.questionId, this.props.optionId, str, prev_output + temp)
+                let questionType = this.props.question_set.get(this.props.questionId).type
+                // console.log(this.props.questionId, true, questionType)
+                if(questionType === "SUBJECTIVE") {
+                    this.props.setAnswer(this.props.questionId, prev_output + temp, true, questionType)
+                }
             }
         }
     }
@@ -153,6 +158,7 @@ class CommonCard extends Component {
             let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
             let width = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width
             let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
+            //console.log(str_question, str_output)
             this.props.setOption(this.props.questionId.toString(), this.props.optionId, str_question, str_output)
         }
     }
@@ -175,6 +181,7 @@ class CommonCard extends Component {
                         <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
                             <p className="subtitle" style={{margin: "auto 0", marginLeft: "10px"}}>{this.props.title}</p>
                             <div className="container is-flex" style={{justifyContent: "flex-end", alignItems: "center", padding: "10px"}}>
+                                <button onClick={() => this.props.removeOption(this.props.questionId, this.props.optionId)}><DeleteIcon /></button>
                                 <button onClick={() => this.props.toggleOptionModal(this.props.questionId, this.props.optionId)}><ImageIcon /></button>
                                 <button onClick={() => this.props.toggleOptionBoldFlag(this.props.questionId, this.props.optionId)}><FormatBoldIcon/></button>
                                 <button onClick={() => this.props.toggleOptionItalicFlag(this.props.questionId, this.props.optionId)}><FormatItalicIcon /></button>
@@ -271,12 +278,13 @@ const mapDispatchToProps = (dispatch) => {
         setQuestionAlternative: (id,value) => dispatch(setQuestionAlternative(id,value)),
         setQuestionHeight: (id,value) => dispatch(setQuestionHeight(id,value)),
         setQuestionWidth: (id,value) => dispatch(setQuestionWidth(id,value)),
-        setAnswer: (id, ans) => dispatch(setAnswer(id, ans)),
+        setAnswer: (id, ans, flag, type) => dispatch(setAnswer(id, ans, flag, type)),
         toggleOptionBoldFlag: (id1, id2) => dispatch(toggleOptionBoldFlag(id1, id2)),
         toggleOptionItalicFlag: (id1, id2) => dispatch(toggleOptionItalicFlag(id1, id2)),
         toggleOptionUnderlineFlag: (id1, id2) => dispatch(toggleOptionUnderlineFlag(id1, id2)),
         toggleOptionModal: (id1, id2) => dispatch(toggleOptionModal(id1, id2)),
         setOption: (id1, id2, question, output) => dispatch(setOption(id1, id2, question, output)),
+        removeOption: (id1, id2) => dispatch(removeOption(id1, id2)),
         setOptionImgSrc: (id1, id2, value) => dispatch(setOptionImgSrc(id1, id2, value)),
         setOptionAlternative: (id1, id2,value) => dispatch(setOptionAlternative(id1, id2, value)),
         setOptionHeight: (id1, id2,value) => dispatch(setOptionHeight(id1, id2, value)),
