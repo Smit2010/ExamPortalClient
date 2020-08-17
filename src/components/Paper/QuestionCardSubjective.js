@@ -5,6 +5,7 @@ import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { connect } from 'react-redux'
@@ -32,6 +33,14 @@ class QuestionCardSubjective extends Component {
                         <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{"Q"+this.props.num}</div>
                         <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
                     </div>
+                    {Array.from(this.props.optionList.values()).map(elem => {
+                        return ( 
+                        <div className="control" >
+                            <label className="checkbox is-flex" >
+                                <ArrowForwardIcon /><div dangerouslySetInnerHTML={this.show(elem.output)}></div>
+                            </label>
+                        </div>)
+                    })}
                 </div>
                 <div>
                     
