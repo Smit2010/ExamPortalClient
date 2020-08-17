@@ -26,6 +26,7 @@ class CommonCard extends Component {
             italicFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).italicFlag
             underlineFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).underlineFlag
         }
+        // console.log(this.props.questionId, this.props.optionId)
         if(prev_str.length > str.length) {
             let len = 0, pos = prev_output.length - 1, diff = prev_str.length - str.length
             let flag = 0, count = 0
@@ -146,7 +147,7 @@ class CommonCard extends Component {
             this.props.setQuestion(this.props.questionId.toString(), str_question, str_output)
         } else {
             this.props.toggleOptionModal(this.props.questionId.toString(), this.props.optionId)
-            let str_question = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).question
+            let str_question = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).option
             let img_src = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).img_src
             let alternative = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).alternative
             let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
