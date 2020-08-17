@@ -15,11 +15,13 @@ export const setQuestion = (id,question,output) => {
     }
 }
 
-export const setAnswer = (id, ans) => {
+export const setAnswer = (id, ans, flag, questionType) => {
     return {
         type: QUESTIONS.SET_ANSWER,
         id,
-        ans
+        ans,
+        flag,
+        questionType
     }
 }
 
