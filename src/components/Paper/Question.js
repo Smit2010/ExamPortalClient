@@ -92,7 +92,7 @@ class Question extends Component {
                     <div className="control is-flex" style={{marginTop: "10px", justifyContent: "center"}}>
                         <div className="select" style={{marginLeft: "50px"}}>
                             <select onChange={this.handleType}>
-                                <option>None</option>
+                                <option value="" disabled selected>Select Question type</option>
                                 <option value="MULTIPLE">Multiple choise question</option>
                                 <option value="SINGLE">Single choice question</option>
                                 <option value="SUBJECTIVE">Subjective question</option>
