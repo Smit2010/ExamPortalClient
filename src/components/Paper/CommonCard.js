@@ -70,7 +70,6 @@ class CommonCard extends Component {
                 len = len + 1
                 count = count - 1
             }
-            //console.log(this.props.optionId)
             if(this.props.optionId === "") {
                 this.props.setQuestion(this.props.questionId, prev_str.substring(0,str.length), prev_output.substring(0,prev_output.length - len))
             } else {
@@ -78,8 +77,8 @@ class CommonCard extends Component {
                 let questionType = this.props.question_set.get(this.props.questionId).type
                 // console.log(this.props.questionId, true, questionType)
                 if(questionType === "SUBJECTIVE") {
-                    //let ans = this.props.question_set.get(this.props.questionId).optionList.get(this.props.optionId).output
-                    this.props.setAnswer(this.props.questionId, prev_output.substring(0,prev_output.length - len), true, questionType)
+                    let ans = this.props.question_set.get(this.props.questionId).optionList.get(this.props.optionId).output
+                    this.props.setAnswer(this.props.questionId, ans, true, questionType)
                 }
             }
         } else if(prev_str.length < str.length) {
@@ -157,8 +156,7 @@ class CommonCard extends Component {
             let alternative = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).alternative
             let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
             let width = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width
-            let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
-            //console.log(str_question, str_output)
+            let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`    
             this.props.setOption(this.props.questionId.toString(), this.props.optionId, str_question, str_output)
         }
     }
@@ -196,6 +194,7 @@ class CommonCard extends Component {
                         this.props.optionId === "" ? 
                         <textarea id="text" className="textarea" placeholder="Write question here..." onKeyPress={this.handleKeyPress} onChange={this.handleChange} value={this.props.question_set.get(this.props.questionId.toString()).question}/>
                         : <textarea id="text" className="textarea" placeholder="Write option here..." onKeyPress={this.handleKeyPress} onChange={this.handleChange} value={this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId.toString()).option}/>
+                        // console.log(this.props.question_set.get(this.props.questionId.toString()).optionList,this.props.optionId.toString())
                     }
                 </div>
                 <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>Output : </p>
