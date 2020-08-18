@@ -80,13 +80,18 @@ export default function (state = initialState, action) {
             let newMap3 = new Map(state.question_set)
             let currFirst3 = (action.first).toString()
             let currSecond3 = (action.second).toString()
-            newMap3.get(currFirst3).id = currSecond3
-            newMap3.get(currSecond3).id = currFirst3
-            let temp1 = newMap3.get(currFirst3)
-            let temp2 = newMap3.get(currSecond3)
-            newMap3.set(currFirst3, temp2)
-            newMap3.set(currSecond3, temp1)
-            return {...state, question_set: newMap3}
+            let newQuestionSet = new Map()
+            newMap3.forEach((value, key) => {
+                if(key === currFirst3) {
+                    newQuestionSet.set(currSecond3, newMap3.get(currSecond3))
+                } else if(key === currSecond3) {
+                    newQuestionSet.set(currFirst3, newMap3.get(currFirst3))
+                }
+                else {
+                    newQuestionSet.set(key, value)
+                }
+            })
+            return {...state, question_set: newQuestionSet}
 
         case QUESTIONS.ADD_OPTION:
             let newMap4 = new Map(state.question_set)
