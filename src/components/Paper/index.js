@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import { withRouter, Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import SideBar from '../SideBar';
 import QuestionCardSingle from './QuestionCardSingle';
 import QuestionCardMultiple from './QuestionCardMultiple';
 import QuestionCardSubjective from './QuestionCardSubjective';
 import QuestionCardDiagram from './QuestionCardDiagram';
 import { Divider } from '@material-ui/core';
 import { addQuestion } from '../../actions/question';
+import SideBar from '../SideBar';
 
 class Paper extends Component {
+
+    handleAddQuestion = () => {
+        this.props.addQuestion()
+        this.props.history.push(`/add-question?null`)
+    }
+
+    handleCreatePaper = () => {
+
+    }
 
     renderDrawer = () => {
         if(this.props.isDrawerOpen){
@@ -28,15 +37,6 @@ class Paper extends Component {
             );
         }
     };
-
-    handleAddQuestion = () => {
-        this.props.addQuestion()
-        this.props.history.push(`/add-question`)
-    }
-
-    handleCreatePaper = () => {
-
-    }
 
     render() {
         //split questions according to the types
@@ -112,65 +112,68 @@ class Paper extends Component {
 
         return (
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
-            {this.renderDrawer()}
-            <div className="container" style={{marginTop:"100px"}}>
-                <h1 className="title">Generate Question Paper</h1>
+            {/* <div className="container" style={{marginTop:"100px"}}> */}
+                {this.renderDrawer()}
                 <div className="container">
+                    <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", width:"100%", margin: "10vh 0px"}}>
+                        <h1 className="title">Generate Question Paper</h1>
+                        <div className="container" style={{width: "100%"}}>
 
-                    {/* Show multiple choice questions */}
-                    {multiple.length > 0 && <div className="box">
-                        <p className="subtitle">Multiple Choise Questions</p>
-                        <Divider />
-                            {multiple.map(elem => {
-                                count = count + 1
-                                return <QuestionCardMultiple calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
-                            })
-                        }
-                    </div>}
+                            {/* Show multiple choice questions */}
+                            {multiple.length > 0 && <div className="box">
+                                <p className="subtitle">Multiple Choise Questions</p>
+                                <Divider />
+                                    {multiple.map(elem => {
+                                        count = count + 1
+                                        return <QuestionCardMultiple calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                    })
+                                }
+                            </div>}
 
-                    {/* Show single choice questions */}
-                    {single.length > 0 && <div className="box">
-                        <p className="subtitle">Single Choise Questions</p>
-                        <Divider />
-                            {single.map(elem => {
-                                count = count + 1
-                                return <QuestionCardSingle calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
-                            })
-                        }
-                    </div>}
+                            {/* Show single choice questions */}
+                            {single.length > 0 && <div className="box">
+                                <p className="subtitle">Single Choise Questions</p>
+                                <Divider />
+                                    {single.map(elem => {
+                                        count = count + 1
+                                        return <QuestionCardSingle calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                    })
+                                }
+                            </div>}
 
-                    {/* Show subjective questions */}
+                            {/* Show subjective questions */}
 
-                    {subjective.length > 0 && <div className="box">
-                        <p className="subtitle">Subjective Questions</p>
-                        <Divider />
-                            {subjective.map(elem => {
-                                count = count + 1
-                                return <QuestionCardSubjective calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
-                            })
-                        }
-                    </div>}
+                            {subjective.length > 0 && <div className="box">
+                                <p className="subtitle">Subjective Questions</p>
+                                <Divider />
+                                    {subjective.map(elem => {
+                                        count = count + 1
+                                        return <QuestionCardSubjective calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                    })
+                                }
+                            </div>}
 
-                    {/* Show diagram based questions */}
+                            {/* Show diagram based questions */}
 
-                    {diagram.length > 0 && <div className="box">
-                        <p className="subtitle">Diagram Bquestionased Questions</p>
-                        <Divider />
-                            {diagram.map(elem => {
-                                count = count + 1
-                                return <QuestionCardDiagram calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
-                            })
-                        }
-                    </div>}
+                            {diagram.length > 0 && <div className="box">
+                                <p className="subtitle">Diagram Based Questions</p>
+                                <Divider />
+                                    {diagram.map(elem => {
+                                        count = count + 1
+                                        return <QuestionCardDiagram calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                    })
+                                }
+                            </div>}
 
+                        </div>
+
+                        {/* Button to add question and create paper*/}
+                        <div className="is-flex" style={{justifyContent: "center", marginBottom: "20px"}}>
+                            <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px"}} onClick={this.handleAddQuestion}>Add Question</button>
+                            <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px", marginLeft: "40px"}} onClick={this.handleCreatePaper}>Create Paper</button>
+                        </div>
+                    </div>
                 </div>
-
-                {/* Button to add question and create paper*/}
-                <div className="is-flex" style={{justifyContent: "start", marginBottom: "20px"}}>
-                    <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px"}} onClick={this.handleAddQuestion}>Add Question</button>
-                    <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px", marginLeft: "40px"}} onClick={this.handleCreatePaper}>Create Paper</button>
-                </div>
-            </div>
             </div>
         )
     }
