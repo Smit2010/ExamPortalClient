@@ -15,6 +15,7 @@ import SignUp from './Auth/SignUp';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
 import Paper from './Paper';
+import EditQuestion from './Paper/EditQuestion'
 import Question from './Paper/Question';
 
 class App extends React.Component{
