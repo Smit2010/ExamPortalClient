@@ -1,17 +1,29 @@
 import React, { Component } from 'react'
 import './style.css'
-import ImageIcon from '@material-ui/icons/Image';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { connect } from 'react-redux'
-import {removeQuestion, swapQuestion } from '../../actions/question';
+import {removeQuestion, swapQuestion, addQuestionInPaper, removeQuestionFromPaper } from '../../actions/question';
+import { withRouter } from 'react-router-dom';
+import CommonCard from './CommonCard';
 
 class QuestionCardSubjective extends Component {
 
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            answer: ""
+        }
+    }
+    
     check = (flag) => {
 
         this.props.swapQuestion(...this.props.calcId("SUBJECTIVE",this.props.id,flag))
@@ -23,6 +35,24 @@ class QuestionCardSubjective extends Component {
         }
     }
 
+    handleAdd = () => {
+        this.props.click()
+        this.props.addQuestionInPaper(this.props.id)
+    }
+
+    handleRemove = () => {
+        this.props.click()
+        this.props.removeQuestionFromPaper(this.props.id)
+    }
+
+    handleEdit = () => {
+        this.props.history.replace(`add-question?${this.props.id}`)
+    }
+
+    handleChange = (e) => {
+        this.setState({answer: e.target.value})
+    }
+
     render() {
 
         return (
@@ -32,36 +62,50 @@ class QuestionCardSubjective extends Component {
                         <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{this.props.num}</div>
                         <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
                     </div>
+                     {Array.from(this.props.optionList.values()).map(elem => {
+                        return ( 
+                        <div className="control" >
+                            <label className="checkbox is-flex" >
+                                <ArrowForwardIcon /><div dangerouslySetInnerHTML={this.show(elem.output)}></div>
+                            </label>
+                        </div>)
+                    })}
                 </div>
                 <div>
-                    
+                    {this.props.examPaper.has(this.props.id) ? <CheckCircleIcon /> : ""}
+                    {this.props.examPaper.has(this.props.id) ? (
+                        <div onClick={this.handleRemove} style={{display: "inline-block", cursor: "pointer"}}>
+                            <RemoveCircleIcon />
+                        </div>) : (
+                        <div onClick={this.handleAdd} style={{display: "inline-block", cursor: "pointer"}}>
+                            <AddCircleIcon />
+                        </div>)
+                    }
+                    <div onClick={this.handleEdit} style={{display: "inline-block", cursor: "pointer"}}><EditIcon /></div>
                     <div onClick={() => this.props.removeQuestion(this.props.id)} style={{display: "inline-block", cursor: "pointer"}}><DeleteIcon /></div>
                     <div onClick={() => this.check(true)} style={{display: "inline-block", cursor: "pointer"}}><ArrowUpwardIcon /></div>
                     <div onClick={() => this.check(false)} style={{display: "inline-block", cursor: "pointer"}}><ArrowDownwardIcon /></div>
                 </div>
-            </div>) : (<div className="control is-flex" >
-                {/* <label className="checkbox is-flex" style={{width: "100%"}}>
-                    <div className="is-flex" style={{alignItems: "center", marginRight: "20px"}}>
-                        <input type="checkbox" id={this.props.id} name={this.props.curr} />
+            </div>) : (<div className="box question is-flex" style={{marginTop: "20px", justifyContent: "space-between"}}>
+                <div style={{flexDirection: "column", width: "100%", marginLeft: "30px"}}>
+                    <div className="is-flex" style={{width: "100%"}}>
+                        <div className="subtitle" style={{marginTop: "5px", marginRight: "10px"}}>{this.props.num}</div>
+                        <p style={{fontSize:"20px", marginBottom: "10px", flex: 1}} dangerouslySetInnerHTML={this.show(this.props.output)}></p>
+                        {this.props.past ? (this.props.correct ? <CheckCircleIcon /> : <CancelIcon />) : ""}
                     </div>
-                    <div className="box" style={{flex: 1}}>
-                        <div className="container is-flex" style={{justifyContent: "space-between", border: "1px solid lightgray", width: "100%"}} >
-                            <div className="subtitle is-flex" style={{margin: "auto 20px"}}>Option</div>
-                            <div className="container is-flex" style={{justifyContent: "flex-end", alignItems: "center", padding: "10px"}}>
-                                <button onClick={() => this.setState({visible: true})}><ImageIcon /></button>
-                                <button onClick={this.handleBold}><FormatBoldIcon/></button>
-                                <button onClick={this.handleItalic}><FormatItalicIcon /></button>
-                                <button onClick={this.handleUnderline}><FormatUnderlinedIcon /></button>
-                                <button id={this.props.id} onClick={(e) => this.props.handleDeleteOption(e.currentTarget.id)}><DeleteIcon /></button>
-                            </div>
-                        </div>
-                        <div className="container" style={{width: "100%"}}>
-                            <textarea id="text" className="textarea" placeholder="Write option here..." onKeyPress={this.handleKeyPress} onChange={this.handleChange} value={this.state.question}/>
-                        </div>
-                        <p className="subtitle" style={{marginLeft: "20px", marginTop: "10px"}}>Output : </p>
-                        <div className="output" dangerouslySetInnerHTML={this.show()} style={{marginLeft: "20px"}}></div>
+                    <div className="box is-flex" style={{width: "100%", marginLeft: "20px"}}>
+                        {
+                            this.props.past ? (
+                                <div className="is-flex" style={{alignItems: "center"}}>
+                                    <ArrowForwardIcon />
+                                    <p style={{fontSize:"20px", marginBottom: "10px"}} dangerouslySetInnerHTML={this.show(this.props.answer)}></p>
+                                </div>
+                            ) : (
+                                <textarea className="textarea" placeholder="Write answer here..." onChange={this.handleChange} value={this.state.answer}/>
+                            )
+                        }
                     </div>
-                </label> */}
+                </div>
             </div>)
         )
     }
@@ -69,15 +113,18 @@ class QuestionCardSubjective extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        question_set: state.question.question_set
+        question_set: state.question.question_set,
+        examPaper: state.question.examPaper
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         removeQuestion: (id) => dispatch(removeQuestion(id)),
-        swapQuestion: (first, second) => dispatch(swapQuestion(first, second))
+        swapQuestion: (first, second) => dispatch(swapQuestion(first, second)),
+        addQuestionInPaper: (id) => dispatch(addQuestionInPaper(id)),
+        removeQuestionFromPaper: (id) => dispatch(removeQuestionFromPaper(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionCardSubjective)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(QuestionCardSubjective))
