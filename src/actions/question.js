@@ -15,11 +15,13 @@ export const setQuestion = (id,question,output) => {
     }
 }
 
-export const setAnswer = (id, ans) => {
+export const setAnswer = (id, ans, flag, questionType) => {
     return {
         type: QUESTIONS.SET_ANSWER,
         id,
-        ans
+        ans,
+        flag,
+        questionType
     }
 }
 
@@ -196,5 +198,19 @@ export const setOptionWidth = (questionId, optionId, value) => {
         questionId,
         optionId,
         value
+    }
+}
+
+export const addQuestionInPaper = (id) => {
+    return {
+        type: QUESTIONS.ADD_QUESTION_IN_PAPER,
+        id
+    }
+}
+
+export const removeQuestionFromPaper = (id) => {
+    return {
+        type: QUESTIONS.REMOVE_QUESTION_FROM_PAPER,
+        id
     }
 }
