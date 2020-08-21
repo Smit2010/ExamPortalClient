@@ -4,6 +4,7 @@ const initialState = {
     question_set: new Map([]),
     currQuestionId: 0,
     currOptionId: 0,
+    examPaper: new Set()
 }
 
 export default function (state = initialState, action) {
@@ -43,11 +44,18 @@ export default function (state = initialState, action) {
             let newMap24 = new Map(state.question_set)
             let currQuestionId24 = (action.id).toString()
             let set24 = newMap24.get(currQuestionId24).answer
-            if(set24.has(action.ans)) {
-                set24.delete(action.ans)
+            // console.log(action.flag)
+            if(action.flag === true) {
+                if(action.questionType !== "MULTIPLE") {
+                    set24.clear()
+                }
+                // console.log(action.ans)
+                if(action.ans !== "")
+                    set24.add(action.ans)
             } else {
-                set24.add(action.ans)
+                set24.delete(action.ans)
             }
+            // console.log(set24)
             newMap24.set(currQuestionId24, {
                 ...newMap24.get(currQuestionId24),
                 answer: set24
@@ -73,13 +81,18 @@ export default function (state = initialState, action) {
             let newMap3 = new Map(state.question_set)
             let currFirst3 = (action.first).toString()
             let currSecond3 = (action.second).toString()
-            newMap3.get(currFirst3).id = currSecond3
-            newMap3.get(currSecond3).id = currFirst3
-            let temp1 = newMap3.get(currFirst3)
-            let temp2 = newMap3.get(currSecond3)
-            newMap3.set(currFirst3, temp2)
-            newMap3.set(currSecond3, temp1)
-            return {...state, question_set: newMap3}
+            let newQuestionSet = new Map()
+            newMap3.forEach((value, key) => {
+                if(key === currFirst3) {
+                    newQuestionSet.set(currSecond3, newMap3.get(currSecond3))
+                } else if(key === currSecond3) {
+                    newQuestionSet.set(currFirst3, newMap3.get(currFirst3))
+                }
+                else {
+                    newQuestionSet.set(key, value)
+                }
+            })
+            return {...state, question_set: newQuestionSet}
 
         case QUESTIONS.ADD_OPTION:
             let newMap4 = new Map(state.question_set)
@@ -120,9 +133,14 @@ export default function (state = initialState, action) {
         case QUESTIONS.REMOVE_OPTION:
             let newMap6 = new Map(state.question_set)
             let currQuestionId6 = (action.questionId).toString()
+            if(newMap6.get(currQuestionId6).type === "SUBJECTIVE") {
+                newMap6.get(currQuestionId6).answer.clear()
+            } else {
+                newMap6.get(currQuestionId6).answer.delete(action.optionId)
+            }
             let newCurrOptionId6 = action.optionId
             let existingQuestion6 = newMap6.get(currQuestionId6)
-            existingQuestion6.delete(newCurrOptionId6)
+            existingQuestion6.optionList.delete(newCurrOptionId6)
             newMap6.set(currQuestionId6, existingQuestion6)
             return {...state, question_set: newMap6}
 
@@ -286,6 +304,16 @@ export default function (state = initialState, action) {
             newMap22.set(currQuestionId22,existingQuestion22)
             return {...state, question_set: newMap22}
 
+        case QUESTIONS.ADD_QUESTION_IN_PAPER:
+            let newMap25 = state.examPaper
+            newMap25.add(action.id)
+            return {...state, examPaper: newMap25}
+
+        case QUESTIONS.REMOVE_QUESTION_FROM_PAPER:
+            let newMap26 = state.examPaper
+            newMap26.delete(action.id)
+            return {...state, examPaper: newMap26}
+        
         default:
             return state
     }
