@@ -54,7 +54,7 @@ const NavBar = ({ isAuthenticated, logoutUser, isDrawerOpen, toggleDrawer }) => 
                     {renderBurgerIcon()}
                     <div className="column" style={{marginLeft: 20}}>
                         <Link to='/home' >
-                            <h1 class="title is-4" style={{color: "white"}}>
+                            <h1 className="title is-4" style={{color: "white"}}>
                                 ExamPortal
                             </h1>
                         </Link>

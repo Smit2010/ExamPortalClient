@@ -156,7 +156,7 @@ class CommonCard extends Component {
             let alternative = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).alternative
             let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
             let width = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width
-            let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`    
+            let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
             this.props.setOption(this.props.questionId.toString(), this.props.optionId, str_question, str_output)
         }
     }

@@ -79,7 +79,6 @@ export const createUser = (email, password, firstName, lastName, type, history) 
       setAuthToken(token);
 
       dispatch(setCurrentUser(user));
-
       history.replace('/dashboard');
     })
     .catch(err => {

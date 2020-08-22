@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter, Redirect, Link } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import QuestionCardSingle from './QuestionCardSingle';
 import QuestionCardMultiple from './QuestionCardMultiple';
@@ -8,16 +8,98 @@ import QuestionCardDiagram from './QuestionCardDiagram';
 import { Divider } from '@material-ui/core';
 import { addQuestion } from '../../actions/question';
 import SideBar from '../SideBar';
+import { toast } from 'react-toastify';
 
 class Paper extends Component {
+
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            flag: false,
+            showModal: false,
+            subjectName: "",
+            duration: "",
+            date: "",
+            time: ""
+        }
+    }
 
     handleAddQuestion = () => {
         this.props.addQuestion()
         this.props.history.push(`/add-question?null`)
     }
 
-    handleCreatePaper = () => {
+    handleclick = () => {
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                flag: !prevState.flag
+            }
+        })
+    }
 
+    handleshow = (val) => {
+        this.setState({...this.state, showModal: val})
+    }
+
+    handleModalVisible = () => {
+        if(this.props.question_set.size == 0) {
+            toast.error("Please Add Some Question In Paper")
+        } else {
+            this.handleshow(true)
+        }
+    }
+
+    handleCreatePaper = () => {
+        
+        let questions = []
+        questions.push(Array.from(this.props.question_set.values()).map(question => {
+            let options = []
+            options.push(Array.from(question.optionList.values()).map(option => {
+                return {
+                    id: option.id,
+                    optionText: option.output
+                }
+            }))
+            return {
+                _id: question.id,
+                questionText: question.output,
+                type: question.type,
+                marks: [{
+                    correcAnswer: question.positiveMarks,
+                    wrongAnswer: question.negativeMarks,
+                    partialEnabled: question.partialEnabled,
+                    partiallyCorrect: question.partialMarks
+                }],
+                options,
+                answer: Array.from(question.answer)
+            }
+        }))
+        
+        //upload this paper object
+        let paper = {
+            courseName: this.state.subjectName,
+            facultyId: this.props.user._id,
+            questions,
+            scheduledTime: {
+                date: this.state.date,
+                time: this.state.time,
+            },
+            duration: this.state.duration,
+        }
+        // console.log(paper)
+
+        this.setState({
+            flag: false,
+            showModal: false,
+            subjectName: "",
+            duration: "",
+            date: "",
+            time: ""
+        })
+
+        this.props.history.replace('/dashboard')
     }
 
     renderDrawer = () => {
@@ -39,6 +121,12 @@ class Paper extends Component {
     };
 
     render() {
+        // if(!this.props.isAuthenticated){
+        //     return(
+        //         <Redirect to="/home"/>
+        //     );   
+        // }
+
         //split questions according to the types
         let single = []
         let subjective = []
@@ -107,9 +195,6 @@ class Paper extends Component {
             }
             return [ans1, ans2]
         }
-
-        // console.log(this.state)
-
         return (
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
             {/* <div className="container" style={{marginTop:"100px"}}> */}
@@ -125,7 +210,8 @@ class Paper extends Component {
                                 <Divider />
                                     {multiple.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardMultiple calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardMultiple click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+
                                     })
                                 }
                             </div>}
@@ -136,7 +222,7 @@ class Paper extends Component {
                                 <Divider />
                                     {single.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardSingle calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardSingle click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
                                     })
                                 }
                             </div>}
@@ -148,7 +234,7 @@ class Paper extends Component {
                                 <Divider />
                                     {subjective.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardSubjective calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
                                     })
                                 }
                             </div>}
@@ -160,18 +246,40 @@ class Paper extends Component {
                                 <Divider />
                                     {diagram.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardDiagram calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardDiagram click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
                                     })
                                 }
                             </div>}
 
                         </div>
-
                         {/* Button to add question and create paper*/}
                         <div className="is-flex" style={{justifyContent: "center", marginBottom: "20px"}}>
                             <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px"}} onClick={this.handleAddQuestion}>Add Question</button>
-                            <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px", marginLeft: "40px"}} onClick={this.handleCreatePaper}>Create Paper</button>
+                            <button className="button is-outlined is-rounded is-link" style={{marginTop: "20px", marginLeft: "40px"}} onClick={this.handleModalVisible}>Create Paper</button>
                         </div>
+                    </div>
+                </div>
+
+                {/* Modal for create paper */}
+                <div className={`modal is-clipped ${this.state.showModal ? "is-active" : ""}`}>
+                    <div className="modal-background"></div>
+                    <div className="modal-card">
+                        <header className="modal-card-head">
+                            <p className="modal-card-title">Create Paper</p>
+                            <button className="delete" aria-label="close" onClick={() => this.handleshow(false)}></button>
+                        </header>
+                        <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
+                            <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
+                                <input className="input" type="text" placeholder="Enter Subject Name" value={this.state.subjectName} onChange={e => this.setState({...this.state, subjectName: e.target.value})} />
+                                <input className="input" type="text" placeholder="Enter Duration Of Exam-Paper(in Hour)" value={this.state.duration} onChange={e => this.setState({...this.state, duration: e.target.value})} />
+                                <input className="input" type="text" placeholder="Enter Date Of Exam(dd-mm-yyyy)" value={this.state.date} onChange={e => this.setState({...this.state, date: e.target.value})} />
+                                <input className="input" type="text" placeholder="Enter Time Of Exam(hh:mm:ss)" value={this.state.time} onChange={e => this.setState({...this.state, time: e.target.value})} />
+                            </div>
+                        </section>
+                        <footer className="modal-card-foot" style={{justifyContent: "flex-end"}}>
+                            <button className="button is-success" onClick={this.handleCreatePaper}>Create</button>
+                            <button className="button" onClick={() => this.handleshow(false)}>Cancel</button>
+                        </footer>
                     </div>
                 </div>
             </div>
@@ -184,6 +292,9 @@ const mapStateToProps = (state) => {
         question_set: state.question.question_set,
         currQuestionId: state.question.currQuestionId,
         isDrawerOpen: state.drawer.isDrawerOpen,
+//         examPaper: state.question.examPaper,
+        user: state.auth.user
+
     }
 }
 

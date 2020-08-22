@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import './styles.css';
+import MultipleSelect from './MultipleSelect';
 
 const facultyList = [
     {"icon" : "fas fa-user fa-lg",
@@ -28,7 +29,7 @@ const SideBar = ({list, user}) => {
     const handleClick = (item) => {
         if(item === "Profile"){
             history.push('/me');
-        } else if(item === "Create New Exam"){
+        } else if(item === "Create New Exam") {
             history.push('/question-paper');
         }
     }
@@ -62,6 +63,7 @@ const SideBar = ({list, user}) => {
                         </div>
                     </div>
                 ))}
+                <MultipleSelect user={user}/>
             </div>
         </div>
     )
