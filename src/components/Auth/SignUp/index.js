@@ -2,18 +2,35 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import Welcome from '../../Welcome/Welcome.js';
-//import { createUser } from '../../../actions/auth';
+import { createUser } from '../../../actions/auth';
+import Radio from '@material-ui/core/Radio';
+
+const FormRadio = ({
+    field,
+    form: { setFieldValue, setFieldTouched, values },
+    ...props
+}) => (
+    <Radio
+        checked={values.type===props.label}
+        color="primary"
+        onChange={() => setFieldValue("type", props.label)}
+        onBlur={() => setFieldTouched("type", true)}
+    />
+);
 
 class NormalSignUpForm extends React.Component {
+
 	render() {
+        if (this.props.isAuthenticated) {
+			return <Redirect to="/dashboard" />;
+		}
 		const { errors, touched } = this.props
 		return (
-			<div style={{backgroundColor: "#d6dbd7", height:"93vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+			<div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
-                        <div className= "card" style={{height: "80vh", flexDirection: "column"}}>
                             <div className="column is-centered">
                                 <Welcome/>
                             </div>
@@ -54,6 +71,34 @@ class NormalSignUpForm extends React.Component {
                                         </div>
                                         {touched.confirmPassword && errors.confirmPassword ? <p class="help is-danger">{errors.confirmPassword}</p> : null }
                                     </div>
+                                    <div class="field">
+                                        <label class="label" style={{margin: 0}}>You are a</label>
+                                        {touched.type && errors.type ? <p class="help is-danger">{errors.type}</p> : null }
+                                        <div class="columns is-vcentered is-centered">
+                                            <div class="column is-centered" style={{display: "flex", justifyContent: "center", padding: 10}}>
+                                                <div class="control">
+                                                    <Field
+                                                        class="input"
+                                                        name="type"
+                                                        label="student"
+                                                        component={FormRadio}
+                                                    />
+                                                    <label>Student</label>
+                                                </div>
+                                            </div>
+                                            <div class="column is-centered" style={{display: "flex", justifyContent: "center", padding: 10}}>
+                                                <div class="control">
+                                                    <Field
+                                                        class="input"
+                                                        name="type"
+                                                        label="faculty"
+                                                        component={FormRadio}
+                                                    />
+                                                    <label>Faculty</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="field">
                                         <div className="column is-offset-3 is-centered is-6">
                                             <div class="control is-centered">
@@ -68,7 +113,6 @@ class NormalSignUpForm extends React.Component {
                                     </div>
                                 </div>
                             </Form>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -83,28 +127,34 @@ const SignUp = withFormik({
 			lastName: '',
 			confirmPassword: '',
 			email: '',
-			password: ''
+            password: '',
+            type: ''
 		})
 	},
 	handleSubmit(values, { props, resetForm }) {
-		//props.createUser(values.email, values.password, values.firstName, values.lastName);
-		//resetForm();
+		props.createUser(values.email, values.password, values.firstName, values.lastName, values.type);
+		resetForm();
 	},
 	validationSchema: Yup.object().shape({
-		email: Yup.string().email('Please enter a valid email').required(),
-		password: Yup.string().required('Please Enter your password').matches(
+		email: Yup.string().email('Please enter a valid Email').required('Please enter your Email'),
+		password: Yup.string().required('Please enter your password').matches(
 		  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
 		  "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
 		),
-		firstName: Yup.string().required('first name cannot be empty'),
-		lastName: Yup.string().required('last name cannot be empty'),
-		confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+		firstName: Yup.string().required('Please enter your First name'),
+		lastName: Yup.string().required('Please enter your Last name'),
+        confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+        type: Yup.string().required('Please select any of the option')
 	})
-})(NormalSignUpForm)
+})(NormalSignUpForm);
+
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.auth.isAuthenticated,
+});
 
 const mapDispatchToProps = (dispatch) => ({
-	//createUser: (email, password, firstName, lastName) => dispatch(createUser(email, password, firstName, lastName))
+	createUser: (email, password, firstName, lastName, type, history) => dispatch(createUser(email, password, firstName, lastName, type, history))
 })
 
 
-export default withRouter(connect(null, mapDispatchToProps)(SignUp));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));

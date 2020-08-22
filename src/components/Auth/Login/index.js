@@ -4,8 +4,7 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { withRouter, Redirect } from "react-router-dom";
 import Welcome from '../../Welcome/Welcome.js';
-
-//import { login, sendResetPasswordEmail } from '../../../actions/auth';
+import { login } from '../../../actions/auth';
 import { toast } from "react-toastify";
 
 class NormalLoginForm extends React.Component {
@@ -70,18 +69,17 @@ class NormalLoginForm extends React.Component {
                 </div>,
             ];
         }
-	};
+    };
 
 	render() {
 		if (this.props.isAuthenticated) {
-			return <Redirect to="/" />;
+			return <Redirect to="/dashboard" />;
 		}
 		const { errors, touched } = this.props;
 		return (
-            <div style={{backgroundColor: "#d6dbd7", height:"93vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div style={{backgroundColor: "#fff", height:"100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <div className="container">
                     <div className= "column is-offset-2 is-8">
-                        <div className= "card" style={{height: "80vh", flexDirection: "column"}}>
                             <div className="column is-centered">
                                 <Welcome/>
                             </div>
@@ -136,7 +134,6 @@ class NormalLoginForm extends React.Component {
                             <div className="column is-offset-3 is-centered is-6" style={{marginTop: 20}}>
                                     {this.renderForgotPasswordPanel()}
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -152,10 +149,10 @@ const LoginForm = withFormik({
 			forgetPassword: "",
 		};
 	},
-	/* handleSubmit(values, {props, resetForm}) {
+	handleSubmit(values, {props, resetForm}) {
     props.login(values.email, values.password, props.history)
     resetForm()
-  }, */
+  },
 	validationSchema: Yup.object().shape({
 		email: Yup.string().email("Please enter a valid email").required(),
 		password: Yup.string().required(),
@@ -163,12 +160,12 @@ const LoginForm = withFormik({
 })(NormalLoginForm);
 
 const mapStateToProps = (state) => ({
-	isAuthenticated: state.auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
 });
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		//login: (email, password, history) => dispatch(login(email, password, history)),
+		login: (email, password, history) => dispatch(login(email, password, history)),
 		//resetPassword: (email) => dispatch(sendResetPasswordEmail(email))
 	};
 };
