@@ -48,9 +48,9 @@ class CommonCard extends Component {
                     }
                     pos = pos - 1
                     len = len + 1
-                    if(flag === 1)
+                    if(flag == 1)
                         count = count + 1
-                    else if(flag === 0)
+                    else if(flag == 0)
                         count = count - 1
                 }
                 else {
@@ -70,7 +70,6 @@ class CommonCard extends Component {
                 len = len + 1
                 count = count - 1
             }
-            console.log(this.props.optionId)
             if(this.props.optionId === "") {
                 this.props.setQuestion(this.props.questionId, prev_str.substring(0,str.length), prev_output.substring(0,prev_output.length - len))
             } else {
@@ -158,7 +157,6 @@ class CommonCard extends Component {
             let height = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).height
             let width = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).width
             let str_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output + `<img src="${img_src}" alt="${alternative}" width="${width}px" height="${height}px" /><br />`
-            console.log(str_question, str_output)
             this.props.setOption(this.props.questionId.toString(), this.props.optionId, str_question, str_output)
         }
     }

@@ -60,7 +60,7 @@ class QuestionCardMultiple extends Component {
         // console.log(temp)
         this.props.handleAddAnswer(this.props.id, temp)
     }
-
+    
     handleEdit = () => {
         this.props.history.replace(`add-question?${this.props.id}`)
     }

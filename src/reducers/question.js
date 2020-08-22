@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
             let newCurrQuestionId = new bson.ObjectID().toString()
             newMap.set(newCurrQuestionId, {
                 id: newCurrQuestionId,
-                type: "",
+                type: "NONE",
                 question: "",
                 output: "",
                 boldFlag: false,
@@ -51,7 +51,7 @@ export default function (state = initialState, action) {
             let currQuestionId24 = (action.id).toString()
             let set24 = newMap24.get(currQuestionId24).answer
             // console.log(action.flag)
-            if(action.flag === true) {
+            if(action.flag == true) {
                 if(action.questionType !== "MULTIPLE") {
                     set24.clear()
                 }
@@ -310,15 +310,15 @@ export default function (state = initialState, action) {
             newMap22.set(currQuestionId22,existingQuestion22)
             return {...state, question_set: newMap22}
 
-        case QUESTIONS.ADD_QUESTION_IN_PAPER:
-            let newMap25 = state.examPaper
-            newMap25.add(action.id)
-            return {...state, examPaper: newMap25}
+//         case QUESTIONS.ADD_QUESTION_IN_PAPER:
+//             let newMap25 = state.examPaper
+//             newMap25.add(action.id)
+//             return {...state, examPaper: newMap25}
 
-        case QUESTIONS.REMOVE_QUESTION_FROM_PAPER:
-            let newMap26 = state.examPaper
-            newMap26.delete(action.id)
-            return {...state, examPaper: newMap26}
+//         case QUESTIONS.REMOVE_QUESTION_FROM_PAPER:
+//             let newMap26 = state.examPaper
+//             newMap26.delete(action.id)
+//             return {...state, examPaper: newMap26}
         
         default:
             return state

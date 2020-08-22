@@ -5,8 +5,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// import CancelIcon from '@material-ui/icons/Cancel';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { connect } from 'react-redux'
@@ -23,7 +23,7 @@ class QuestionCardSubjective extends Component {
             answer: ""
         }
     }
-    
+  
     check = (flag) => {
 
         this.props.swapQuestion(...this.props.calcId("SUBJECTIVE",this.props.id,flag))
@@ -34,7 +34,7 @@ class QuestionCardSubjective extends Component {
             __html: str
         }
     }
-
+    
     // handleAdd = () => {
     //     this.props.click()
     //     this.props.addQuestionInPaper(this.props.id)

@@ -121,7 +121,6 @@ class Paper extends Component {
     };
 
     render() {
-
         // if(!this.props.isAuthenticated){
         //     return(
         //         <Redirect to="/home"/>
@@ -133,7 +132,6 @@ class Paper extends Component {
         let subjective = []
         let multiple = []
         let diagram = []
-
         Array.from(this.props.question_set.values()).map(element => {
             if(element.type === "SINGLE") {
                 single.push(element.id)
@@ -213,6 +211,7 @@ class Paper extends Component {
                                     {multiple.map(elem => {
                                         count = count + 1
                                         return <QuestionCardMultiple click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+
                                     })
                                 }
                             </div>}
@@ -293,8 +292,9 @@ const mapStateToProps = (state) => {
         question_set: state.question.question_set,
         currQuestionId: state.question.currQuestionId,
         isDrawerOpen: state.drawer.isDrawerOpen,
-        examPaper: state.question.examPaper,
+//         examPaper: state.question.examPaper,
         user: state.auth.user
+
     }
 }
 

@@ -16,7 +16,6 @@ export const login = (email,password,history) => {
       setAuthToken(token);
 
       dispatch(setCurrentUser(user));
-      dispatch(getExams(user._id))
 
       history.replace('/dashboard');
     })
@@ -29,13 +28,6 @@ export const login = (email,password,history) => {
     });
 
 	}
-}
-
-export const getExams = (id) => {
-  return {
-      type: AUTH.GET_EXAMS,
-      id
-  }
 }
 
 export const setCurrentUser = (user) => {
@@ -87,13 +79,11 @@ export const createUser = (email, password, firstName, lastName, type, history) 
       setAuthToken(token);
 
       dispatch(setCurrentUser(user));
-      dispatch()
       history.replace('/dashboard');
     })
     .catch(err => {
       if (err.response) {
-         toast.error(err.response.data)
-         console.log(err.response)
+         toast.error(err.response.data.message)
       } else {
 		    console.log(err)
       }

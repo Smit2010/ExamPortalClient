@@ -78,11 +78,11 @@ class Dashboard extends React.Component {
     };
 
     render(){
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
         let upcomingExams = [], pastExams = []
         sampleExam.map(exam => {
             if(cmp(exam, todayObject)) {
@@ -95,6 +95,7 @@ class Dashboard extends React.Component {
             return cmp(a,b)})
         pastExams.sort((a,b) => {
             return !cmp(a,b)})
+      
         return(
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}

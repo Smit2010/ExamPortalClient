@@ -53,6 +53,12 @@ class App extends React.Component{
                             <Route exact path="/me">
                                 <Profile/>
                             </Route>
+                            <Route exact path="/question-paper">
+                                <Paper/>
+                            </Route>
+                            <Route exact path="/add-question">
+                                <Question/>
+                            </Route>
                         </Switch>
                     </Route>
                 </Switch>

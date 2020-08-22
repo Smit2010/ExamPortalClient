@@ -200,17 +200,3 @@ export const setOptionWidth = (questionId, optionId, value) => {
         value
     }
 }
-
-export const addQuestionInPaper = (id) => {
-    return {
-        type: QUESTIONS.ADD_QUESTION_IN_PAPER,
-        id
-    }
-}
-
-export const removeQuestionFromPaper = (id) => {
-    return {
-        type: QUESTIONS.REMOVE_QUESTION_FROM_PAPER,
-        id
-    }
-}

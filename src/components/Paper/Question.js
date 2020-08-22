@@ -25,7 +25,6 @@ class Question extends Component {
     handleAddOption = () => {
         if( this.props.question_set.get(this.state.id.toString()).type === "") {
             toast.error("Please Choose Question Type")
-            // console.log("Please Choose Question Type")
         }
         else {
             this.props.addOption(this.state.id.toString())
@@ -94,7 +93,7 @@ class Question extends Component {
             }
         })
     }
-
+    
     render() {
         const findType = () => {
             if(this.props.question_set.get(this.state.id.toString()).type === "SUBJECTIVE")
@@ -194,7 +193,6 @@ class Question extends Component {
                             this.props.question_set.get(this.state.id.toString()).type !== "SUBJECTIVE" ? (
                                 <div className="box is-flex" style={{width: "100%"}}>
                                     <div className="is-flex" style={{alignItems: "center", marginRight: "10px"}}><input id={elem.id} name={this.state.id} type={findType()} onChange={this.handleAnswer} checked={this.props.question_set.get(this.state.id.toString()).answer.has(elem.id)} /></div> 
-                                    {/* {console.log(elem.id)} */}
                                     <CommonCard questionId={elem.id.split(".")[0]} optionId={elem.id} title="Option"/>
                                 </div>
                             ) : (
