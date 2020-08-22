@@ -4,13 +4,19 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
   } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import NavBar from './NavBar';
 import './style.css'
 import Login from './Auth/Login';
 import Home from './Home';
 import SignUp from './Auth/SignUp';
-import Dashboard from './MainPage/Dashboard'
+import Dashboard from './Dashboard';
+import Profile from './Profile';
+import Paper from './Paper/index'
+import Question from './Paper/Question'
+import Exam from './Paper/Exam'
 
 class App extends React.Component{
     render(){
@@ -21,20 +27,36 @@ class App extends React.Component{
                         <NavBar/>
                         <Switch>
                             <Route exact path="/">
+                                <Redirect to="/home"/>
+                            </Route>
+                            <Route path="/question-paper">
+                                <Paper />
+                            </Route>
+                            <Route path="/add-question">
+                                <Question />
+                            </Route>
+                            <Route path="/exam">
+                                <Exam />
+                            </Route>
+                            <Route path="/dashboard">
                                 <Dashboard type="student"/>
                             </Route>
-                            <Route path="/home">
+                            <Route exact path="/home">
                                 <Home/>
                             </Route>
-                            <Route path="/login">
+                            <Route exact path="/login">
                                 <Login/>
                             </Route>
-                            <Route path="/signUp">
+                            <Route exact path="/signup">
                                 <SignUp/>
+                            </Route>
+                            <Route exact path="/me">
+                                <Profile/>
                             </Route>
                         </Switch>
                     </Route>
                 </Switch>
+                <ToastContainer position="bottom-right" />
             </Router>
         )
     }
