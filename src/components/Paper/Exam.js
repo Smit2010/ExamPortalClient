@@ -4,14 +4,15 @@ import QuestionCardSingle from './QuestionCardSingle'
 import QuestionCardDiagram from './QuestionCardDiagram'
 import QuestionCardSubjective from './QuestionCardSubjective'
 import { withRouter, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 const sampleExam = {
     subjectName : "Maths",
     subjectCode : "IT999",
     marks: 100,
-    date: "22-12-2008",
+    date: "22-12-2020",
     time: "12:00:00",
-    duration: (1/360)
+    duration: (1)
 }
 
 //import if it is past exam
@@ -21,7 +22,8 @@ const studentAnswers = [{
 },{
     id: "2",
     answer: ["2.1", "2.2"]
-},{
+}
+,{
     id: "3",
     answer: ["3.1"]
 },{
@@ -38,99 +40,136 @@ const studentAnswers = [{
 const samplePaper = [{
     id: 1,
     type: "MULTIPLE",
-    output: "<b>what is your name?</b>",
+    output: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
     optionList: [{
         id: "1.1",
-        output: "<b>abc</b>"
+        output: "<b>Energy transform into different form continuously.</b>"
     },{
         id: "1.2",
-        output: "<b>def</b>"
+        output: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
     },{
         id: "1.3",
-        output: "<b>ghi</b>"
+        output: "<b>Energy is consumed and cannot be used again.</b>"
     },{
         id: "1.4",
-        output: "<b>jkl</b>"
+        output: "<b>All of these</b>"
     }],
-    answer: ["1.1", "1.2"]
+    answer: ["1.1", "1.2"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
 },{
     id: 2,
     type: "MULTIPLE",
-    output: "<b>what is your name?</b>",
+    output: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
     optionList: [{
         id: "2.1",
-        output: "<b>abc</b>"
+        output: "<b>Energy transform into different form continuously.</b>"
     },{
         id: "2.2",
-        output: "<b>def</b>"
+        output: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
     },{
         id: "2.3",
-        output: "<b>ghi</b>"
+        output: "<b>Energy is consumed and cannot be used again.</b>"
     },{
         id: "2.4",
-        output: "<b>jkl</b>"
+        output: "<b>All of these</b>"
     }],
-    answer: ["2.3", "2.4"]
+    answer: ["2.2", "2.4"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
 },{
     id: 3,
     type: "SINGLE",
-    output: "<b>what is your name?</b>",
+    output: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
     optionList: [{
         id: "3.1",
-        output: "<b>abc</b>"
+        output: "<b>Energy transform into different form continuously.</b>"
     },{
         id: "3.2",
-        output: "<b>def</b>"
+        output: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
     },{
         id: "3.3",
-        output: "<b>ghi</b>"
+        output: "<b>Energy is consumed and cannot be used again.</b>"
     },{
         id: "3.4",
-        output: "<b>jkl</b>"
+        output: "<b>All of these</b>"
     }],
-    answer: ["3.1"]
+    answer: ["3.1"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
 },{
     id: 4,
     type: "SINGLE",
-    output: "<b>what is your name?</b>",
+    output: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
     optionList: [{
         id: "4.1",
-        output: "<b>abc</b>"
+        output: "<b>Energy transform into different form continuously.</b>"
     },{
         id: "4.2",
-        output: "<b>def</b>"
+        output: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
     },{
         id: "4.3",
-        output: "<b>ghi</b>"
+        output: "<b>Energy is consumed and cannot be used again.</b>"
     },{
         id: "4.4",
-        output: "<b>jkl</b>"
+        output: "<b>All of these</b>"
     }],
-    answer: ["4.2"]
+    answer: ["4.2"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
 },{
     id: 5,
     type: "DIAGRAM",
-    output: "<b>what is your name?</b>",
+    output: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
     optionList: [{
         id: "5.1",
-        output: "<b>abc</b>"
+        output: "<b>Energy transform into different form continuously.</b>"
     },{
         id: "5.2",
-        output: "<b>def</b>"
+        output: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
     },{
         id: "5.3",
-        output: "<b>ghi</b>"
+        output: "<b>Energy is consumed and cannot be used again.</b>"
     },{
         id: "5.4",
-        output: "<b>jkl</b>"
+        output: "<b>All of these</b>"
     }],
-    answer: ["5.2"]
+    answer: ["5.2"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
 },{
     id: 6,
     type: "SUBJECTIVE",
     output: "<b>what is your name?</b>",
-    answer: ["xyz"]
-}]
+    answer: ["xyz"],
+    marks: {
+        correctAnswer: 1,
+        wrongAnswer: -1,
+        partiallyCorrect: 0.1,
+        partialEnabled: true
+    }
+}
+]
 
 let interval
 
@@ -140,7 +179,8 @@ class Exam extends Component {
         super(props)
     
         this.state = {
-            total: 3600*sampleExam.duration
+            total: 3600*sampleExam.duration,
+            answers: new Map()
         }
         const currDate = new Date()
         const pastDate = new Date()
@@ -180,12 +220,68 @@ class Exam extends Component {
         return new Date(this.state.total * 1000).toISOString().substr(11, 8)
     }
 
-    render() {
-        if(!this.props.isAuthenticated){
-            return(
-                <Redirect to="/home"/>
-            );   
+    handleAddAnswer = (id, answer) => {
+        // console.log(id, this.state.answers ,answer)
+        this.setState(prevState => {
+            if(prevState.answers.has(id)) {
+                prevState.answers.delete(id)
+            }
+            return {
+                ...this.state,
+                answers: prevState.answers.set(id, answer)
+            }
+        })
+    }
+
+    handleSubmit = () => {
+        //upload this
+        let studentResponse = {
+            userId: this.props.user.id,
+            examId: window.location.href.split("?")[1],
+            answers: samplePaper.map(question => {
+                // console.log(question)
+                let studentAnswer = []
+                if(this.state.answers.has(question.id)) {
+                    studentAnswer = this.state.answers.get(question.id)
+                }
+
+                let options = []
+                if(question.type !== "SUBJECTIVE") {
+                    options.push(question.optionList.map(option => {
+                        return {
+                            id: option.id,
+                            optionText: option.output
+                        }
+                    }))
+                }
+
+                return {
+                    questionId: question.id,
+                    questionText: question.output,
+                    type: question.type,
+                    marks: {
+                        correctAnswer: question.marks.correctAnswer,
+                        wrongAnswer: question.marks.wrongAnswer,
+                        partiallyCorrect: question.marks.partiallyCorrect,
+                        partialEnabled: question.marks.partialEnabled
+                    },
+                    options,
+                    answer: question.answer,
+                    studentAnswer
+                }
+            })
         }
+        console.log(studentResponse)
+        this.props.history.replace('/dashboard')
+    }
+
+    render() {
+        // console.log(this.state.answers)
+        // if(!this.props.isAuthenticated){
+        //     return(
+        //         <Redirect to="/home"/>
+        //     );   
+        // }
         let num = 0
         return (
             <div>
@@ -199,22 +295,24 @@ class Exam extends Component {
                             <p className="subtitle">Total Marks : {sampleExam.marks}</p>
                         </div>
                     </div>
+                    {/* {console.log(studentAnswers.filter(answer => answer.id === question.id))} */}
                     <div className="box">
                         {
                             samplePaper.map(question => {
-                                let correct = (JSON.stringify(question.answer) == JSON.stringify(studentAnswers[num].answer))
+                                // console.log(studentAnswers.filter(answer => answer.id == question.id))
+                                // let correct = (JSON.stringify(question.answer) == JSON.stringify(studentAnswers[num].answer))
                                 // console.log(JSON.stringify(question.answer), studentAnswers[num].answer, correct)
                                 // console.log(studentAnswers)
                                 num++
                                 switch(question.type) {
                                     case "MULTIPLE":
-                                        return <QuestionCardMultiple id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correct={correct} answer={question.answer}/>
+                                        return <QuestionCardMultiple id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correctAnswer={question.answer} studentAnswer={studentAnswers.filter(answer => answer.id == question.id)[0].answer} handleAddAnswer={this.handleAddAnswer}/>
                                     case "SINGLE":
-                                        return <QuestionCardSingle id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correct={correct} answer={question.answer}/>
+                                        return <QuestionCardSingle id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correctAnswer={question.answer} studentAnswer={studentAnswers.filter(answer => answer.id == question.id)[0].answer} handleAddAnswer={this.handleAddAnswer}/>
                                     case "DIAGRAM":
-                                        return <QuestionCardDiagram id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correct={correct} answer={question.answer}/>
+                                        return <QuestionCardDiagram id={question.id} num={num} output={question.output} optionList={question.optionList} show={false} past={this.past} correctAnswer={question.answer} studentAnswer={studentAnswers.filter(answer => answer.id == question.id)[0].answer} handleAddAnswer={this.handleAddAnswer}/>
                                     case "SUBJECTIVE":
-                                        return <QuestionCardSubjective id={question.id} num={num} output={question.output} show={false} past={this.past} correct={correct} answer={question.answer}/>
+                                        return <QuestionCardSubjective id={question.id} num={num} output={question.output} show={false} past={this.past} correctAnswer={question.answer} studentAnswer={studentAnswers.filter(answer => answer.id == question.id)[0].answer} handleAddAnswer={this.handleAddAnswer}/>
                                 }
                             })
                         }
@@ -222,7 +320,7 @@ class Exam extends Component {
                     {
                         !this.past ? (
                             <div className="is-flex" style={{width: "100%", justifyContent: "center", marginBottom: "80px"}}>
-                                <button className="button is-rounded is-outlined is-link" style={{width: "100%"}}>Submit</button>
+                                <button className="button is-rounded is-outlined is-link" style={{width: "100%"}} onClick={this.handleSubmit}>Submit</button>
                             </div>
                         ) : ""
                     }
@@ -238,4 +336,8 @@ class Exam extends Component {
     }
 }
 
-export default withRouter(Exam)
+const mapStateToProps = (state) => ({
+    user : state.auth.user
+});
+
+export default withRouter(connect(mapStateToProps)(Exam))

@@ -11,9 +11,13 @@ class Question extends Component {
 
     constructor(props) {
         super(props)
-    
+        const id = window.location.href.split("?")[1] !== "null" ? window.location.href.split("?")[1] : this.props.currQuestionId.toString()
         this.state = {
-            id: window.location.href.split("?")[1] !== "null" ? window.location.href.split("?")[1] : this.props.currQuestionId
+            id: id,
+            flag: Boolean(props.question_set.get(id).partialMarks),
+            positiveMarks: props.question_set.get(id).positiveMarks,
+            negativeMarks: props.question_set.get(id).negativeMarks,
+            partialMarks: props.question_set.get(id).partialMarks
         }
     }
     
@@ -52,11 +56,20 @@ class Question extends Component {
     }
 
     handleAnswer = (e) => {
-        let questionType = this.props.question_set.get(e.target.id.split(".")[0]).type
+        let questionType = this.props.question_set.get(this.state.id).type
         this.props.setAnswer(e.target.id.split(".")[0], e.target.id, e.target.checked, questionType)
     }
 
     handleSave = () => {
+        this.props.question_set.get(this.state.id.toString()).positiveMarks = this.state.positiveMarks
+        this.props.question_set.get(this.state.id.toString()).negativeMarks = this.state.negativeMarks
+        this.props.question_set.get(this.state.id.toString()).partialEnabled = this.state.flag
+        if(this.state.flag) {
+            this.props.question_set.get(this.state.id.toString()).partialMarks = this.state.partialMarks
+        }
+        else {
+            this.props.question_set.get(this.state.id.toString()).partialMarks = 0
+        }
         if(this.props.question_set.get(this.state.id.toString()).question === "")
             toast.error("Please Enter Question")
         else if(this.props.question_set.get(this.state.id.toString()).type === "NONE")
@@ -73,6 +86,15 @@ class Question extends Component {
         this.props.history.replace('/question-paper')
     }
 
+    handleVisible = () => {
+        this.setState(prevState => {
+            return {
+                ...prevState,
+                flag: !prevState.flag
+            }
+        })
+    }
+
     render() {
         const findType = () => {
             if(this.props.question_set.get(this.state.id.toString()).type === "SUBJECTIVE")
@@ -85,40 +107,84 @@ class Question extends Component {
         return (
            <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}
-                 <div className="container">
-                     <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", margin: "10vh 0px", width:"100%"}}>
-                         <div style={{justifyContent: "space-between"}}>
-                             <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
-                                 <div className="select" style={{marginBottom: 10}}>
-                                     {window.location.href.split("?")[1] === "null" ? (
-                                         <select id="options" onChange={this.handleType} placeholder="Select Question type">
-                                            <option value="" disabled selected>Select Question type</option>
-                                            <option value="MULTIPLE">Multiple choise question</option>
-                                            <option value="SINGLE">Single choice question</option>
-                                            <option value="SUBJECTIVE">Subjective question</option>
-                                            <option value="DIAGRAM">Diagram based question</option>
-                                        </select>
-                                     ) : (
+                <div className="container">
+                    <div className="column is-6 is-offset-3" style={{display: "flex",flexDirection: "column", margin: "10vh 0px", width:"100%"}}>
+                        {window.location.href.split("?")[1] === "null" ? (
+                        <div style={{justifyContent: "space-between", display: "flex", alignItems: "center"}}>
+                            <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
+                                <div className="select is-flex" style={{marginBottom: 10, justifyContent: "space-between", alignItems: "center"}}>
+                                    <select id="options" onChange={this.handleType} placeholder="Select Question type">
+                                        <option value="" disabled selected>Select Question type</option>
+                                        <option value="MULTIPLE">Multiple choise question</option>
+                                        <option value="SINGLE">Single choice question</option>
+                                        <option value="SUBJECTIVE">Subjective question</option>
+                                        <option value="DIAGRAM">Diagram based question</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className= "is-flex" style={{justifyContent: "space-evenly", flex: 1}}>
+                                <div>
+                                    <label for="positiveMarks">Correct Answer Marks : </label>
+                                    <input type="number" id="positiveMarks" min="0" style={{width: "50px"}} value={this.state.positiveMarks} onChange={e => this.setState({...this.state, positiveMarks: e.target.value})}/>
+                                </div>
+                                <div>
+                                    <label for="negativeMarks">Wrong Answer Marks : </label>
+                                    <input type="number" id="negativeMarks" max="0" style={{width: "50px"}} value={this.state.negativeMarks} onChange={e => this.setState({...this.state, negativeMarks: e.target.value})}/>
+                                </div>
+                                <div>
+                                    <label for="pqrtialMarks">Partial Marks : </label>
+                                    {
+                                        this.state.flag ? (
+                                            <input type="number" id="pqrtialMarks" min="0" step="0.1" style={{width: "50px", marginRight: "10px"}} value={this.state.partialMarks} onChange={e => this.setState({...this.state, partialMarks: e.target.value})}/>
+                                        ) : (
+                                            ""
+                                        )
+                                    }
+                                    <input type="checkbox" id="pqrtialMarks" onChange={this.handleVisible} checked={this.state.flag}/>
+                                </div>
+                            </div>
+                        </div>
+                        ) : (<div style={{justifyContent: "space-between", display: "flex", alignItems: "center"}}>
+                                <div className="control is-flex" style={{marginTop: "10px", justifyContent: "start"}}>
+                                    <div className="select is-flex" style={{marginBottom: 10, justifyContent: "space-between", alignItems: "center"}}>
                                         <select id="options" onChange={this.handleType} placeholder="Select Question type" disabled >
                                             <option value="MULTIPLE" selected={this.props.question_set.get(this.state.id).type === "MULTIPLE"}>Multiple choise question</option>
                                             <option value="SINGLE" selected={this.props.question_set.get(this.state.id).type === "SINGLE"}>Single choice question</option>
                                             <option value="SUBJECTIVE" selected={this.props.question_set.get(this.state.id).type === "SUBJECTIVE"}>Subjective question</option>
                                             <option value="DIAGRAM" selected={this.props.question_set.get(this.state.id).type === "DIAGRAM"}>Diagram based question</option>
                                         </select>
-                                     )}
-                                  </div>
-                            </div>  
-                        </div>
-                        <CommonCard questionId={this.state.id} optionId="" title="Question" />	
-                                            
-                    {
-                        this.props.question_set.get(this.state.id.toString()).type !== "SUBJECTIVE" ?
-                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add option</button> : 
-                        this.props.question_set.get(this.state.id.toString()).optionList.size == 0 ? 
-                        <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add answer</button> : ""
-                    } 
-                    
-                
+                                    </div>
+                                </div>
+                                <div className= "is-flex" style={{justifyContent: "space-evenly", flex: 1}}>
+                                    <div>
+                                        <label for="positiveMarks">Correct Answer Marks : </label>
+                                        <input type="number" id="positiveMarks" min="0" style={{width: "50px"}} value={this.state.positiveMarks} onChange={e => this.setState({...this.state, positiveMarks: e.target.value})}/>
+                                    </div>
+                                    <div>
+                                        <label for="negativeMarks">Wrong Answer Marks : </label>
+                                        <input type="number" id="negativeMarks" max="0" style={{width: "50px"}} value={this.state.negativeMarks} onChange={e => this.setState({...this.state, negativeMarks: e.target.value})}/>
+                                    </div>
+                                    <div>
+                                        <label for="pqrtialMarks">Partial Marks : </label>
+                                        {
+                                            this.state.flag ? (
+                                                <input type="number" id="pqrtialMarks" min="0" step="0.1" style={{width: "50px", marginRight: "10px"}} value={this.state.partialMarks} onChange={e => this.setState({...this.state, partialMarks: e.target.value})}/>
+                                            ) : (
+                                                ""
+                                            )
+                                        }
+                                        <input type="checkbox" id="pqrtialMarks" onChange={this.handleVisible} checked={this.state.flag}/>
+                                    </div>
+                                </div>
+                            </div>
+                        )} 
+                        <CommonCard questionId={this.state.id} optionId="" title="Question" />	                   
+                        {
+                            this.props.question_set.get(this.state.id.toString()).type !== "SUBJECTIVE" ?
+                            <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add option</button> : 
+                            this.props.question_set.get(this.state.id.toString()).optionList.size == 0 ? 
+                            <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add answer</button> : ""
+                        } 
                     {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}
                 {
                     Array.from(this.props.question_set.get(this.state.id.toString()).optionList.values()).map(elem => {
