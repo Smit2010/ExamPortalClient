@@ -1,17 +1,19 @@
 import { QUESTIONS } from "../actions/types";
 
+const bson = require('bson');
+
 const initialState = {
     question_set: new Map([]),
     currQuestionId: 0,
     currOptionId: 0,
-    examPaper: new Set()
+    // examPaper: new Set()
 }
 
 export default function (state = initialState, action) {
     switch(action.type) {
         case QUESTIONS.ADD_QUESTION:
             let newMap = new Map(state.question_set)
-            let newCurrQuestionId = (state.currQuestionId + 1).toString()
+            let newCurrQuestionId = new bson.ObjectID().toString()
             newMap.set(newCurrQuestionId, {
                 id: newCurrQuestionId,
                 type: "",
@@ -26,9 +28,13 @@ export default function (state = initialState, action) {
                 width: "",
                 height: "",
                 answer: new Set(),
+                positiveMarks: 0,
+                negativeMarks: 0,
+                partialEnabled: false,
+                partialMarks: 0,
                 optionList: new Map()
             })
-            return {...state, question_set: newMap, currQuestionId: parseInt(newCurrQuestionId)}
+            return {...state, question_set: newMap, currQuestionId: newCurrQuestionId}
 
         case QUESTIONS.SET_QUESTION:
             let newMap1 = new Map(state.question_set)
@@ -97,7 +103,7 @@ export default function (state = initialState, action) {
         case QUESTIONS.ADD_OPTION:
             let newMap4 = new Map(state.question_set)
             let currQuestionId4 = (action.questionId).toString()
-            let newOptionId = state.currOptionId + 1
+            let newOptionId = new bson.ObjectID().toString()
             let newCurrOptionId4 = currQuestionId4 + '.'  + newOptionId
             let existingQuestion4 = newMap4.get(currQuestionId4)
             existingQuestion4.optionList.set(newCurrOptionId4,{
