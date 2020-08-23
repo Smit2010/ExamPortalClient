@@ -54,12 +54,12 @@ class Paper extends Component {
     handleCreatePaper = () => {
         
         let questions = []
-        questions.push(Array.from(this.props.question_set.values()).map(question => {
+        questions = (Array.from(this.props.question_set.values()).map(question => {
             let options = []
-            options.push(Array.from(question.optionList.values()).map(option => {
+            options = (Array.from(question.optionList.values()).map(option => {
                 return {
                     id: option.id,
-                    optionText: option.output
+                    optionText: option.optionText
                 }
             }))
             return {
@@ -88,7 +88,6 @@ class Paper extends Component {
             },
             duration: this.state.duration,
         }
-        // console.log(paper)
 
         this.setState({
             flag: false,
@@ -121,11 +120,11 @@ class Paper extends Component {
     };
 
     render() {
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
 
         //split questions according to the types
         let single = []
@@ -210,8 +209,14 @@ class Paper extends Component {
                                 <Divider />
                                     {multiple.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardMultiple click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
-
+                                        return <QuestionCardMultiple click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
+                                            output={this.props.question_set.get(elem.toString()).output} 
+                                            optionList={Array.from(this.props.question_set.get(elem.toString()).optionList.values())} from="paper"
+                                            marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                                wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
+                                                partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
+                                                partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
+                                            correctAnswer={Array.from(this.props.question_set.get(elem.toString()).answer.values()).map(val => {return {text: val}})} />
                                     })
                                 }
                             </div>}
@@ -222,7 +227,14 @@ class Paper extends Component {
                                 <Divider />
                                     {single.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardSingle click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardSingle click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
+                                        output={this.props.question_set.get(elem.toString()).output} 
+                                        optionList={Array.from(this.props.question_set.get(elem.toString()).optionList.values())} from="paper"
+                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                            wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
+                                            partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
+                                            partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
+                                        correctAnswer={Array.from(this.props.question_set.get(elem.toString()).answer.values()).map(val => {return {text: val}})} />
                                     })
                                 }
                             </div>}
@@ -234,7 +246,13 @@ class Paper extends Component {
                                 <Divider />
                                     {subjective.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
+                                        output={this.props.question_set.get(elem.toString()).output} 
+                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                            wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
+                                            partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
+                                            partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
+                                        correctAnswer={Array.from(this.props.question_set.get(elem.toString()).answer.values()).map(val => {return {text: val}})} />
                                     })
                                 }
                             </div>}
@@ -246,7 +264,14 @@ class Paper extends Component {
                                 <Divider />
                                     {diagram.map(elem => {
                                         count = count + 1
-                                        return <QuestionCardDiagram click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} output={this.props.question_set.get(elem.toString()).output} optionList={this.props.question_set.get(elem.toString()).optionList}/>
+                                        return <QuestionCardDiagram click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
+                                        output={this.props.question_set.get(elem.toString()).output} 
+                                        optionList={Array.from(this.props.question_set.get(elem.toString()).optionList.values())} from="paper"
+                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                            wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
+                                            partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
+                                            partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
+                                        correctAnswer={Array.from(this.props.question_set.get(elem.toString()).answer.values()).map(val => {return {text: val}})} />
                                     })
                                 }
                             </div>}
@@ -293,8 +318,8 @@ const mapStateToProps = (state) => {
         currQuestionId: state.question.currQuestionId,
         isDrawerOpen: state.drawer.isDrawerOpen,
 //         examPaper: state.question.examPaper,
-        user: state.auth.user
-
+        user: state.auth.user,
+        isAuthenticated: state.auth.isAuthenticated,
     }
 }
 

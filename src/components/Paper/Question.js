@@ -23,7 +23,7 @@ class Question extends Component {
     
 
     handleAddOption = () => {
-        if( this.props.question_set.get(this.state.id.toString()).type === "") {
+        if(this.props.question_set.get(this.state.id.toString()).type === "NONE") {
             toast.error("Please Choose Question Type")
         }
         else {
