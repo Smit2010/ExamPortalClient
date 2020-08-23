@@ -422,7 +422,7 @@ class Exam extends Component {
             }
         })
     }
-
+    
     find = () => {
         let num = 0
         if(this.props.user.type === "faculty") {
@@ -524,6 +524,7 @@ class Exam extends Component {
                 <Redirect to="/home"/>
             );   
         }
+      
         return (
             <div>
                 <div className="container" style={{marginTop: "8vh"}}>

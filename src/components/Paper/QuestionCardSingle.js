@@ -16,7 +16,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 class QuestionCardSingle extends Component {
 
     check = (flag) => {
-        this.props.swapQuestion(...this.props.calcId("MULTIPLE",this.props.id,flag))
+        this.props.swapQuestion(...this.props.calcId("SINGLE",this.props.id,flag))
     }
 
     show = (str) => {

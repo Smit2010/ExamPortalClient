@@ -88,6 +88,7 @@ class Paper extends Component {
             },
             duration: this.state.duration,
         }
+        // console.log(paper)
 
         this.setState({
             flag: false,
@@ -217,6 +218,7 @@ class Paper extends Component {
                                                 partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
                                                 partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
                                             correctAnswer={Array.from(this.props.question_set.get(elem.toString()).answer.values()).map(val => {return {text: val}})} />
+
                                     })
                                 }
                             </div>}
