@@ -14,8 +14,9 @@ import Home from './Home';
 import SignUp from './Auth/SignUp';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
-import Paper from './Paper';
-import Question from './Paper/Question';
+import Paper from './Paper/index'
+import Question from './Paper/Question'
+import Exam from './Paper/Exam'
 
 class App extends React.Component{
     render(){
@@ -33,6 +34,9 @@ class App extends React.Component{
                             </Route>
                             <Route path="/add-question">
                                 <Question />
+                            </Route>
+                            <Route path="/exam">
+                                <Exam />
                             </Route>
                             <Route path="/dashboard">
                                 <Dashboard type="student"/>

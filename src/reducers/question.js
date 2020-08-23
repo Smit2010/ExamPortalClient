@@ -1,16 +1,19 @@
 import { QUESTIONS } from "../actions/types";
 
+const bson = require('bson');
+
 const initialState = {
     question_set: new Map([]),
     currQuestionId: 0,
     currOptionId: 0,
+    // examPaper: new Set()
 }
 
 export default function (state = initialState, action) {
     switch(action.type) {
         case QUESTIONS.ADD_QUESTION:
             let newMap = new Map(state.question_set)
-            let newCurrQuestionId = (state.currQuestionId + 1).toString()
+            let newCurrQuestionId = new bson.ObjectID().toString()
             newMap.set(newCurrQuestionId, {
                 id: newCurrQuestionId,
                 type: "NONE",
@@ -25,9 +28,13 @@ export default function (state = initialState, action) {
                 width: "",
                 height: "",
                 answer: new Set(),
+                positiveMarks: 0,
+                negativeMarks: 0,
+                partialEnabled: false,
+                partialMarks: 0,
                 optionList: new Map()
             })
-            return {...state, question_set: newMap, currQuestionId: parseInt(newCurrQuestionId)}
+            return {...state, question_set: newMap, currQuestionId: newCurrQuestionId}
 
         case QUESTIONS.SET_QUESTION:
             let newMap1 = new Map(state.question_set)
@@ -96,13 +103,13 @@ export default function (state = initialState, action) {
         case QUESTIONS.ADD_OPTION:
             let newMap4 = new Map(state.question_set)
             let currQuestionId4 = (action.questionId).toString()
-            let newOptionId = state.currOptionId + 1
+            let newOptionId = new bson.ObjectID().toString()
             let newCurrOptionId4 = currQuestionId4 + '.'  + newOptionId
             let existingQuestion4 = newMap4.get(currQuestionId4)
             existingQuestion4.optionList.set(newCurrOptionId4,{
                 id: newCurrOptionId4,
                 option: "",
-                output: "",
+                optionText: "",
                 boldFlag: false,
                 italicFlag: false,
                 underlineFlag: false,
@@ -124,7 +131,7 @@ export default function (state = initialState, action) {
             existingQuestion5.optionList.set(newCurrOptionId5,{
                 ...existingQuestion5.optionList.get(newCurrOptionId5),
                 option: action.option,
-                output: action.output
+                optionText: action.output
             })
             newMap5.set(currQuestionId5, existingQuestion5)
             return {...state, question_set: newMap5}
@@ -303,6 +310,16 @@ export default function (state = initialState, action) {
             newMap22.set(currQuestionId22,existingQuestion22)
             return {...state, question_set: newMap22}
 
+//         case QUESTIONS.ADD_QUESTION_IN_PAPER:
+//             let newMap25 = state.examPaper
+//             newMap25.add(action.id)
+//             return {...state, examPaper: newMap25}
+
+//         case QUESTIONS.REMOVE_QUESTION_FROM_PAPER:
+//             let newMap26 = state.examPaper
+//             newMap26.delete(action.id)
+//             return {...state, examPaper: newMap26}
+        
         default:
             return state
     }
