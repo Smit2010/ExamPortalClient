@@ -22,7 +22,7 @@ class CommonCard extends Component {
             underlineFlag = this.props.question_set.get(this.props.questionId.toString()).underlineFlag
         } else {
             prev_str = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).option
-            prev_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).output
+            prev_output = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).optionText
             boldFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).boldFlag
             italicFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).italicFlag
             underlineFlag = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId).underlineFlag
@@ -117,7 +117,7 @@ class CommonCard extends Component {
         if(this.props.optionId === "") {
             str = this.props.question_set.get(this.props.questionId.toString()).output
         } else {
-            str = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId.toString()).output
+            str = this.props.question_set.get(this.props.questionId.toString()).optionList.get(this.props.optionId.toString()).optionText
         }
         return {
             __html: str

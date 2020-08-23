@@ -109,7 +109,7 @@ export default function (state = initialState, action) {
             existingQuestion4.optionList.set(newCurrOptionId4,{
                 id: newCurrOptionId4,
                 option: "",
-                output: "",
+                optionText: "",
                 boldFlag: false,
                 italicFlag: false,
                 underlineFlag: false,
@@ -131,7 +131,7 @@ export default function (state = initialState, action) {
             existingQuestion5.optionList.set(newCurrOptionId5,{
                 ...existingQuestion5.optionList.get(newCurrOptionId5),
                 option: action.option,
-                output: action.output
+                optionText: action.output
             })
             newMap5.set(currQuestionId5, existingQuestion5)
             return {...state, question_set: newMap5}
