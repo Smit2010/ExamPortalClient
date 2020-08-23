@@ -519,11 +519,11 @@ class Exam extends Component {
 
     render() {
         // console.log(this.state.answers)
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
         return (
             <div>
                 <div className="container" style={{marginTop: "8vh"}}>
