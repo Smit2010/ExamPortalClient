@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import axios from 'axios';
 
 const SERVER_URL = "http://127.0.0.1:5000";
+
 //import from course model in both the cases
 const sampleExam = {
     courseName : "Maths",
@@ -466,6 +467,7 @@ class Exam extends Component {
             })  
         } else {
             return samplePaper?.questions?.map(question => {
+
                 // console.log(studentAnswers.filter(answer => answer.id == question.id))
                 // let correct = (JSON.stringify(question.answer) == JSON.stringify(studentAnswers[num].answer))
                 // console.log(JSON.stringify(question.answer), studentAnswers[num].answer, correct)
@@ -487,7 +489,7 @@ class Exam extends Component {
 
     handleSubmit = async () => {
         //upload this
-        console.log(samplePaper.questions)
+        console.log(samplePaper)
         let studentResponse = {
             userId: this.props.user._id,
             examId: samplePaper._id,
@@ -496,7 +498,7 @@ class Exam extends Component {
                 if(this.state.answers.has(question._id)) {
                     studentAnswer = this.state.answers.get(question._id)
                 }
-                // console.log(question.answer)
+
                 let options = []
                 if(question.type !== "SUBJECTIVE") {
                     options = (question.options.map(option => {
@@ -530,11 +532,11 @@ class Exam extends Component {
 
     render() {
         // console.log(this.state.answers)
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
       
         return (
             <div>
