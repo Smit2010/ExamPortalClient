@@ -117,7 +117,7 @@ class QuestionCardSingle extends Component {
                     this.props.from === "exam" ? (
                         <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between", width: "270px"}}>
                             {this.props.past && this.props.user.type === "student" ? this.findStatus() : ""}
-                            <div>
+                            <div style={{display: "flex", flexDirection: "column", width: "270px", alignItems: "flex-end", justifyContent: "flex-end", flex: 1}}>
                                 <p>Correct Answer Marks : {this.props.marks.correctAnswer}</p>
                                 <p>Wrong Answer Marks : {this.props.marks.wrongAnswer}</p>
                                 {
@@ -144,7 +144,7 @@ class QuestionCardSingle extends Component {
                                 <div onClick={() => this.check(true)} style={{display: "inline-block", cursor: "pointer"}}><ArrowUpwardIcon /></div>
                                 <div onClick={() => this.check(false)} style={{display: "inline-block", cursor: "pointer"}}><ArrowDownwardIcon /></div>
                             </div>
-                            <div>
+                            <div style={{display: "flex", flexDirection: "column", width: "270px", alignItems: "flex-end", justifyContent: "flex-end", flex: 1}}>
                                 <p>Correct Answer Marks : {this.props.question_set.get(this.props.id).positiveMarks}</p>
                                 <p>Wrong Answer Marks : {this.props.question_set.get(this.props.id).negativeMarks}</p>
                                 {

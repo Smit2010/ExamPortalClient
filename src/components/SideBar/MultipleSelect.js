@@ -68,6 +68,7 @@ const MultipleSelect = ({user}) => {
     };
 
     const handleBlur = (event) => {
+        let sem = window.prompt("Please Enter Semester")
         let flag = window.confirm("Please make sure to select all courses!!")
         if(flag) {
             //upload faculty courses
