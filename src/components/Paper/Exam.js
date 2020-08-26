@@ -9,6 +9,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const SERVER_URL = "http://127.0.0.1:5000";
+
 //import from course model in both the cases
 const sampleExam = {
     courseName : "Maths",
@@ -33,7 +34,8 @@ class Exam extends Component {
 
         if(typeof paper === "undefined" || this.props.user.type === "faculty") {
             paper = this.props.exams.filter(exam => JSON.stringify(exam._id) === JSON.stringify(id))[0]
-            // console.log(paper)
+
+            //set end exam time
             pastDate.setDate(paper.scheduledTime.date.split("-")[0])
             pastDate.setMonth(parseInt(paper.scheduledTime.date.split("-")[1])-1)
             pastDate.setFullYear(paper.scheduledTime.date.split("-")[2])
@@ -45,7 +47,8 @@ class Exam extends Component {
         } else {
             this.past = true
         }
-
+        sampleExam.courseName = paper.courseName
+        sampleExam.assignedFaculty = paper.facultyName
         this.state = {
             total: 0,
             answers: new Map()
@@ -196,11 +199,11 @@ class Exam extends Component {
 
     render() {
         // console.log(this.state.answers)
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
       
         return (
             <div>
@@ -217,7 +220,11 @@ class Exam extends Component {
                                     <p className="subtitle" style={{margin: "0px"}}>Total Marks : {paper.result.totalMarks}</p>
                                     <p className="subtitle" style={{margin: "0px"}}>Obtained Marks : {paper.result.obtainedMarks}</p>
                                 </div>
-                            ) : ""
+                            ) : (
+                                <div className="column is-flex" style={{flexDirection: "column", justifyContent: "flex-end", alignItems: "flex-end"}}> 
+                                    <p className="subtitle" style={{margin: "0px"}}>Total Marks : {paper.totalMarks}</p>
+                                </div>
+                            )
                         }
                     </div>
                     {/* {console.log(studentAnswers.filter(answer => answer.id === question.id))} */}

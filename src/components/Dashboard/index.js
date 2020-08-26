@@ -201,23 +201,21 @@ class Dashboard extends React.Component {
 
     render(){
         this.sampleExam = this.props.exams
-        // if(!this.props.isAuthenticated){
-        //     return(
-        //         <Redirect to="/home"/>
-        //     );   
-        // }
+        if(!this.props.isAuthenticated){
+            return(
+                <Redirect to="/home"/>
+            );   
+        }
 
         let upcomingExams = [], pastExams = [], onGoingExams = []
         pastExams = this.props.pastExams
-        let ids = pastExams.map(exam => exam.examId)
+        let ids = pastExams.map(exam => exam._id)
         // console.log(typeof ids[0])
         // console.log(this.props.exams, this.props.pastExams)
         if(this.props.user.type === "student")
             this.sampleExam = this.sampleExam.filter(exam => !ids.includes(exam._id))
         else
             pastExams = []
-        // console.log(this.sampleExam)
-        // console.log(pastExams)
 
         this.sampleExam.map(exam => {
             let temp = [...exam.scheduledTime.date.split("-").reverse(), ...exam.scheduledTime.time.split(":")]
@@ -280,7 +278,19 @@ class Dashboard extends React.Component {
                             ) : ""
                         } 
                         {  
-                            pastExams.length == 0 ? "" : (
+                            pastExams.length == 0 ? (
+                                this.props.from === "pastExams" ? (
+                                    <div>
+                                        {
+                                            this.props.user.type === "faculty" ? (
+                                                <h1 className="title" style={{marginTop: "20px"}}>No exams are created in your choosen subjects</h1>
+                                            ) : (
+                                                <h1 className="title" style={{marginTop: "20px"}}>No exams are attempted in your choosen subjects</h1>
+                                            )
+                                        }
+                                    </div>
+                                ) : ""
+                            ) : (
                                 <div className="container">
                                     <h1 className="title" style={{marginTop: 20}}>Past Exams</h1>
                                     <div className="card" style={{padding: 0}}>
