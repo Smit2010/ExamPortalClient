@@ -3,11 +3,11 @@ import Divider from '@material-ui/core/Divider';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const ExamCard = ({exam, user}) => {
+const ExamCard = ({exam, user, past}) => {
 
     const history = useHistory()
     const [flag, setFlag] = useState(false)
-    let temp = [...exam.date.split("-").reverse(), ...exam.time.split(":")]
+    let temp = [...exam.scheduledTime.date.split("-").reverse(), ...exam.scheduledTime.time.split(":")]
     temp[1] = parseInt(temp[1]) - 1
     const examDate = new Date(...temp)
     const currDate = new Date()
@@ -30,14 +30,14 @@ const ExamCard = ({exam, user}) => {
     }
 
     const handleFlag = () => {
-        if(currDate > endExamTime)
-            history.push(`/exam?${exam.id}`)
+        if(past)
+            history.push(`/exam?${exam._id}`)
         else
             setFlag(!flag)
     }
 
     const handleGoToExam = () => {
-        history.push(`/exam?${exam.id}`)
+        history.push(`/exam?${exam._id}`)
     }
 
     const findTimeLeft = () => {
@@ -72,40 +72,44 @@ const ExamCard = ({exam, user}) => {
     return[
         <div className="columns is-centered question" style={{height: 200, padding: 0, width: "100%", margin: 0, cursor: "pointer"}} onClick={() => handleFlag()}>
             <div className="column is-narrow" style={{display: "flex", justifyContent: "center", flexDirection: "column", padding: "0 5%"}}>
-                <img src={exam.photo} className="card__photo" style={{height: 150}} />
+                <img src={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} className="card__photo" style={{height: 150}} />
             </div>
             <div className="column" style={{marginTop: 25}}>
                 <div style={{width: "fit-content", margin: "0px auto"}}>
-                    <p>Subject : {exam.subjectName}</p>
+                    <p>Subject : {exam.courseName}</p>
                     <p>Duration : {exam.duration}</p>
-                    <p>Date : {exam.date}</p>
-                    <p>Time : {exam.time}</p>
+                    <p>Date : {exam.scheduledTime.date}</p>
+                    <p>Time : {exam.scheduledTime.time}</p>
                 </div>
             </div>
             {/* Modal for Instructions */}
-            <div className={`modal is-clipped ${flag ? "is-active" : ""}`}>
-                <div className="modal-background"></div>
-                <div className="modal-card">
-                    <header className="modal-card-head">
-                        <p className="modal-card-title">Instructions</p>
-                        <p className="subtitle" style={{margin: "0px 20px"}}>{findTimeLeft()}</p>
-                        <button className="delete" aria-label="close" onClick={() => handleFlag()}></button>
-                    </header>
-                    <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
-                        <div className="column is-flex" style={{flexDirection: "column"}}>
-                        <b style={{marginLeft: "40px"}}><ol>{
-                            exam.instructions.map(elem => <li>{elem.text}</li>)
-                        }
-                        <li>{`Exam paper duration is ${exam.duration} hours`}</li>
-                        </ol></b>
+            {
+                past ? "" : (
+                    <div className={`modal is-clipped ${flag ? "is-active" : ""}`}>
+                        <div className="modal-background"></div>
+                        <div className="modal-card">
+                            <header className="modal-card-head">
+                                <p className="modal-card-title">Instructions</p>
+                                <p className="subtitle" style={{margin: "0px 20px"}}>{findTimeLeft()}</p>
+                                <button className="delete" aria-label="close" onClick={() => handleFlag()}></button>
+                            </header>
+                            <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
+                                <div className="column is-flex" style={{flexDirection: "column"}}>
+                                <b style={{marginLeft: "40px"}}><ol>{
+                                    exam.instructions.map(elem => <li>{elem.text}</li>)
+                                }
+                                <li>{`Exam paper duration is ${exam.duration} hours`}</li>
+                                </ol></b>
+                                </div>
+                            </section>
+                            <footer className="modal-card-foot" style={{justifyContent: "flex-end"}}>
+                                {find()}
+                                <button className="button is-success" onClick={() => handleFlag()}>Close</button>
+                            </footer>
                         </div>
-                    </section>
-                    <footer className="modal-card-foot" style={{justifyContent: "flex-end"}}>
-                        {find()}
-                        <button className="button is-success" onClick={() => handleFlag()}>Close</button>
-                    </footer>
-                </div>
-            </div>
+                    </div>
+                )
+            }
         </div>,
         <Divider variant="middle"/>
     ];

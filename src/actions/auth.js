@@ -23,11 +23,57 @@ export const login = (email,password,history) => {
       if (err.response) {
          toast.error(err.response.data.message)
       } else {
-		console.log(err)
+		    console.log(err)
       }
     });
 
 	}
+}
+
+export const fetchCourses = (semester) => {
+  return(dispatch) => {
+    axios.get(`${SERVER_URL}/get-courses/${semester}`).then(res => {
+        const courses = res.data;
+        dispatch(setCourses(courses));
+      })
+      .catch(err => {
+        if (err.response) {
+           toast.error(err.response.data)
+        } else {
+          console.log(err)
+        }
+      });
+    }
+}
+
+export const setCourses = (courses) => {
+  return {
+    type: AUTH.SET_COURSES,
+    courses
+  }
+}
+
+export const fetchExams = (user) => {
+  return(dispatch) => {
+    axios.get(`${SERVER_URL}/get-all-exams/${user._id}`).then(res => {
+        const exams = res.data;
+        dispatch(setAllExams(exams));
+      })
+      .catch(err => {
+        if (err.response) {
+           toast.error(err.response.data)
+        } else {
+          console.log(err)
+        }
+      });
+    }
+}
+
+export const setAllExams = (exams) => {
+  return {
+    type: AUTH.SET_ALL_EXAMS,
+    exams
+  }
 }
 
 export const setCurrentUser = (user) => {

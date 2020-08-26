@@ -39,7 +39,10 @@ class App extends React.Component{
                                 <Exam />
                             </Route>
                             <Route path="/dashboard">
-                                <Dashboard type="student"/>
+                                <Dashboard from="dashboard"/>
+                            </Route>
+                            <Route path="/pastexams">
+                                <Dashboard from="pastExams"/>
                             </Route>
                             <Route exact path="/home">
                                 <Home/>

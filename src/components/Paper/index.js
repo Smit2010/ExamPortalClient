@@ -140,8 +140,9 @@ class Paper extends Component {
             instructions: Array.from(this.state.instructions.values())
         }
         // console.log(exam)
-        await axios.post(`${SERVER_URL}/create-exam`, {exam})
+        let res = await axios.post(`${SERVER_URL}/create-exam`, {exam})
 
+        toast.info(res.data)
         this.props.question_set.clear()
         this.setState({
             flag: false,
@@ -303,7 +304,7 @@ class Paper extends Component {
                                         count = count + 1
                                         return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
                                         output={this.props.question_set.get(elem.toString()).output} 
-                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                        marks={{correctAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
                                             wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
                                             partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
                                             partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
