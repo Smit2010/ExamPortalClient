@@ -4,6 +4,7 @@ import FacultyProfile from './FacultyProfile';
 import SideBar from '../SideBar';
 import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
+import {getResults} from '../../actions/results';
 
 
 class Profile extends Component {
@@ -26,6 +27,10 @@ class Profile extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.getResults();
+    }
+
     render() {
         if(!this.props.isAuthenticated){
             return(
@@ -42,7 +47,8 @@ class Profile extends Component {
                         {this.props.user.type === 'student' ?
                             <StudentProfile name={this.props.user.firstName + " " + this.props.user.lastName} 
                             photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 
-                            student_id={this.props.user.studentId} email={this.props.user.email} /> 
+                            student_id={this.props.user.studentId} email={this.props.user.email}
+                            results={this.props.results.results} /> 
                             : 
                             <FacultyProfile name={this.props.user.firstName + " " + this.props.user.lastName} 
                             photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 
@@ -59,6 +65,13 @@ const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     isDrawerOpen: state.drawer.isDrawerOpen,
     user : state.auth.user,
+    results: state.results
 });
 
-export default withRouter(connect(mapStateToProps)(Profile));
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getResults: () => dispatch(getResults()),
+	};
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

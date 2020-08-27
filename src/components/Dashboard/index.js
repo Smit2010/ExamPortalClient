@@ -3,10 +3,8 @@ import SideBar from '../SideBar';
 import ExamCard from './examCard';
 import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
-import axios from 'axios';
 import { fetchCourses } from '../../actions/auth';
 
-const SERVER_URL = "http://127.0.0.1:5000";
 const cmp = (a,b) => {
     let temp1 = new Date(), temp2 = new Date()
     temp1.setDate(a.scheduledTime.date.split("-")[0])
@@ -25,125 +23,6 @@ const cmp = (a,b) => {
     
     return temp1 >= temp2
 }
-
-// const sampleExam = [
-//     {"id" : "1",
-//     "subjectName" : "Maths",
-//     "duration" : "3",
-//     "date" : '22-12-2020',
-//     "time" : '12:00:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "2",
-//     "subjectName" : "Maths",
-//     "duration" : "3",
-//     "date" : '23-08-2020',
-//     "time" : '21:30:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "3",
-//     "subjectName" : "Maths",
-//     "duration" : "3",
-//     "date" : '28-11-2020',
-//     "time" : '12:00:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "4",
-//     "subjectName" : "Maths",
-//     "subjectCode" : "IT999",
-//     "duration" : "3",
-//     "date" : '24-08-2020',
-//     "time" : '16:57:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "5",
-//     "subjectName" : "Maths",
-//     "subjectCode" : "IT999",
-//     "duration" : "3",
-//     "date" : '28-11-2009',
-//     "time" : '12:00:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "6",
-//     "subjectName" : "Maths",
-//     "subjectCode" : "IT999",
-//     "duration" : "3",
-//     "date" : '28-11-2009',
-//     "time" : '12:00:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-//     {"id" : "7",
-//     "subjectName" : "Maths",
-//     "subjectCode" : "IT999",
-//     "duration" : "3",
-//     "date" : '28-11-2009',
-//     "time" : '12:00:00',
-//     "photo" : "https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png",
-//     "instructions" : [{
-//         "id" : "123",
-//         "text" : "xyz"
-//     },{
-//         "id" : "456",
-//         "text" : "lmn"
-//     },{
-//         "id" : "789",
-//         "text" : "abc"
-//     }]},
-// ];
 
 class Dashboard extends React.Component {
     
@@ -245,8 +124,6 @@ class Dashboard extends React.Component {
         // pastExams.sort((a,b) => {
         //     return !cmp(a,b)})
             
-        let count = 0
-
         return(
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}
@@ -266,14 +143,19 @@ class Dashboard extends React.Component {
                         } 
                         {
                             this.props.from === "dashboard" ? (
-                                <div>
-                                    <h1 className="title" style={{marginTop: "20px"}}>Upcoming Exams</h1>
-                                    <div className="card" style={{padding: 0}}>
-                                        {
-                                            upcomingExams.length == 0 ? <div className="subtitle">Hurrah!! All exams are cleared..</div> :
-                                            upcomingExams.map(exam => <ExamCard exam={exam}  past={false}/>)
-                                        }
-                                    </div> 
+                                <div style={{display: "flex", flexDirection: "column", justifyContent: 'center'}}>
+                                    <div>
+                                        <h1 className="title" style={{marginTop: "20px", marginBottom: "20px"}}>Upcoming Exams</h1>
+                                    </div>
+                                    {
+                                        upcomingExams.length === 0 ? 
+                                        <div className="subtitle">Hurrah!! All exams are cleared..</div> :
+                                        <div className="card" style={{padding: 0}}>
+                                            {
+                                                upcomingExams.map(exam => <ExamCard exam={exam}  past={false}/>)
+                                            }
+                                        </div> 
+                                    }
                                 </div> 
                             ) : ""
                         } 
