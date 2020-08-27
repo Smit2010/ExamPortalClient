@@ -297,9 +297,13 @@ class Paper extends Component {
                         </header>
                         <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
                             <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
+                                <label>Enter Subject Name</label>
                                 <input className="input" type="text" placeholder="Enter Subject Name" value={this.state.subjectName} onChange={e => this.setState({...this.state, subjectName: e.target.value})} />
+                                <label>Enter Duration Of Exam-Paper(in Hour)</label>
                                 <input className="input" type="text" placeholder="Enter Duration Of Exam-Paper(in Hour)" value={this.state.duration} onChange={e => this.setState({...this.state, duration: e.target.value})} />
+                                <label>Enter Date Of Exam(dd-mm-yyyy)</label>
                                 <input className="input" type="text" placeholder="Enter Date Of Exam(dd-mm-yyyy)" value={this.state.date} onChange={e => this.setState({...this.state, date: e.target.value})} />
+                                <label>Enter Time Of Exam(hh:mm:ss)</label>
                                 <input className="input" type="text" placeholder="Enter Time Of Exam(hh:mm:ss)" value={this.state.time} onChange={e => this.setState({...this.state, time: e.target.value})} />
                             </div>
                         </section>
