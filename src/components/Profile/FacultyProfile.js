@@ -1,18 +1,5 @@
 import React, {useEffect} from 'react';
 
-const examData = [
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-    {"date" : "12-12-12", "course" : "Maths", "average" : "100"},
-]
-
 const check = () => {
     if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
         document.getElementById("profile-image").style.height = "100px";
@@ -25,7 +12,7 @@ const check = () => {
     }
 }
 
-const FacultyProfile = ({name,photo,student_id,email}) => {
+const FacultyProfile = ({name,photo,student_id,email,results}) => {
     
     useEffect(() => {
         window.addEventListener('scroll' , check)
@@ -70,17 +57,17 @@ const FacultyProfile = ({name,photo,student_id,email}) => {
                             <tr>
                                 <th style={{textAlign:"center", fontSize:"22px"}}>DATE</th>
                                 <th style={{textAlign:"center", fontSize:"22px"}}>COURSE</th>
-                                <th style={{textAlign:"center", fontSize:"22px"}}>AVERAGE</th>
+                                <th style={{textAlign:"center", fontSize:"22px"}}>TOTAL MARKS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {examData.map((data) => (
+                            {results ? results.map((data) => (
                                 <tr>
-                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.date}</td>
-                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.course}</td>
-                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.average}</td>
+                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.scheduledDate}</td>
+                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.courseName}</td>
+                                    <td style={{textAlign:"center", fontSize:"20px"}}>{data.result.totalMarks}</td>
                                 </tr>
-                            ))}
+                            )): ""}
                         </tbody>
                     </table>
                 </div>
