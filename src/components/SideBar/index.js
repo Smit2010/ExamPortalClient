@@ -16,10 +16,8 @@ const facultyList = [
 const studentList = [
     {"icon" : "far fa-user fa-lg",
     "title" : "Profile"},
-    {"icon" : "fas fa-cabinet-filing fa-lg",
-    "title" : "View Past Exams"},
-    {"icon" : "fas fa-poll fa-lg",
-    "title" : "View Results"}
+    {"icon" : "fas fa-archive fa-lg",
+    "title" : "View Past Exams"}
 ];
 
 let t = [];

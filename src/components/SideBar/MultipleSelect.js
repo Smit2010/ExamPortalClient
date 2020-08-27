@@ -8,6 +8,8 @@ import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { fetchExams } from '../../actions/auth';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -38,15 +40,6 @@ const MenuProps = {
     },
 };
 
-const names = [
-    "System Software",
-    "Software Engineering",
-    "Machine Learning",
-    "DBMS",
-    "CNS",
-    "DSA"
-];
-
 const SERVER_URL = "http://127.0.0.1:5000";
 
 function getStyles(name, personName, theme) {
@@ -58,23 +51,27 @@ function getStyles(name, personName, theme) {
     };
 }
 
-const MultipleSelect = ({user}) => {
+const MultipleSelect = ({user, courses, fetchExams}) => {
     const classes = useStyles();
     const theme = useTheme();
     const [personName, setPersonName] = React.useState([]);
+    const names = courses
 
     const handleChange = (event) => {
         setPersonName(event.target.value);
     };
 
     const handleBlur = (event) => {
-        let sem = window.prompt("Please Enter Semester")
         let flag = window.confirm("Please make sure to select all courses!!")
         if(flag) {
             //upload faculty courses
-            // axios.post(`${SERVER_URL}/select-courses-faculty`, {course : event.target.value, id : user._id})
-            // .then(res => console.log(res))
-            // .catch(err => console.log(err))
+            let temp = names.filter(name => event.target.value.includes(name.courseName))
+            axios.post(`${SERVER_URL}/register-courses`, {courses: temp, user: user})
+            .then(
+                res => {toast.info(res.data)
+                fetchExams(user)
+            })
+            .catch(err => console.log(err))
         }
     }
 
@@ -100,8 +97,8 @@ const MultipleSelect = ({user}) => {
                 MenuProps={MenuProps}
                 >
                 {names.map((name) => (
-                    <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
-                    {name}
+                    <MenuItem key={name.courseName} value={name.courseName} style={getStyles(name.courseName, personName, theme)}>
+                    {name.courseName}
                     </MenuItem>
                 ))}
                 </Select>
@@ -111,7 +108,14 @@ const MultipleSelect = ({user}) => {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.auth.user
+    user: state.auth.user,
+    courses: state.auth.courses
 });
 
-export default connect(mapStateToProps)(MultipleSelect)
+const mapDispatchToProps = (dispatch) => {
+	return {
+        fetchExams: (user) => dispatch(fetchExams(user))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleSelect)

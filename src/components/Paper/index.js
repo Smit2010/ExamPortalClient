@@ -140,8 +140,9 @@ class Paper extends Component {
             instructions: Array.from(this.state.instructions.values())
         }
         // console.log(exam)
-        await axios.post(`${SERVER_URL}/create-exam`, {exam})
+        let res = await axios.post(`${SERVER_URL}/create-exam`, {exam})
 
+        toast.info(res.data)
         this.props.question_set.clear()
         this.setState({
             flag: false,
@@ -303,7 +304,7 @@ class Paper extends Component {
                                         count = count + 1
                                         return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
                                         output={this.props.question_set.get(elem.toString()).output} 
-                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                        marks={{correctAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
                                             wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
                                             partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
                                             partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
@@ -350,9 +351,13 @@ class Paper extends Component {
                         </header>
                         <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
                             <div className="column is-flex" style={{flex: "0.8", flexDirection: "column", justifyContent: "space-evenly", height: "200px"}}>
+                                <label>Enter Subject Name</label>
                                 <input className="input" type="text" placeholder="Enter Subject Name" value={this.state.subjectName} onChange={e => this.setState({...this.state, subjectName: e.target.value})} />
+                                <label>Enter Duration Of Exam-Paper(in Hour)</label>
                                 <input className="input" type="text" placeholder="Enter Duration Of Exam-Paper(in Hour)" value={this.state.duration} onChange={e => this.setState({...this.state, duration: e.target.value})} />
+                                <label>Enter Date Of Exam(dd-mm-yyyy)</label>
                                 <input className="input" type="text" placeholder="Enter Date Of Exam(dd-mm-yyyy)" value={this.state.date} onChange={e => this.setState({...this.state, date: e.target.value})} />
+                                <label>Enter Time Of Exam(hh:mm:ss)</label>
                                 <input className="input" type="text" placeholder="Enter Time Of Exam(hh:mm:ss)" value={this.state.time} onChange={e => this.setState({...this.state, time: e.target.value})} />
                             </div>
                         </section>
