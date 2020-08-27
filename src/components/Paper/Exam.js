@@ -5,6 +5,10 @@ import QuestionCardDiagram from './QuestionCardDiagram'
 import QuestionCardSubjective from './QuestionCardSubjective'
 import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+const SERVER_URL = "http://127.0.0.1:5000";
 
 //import from course model in both the cases
 const sampleExam = {
@@ -13,378 +17,49 @@ const sampleExam = {
     assignedFaculty: "xyz"
 }
 
-//import from answers model if it is past exam
-const samplePastExam = {
-    userId: "123",
-    examId: "1",
-    answers: [{
-        questionId: "1",
-        type: "MULTIPLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        options: [{
-            id: "1.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "1.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "1.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "1.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "1.1"
-        },{
-            text: "1.2"
-        }],
-        studentAnswer: [{
-            text: "1.1"
-        },{
-            text: "1.2"
-        }],
-        correctFlag: "true"
-    },{
-        questionId: "2",
-        type: "MULTIPLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        options: [{
-            id: "2.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "2.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "2.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "2.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "2.1"
-        },{
-            text: "2.2"
-        }],
-        studentAnswer: [{
-            text: "2.3"
-        },{
-            text: "2.2"
-        }],
-        correctFlag: "partial"
-    },{
-        questionId: "3",
-        type: "SINGEL",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        options: [{
-            id: "3.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "3.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "3.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "3.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "3.1"
-        }],
-        studentAnswer: [{
-            text: "3.1"
-        }],
-        correctFlag: "true"
-    },{
-        questionId: "4",
-        type: "SINGLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        options: [{
-            id: "4.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "4.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "4.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "4.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "4.1"
-        }],
-        studentAnswer: [{
-            text: "4.2"
-        }],
-        correctFlag: "false"
-    },{
-        questionId: "5",
-        type: "DIAGRAM",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        options: [{
-            id: "5.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "5.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "5.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "5.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "5.4"
-        }],
-        studentAnswer: [{
-            text: "5.4"
-        }],
-        correctFlag: "true"
-    },{
-        questionId: "6",
-        type: "SUBJECTIVE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        },
-        answer: [{
-            text: "xyz"
-        }],
-        studentAnswer: [{
-            text: "xyz"
-        }],
-        correctFlag: "true"
-    }],
-    result: {
-        totalMarks: 100,
-        obtainedMarks: 100
-    }
-}
-
-//import from exam model if not past exam
-const samplePaper = {
-    _id: "123",
-    courseId: "123",
-    facultyId: "1",
-    students: [],
-    totalMarks: 100,
-    duration: 1,
-    scheduledTime: {
-        date: "12-12-2008",
-        time: "12:12:12"
-    },
-    questions: [{
-        _id: "1",
-        type: "MULTIPLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        options: [{
-            id: "1.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "1.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "1.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "1.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "1.1"
-        },{
-            text: "1.2"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        }
-    },{
-        _id: "2",
-        type: "MULTIPLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        options: [{
-            id: "2.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "2.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "2.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "2.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "2.1"
-        },{
-            text: "2.2"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        }
-    },{
-        _id: "3",
-        type: "SINGLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        options: [{
-            id: "3.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "3.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "3.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "3.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "3.1"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0,
-            partialEnabled: false
-        }
-    },{
-        _id: "4",
-        type: "SINGLE",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        options: [{
-            id: "4.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "4.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "4.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "4.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "4.2"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        }
-    },{
-        _id: "5",
-        type: "DIAGRAM",
-        questionText: "<b>Energy can neither be created nor destroyed but still everybody discuss about the energy crisis because</b>",
-        options: [{
-            id: "5.1",
-            optionText: "<b>Energy transform into different form continuously.</b>"
-        },{
-            id: "5.2",
-            optionText: "<b>Usable form of energy is dissipated to the surroundings in less usable forms</b>"
-        },{
-            id: "5.3",
-            optionText: "<b>Energy is consumed and cannot be used again.</b>"
-        },{
-            id: "5.4",
-            optionText: "<b>All of these</b>"
-        }],
-        answer: [{
-            text: "5.2"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        }
-    },{
-        _id: "6",
-        type: "SUBJECTIVE",
-        questionText: "<b>what is your name?</b>",
-        answer: [{
-            text: "xyz"
-        }],
-        marks: {
-            correctAnswer: 1,
-            wrongAnswer: -1,
-            partiallyCorrect: 0.1,
-            partialEnabled: true
-        }
-    }]
-}
-
 let interval
+let paper
+const currDate = new Date()
+const pastDate = new Date()
 
 class Exam extends Component {
 
     constructor(props) {
         super(props)
-    
+        
+
+        let id = window.location.href.split("?")[1]
+        paper = this.props.pastExams.filter(exam => JSON.stringify(exam._id) === JSON.stringify(id))[0]
+        // console.log(typeof paper === "undefined")
+
+        if(typeof paper === "undefined" || this.props.user.type === "faculty") {
+            paper = this.props.exams.filter(exam => JSON.stringify(exam._id) === JSON.stringify(id))[0]
+
+            //set end exam time
+            pastDate.setDate(paper.scheduledTime.date.split("-")[0])
+            pastDate.setMonth(parseInt(paper.scheduledTime.date.split("-")[1])-1)
+            pastDate.setFullYear(paper.scheduledTime.date.split("-")[2])
+            pastDate.setHours(paper.scheduledTime.time.split(":")[0])
+            pastDate.setMinutes(paper.scheduledTime.time.split(":")[1])
+            pastDate.setSeconds(paper.scheduledTime.time.split(":")[2])
+            pastDate.setMinutes(pastDate.getMinutes() + parseFloat(paper.duration)*60)
+            this.past = currDate > pastDate
+        } else {
+            this.past = true
+        }
+        sampleExam.courseName = paper.courseName
+        sampleExam.assignedFaculty = paper.facultyName
         this.state = {
-            total: 3600*parseInt(samplePaper.duration),
+            total: 0,
             answers: new Map()
         }
-        const currDate = new Date()
-        const pastDate = new Date()
-        pastDate.setDate(samplePaper.scheduledTime.date.split("-")[0])
-        pastDate.setMonth(parseInt(samplePaper.scheduledTime.date.split("-")[1])-1)
-        pastDate.setFullYear(samplePaper.scheduledTime.date.split("-")[2])
-        pastDate.setHours(samplePaper.scheduledTime.time.split(":")[0])
-        pastDate.setMinutes(samplePaper.scheduledTime.time.split(":")[1])
-        pastDate.setSeconds(samplePaper.scheduledTime.time.split(":")[2])
-        this.past = currDate > pastDate
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
         if(!(this.past) && this.props.user.type === "student") {
+            
+            this.setState({...this.state, total: Math.floor((pastDate.getTime()-currDate.getTime())/1000)})
+
             interval = setInterval(() => {
                 this.setState(prevState => {
                     return {total: prevState.total - 1}
@@ -405,7 +80,7 @@ class Exam extends Component {
         if(this.state.total == -1) {
             //submit paper
             alert('Times up!!')
-            this.props.history.replace('/dashboard')
+            this.handleSubmit()
         }
         return new Date(this.state.total * 1000).toISOString().substr(11, 8)
     }
@@ -426,7 +101,7 @@ class Exam extends Component {
     find = () => {
         let num = 0
         if(this.props.user.type === "faculty") {
-            return samplePaper.questions.map(question => {
+            return paper.questions.map(question => {
                 num++
                 switch(question.type) {
                     case "MULTIPLE":
@@ -441,7 +116,7 @@ class Exam extends Component {
             })
         }
         else if(this.past) {
-            return samplePastExam.answers.map(question => {
+            return paper.answers.map(question => {
                 num++
                 switch(question.type) {
                     case "MULTIPLE":
@@ -455,7 +130,7 @@ class Exam extends Component {
                 }
             })  
         } else {
-            return samplePaper.questions.map(question => {
+            return paper?.questions?.map(question => {
                 // console.log(studentAnswers.filter(answer => answer.id == question.id))
                 // let correct = (JSON.stringify(question.answer) == JSON.stringify(studentAnswers[num].answer))
                 // console.log(JSON.stringify(question.answer), studentAnswers[num].answer, correct)
@@ -475,18 +150,20 @@ class Exam extends Component {
         }
     }
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
         //upload this
+        // console.log(paper)
         let studentResponse = {
             userId: this.props.user._id,
-            examId: samplePaper._id,
-            answers: samplePaper.questions.map(question => {
-                // console.log(question)
+            examId: paper._id,
+            duration: paper.duration,
+            scheduledTime: paper.scheduledTime,
+            answers: paper.questions.map(question => {
                 let studentAnswer = []
                 if(this.state.answers.has(question._id)) {
                     studentAnswer = this.state.answers.get(question._id)
                 }
-
+                // console.log(question.answer)
                 let options = []
                 if(question.type !== "SUBJECTIVE") {
                     options = (question.options.map(option => {
@@ -498,7 +175,7 @@ class Exam extends Component {
                 }
 
                 return {
-                    questionId: question._id,
+                    _id: question._id,
                     questionText: question.questionText,
                     type: question.type,
                     marks: {
@@ -514,6 +191,9 @@ class Exam extends Component {
             })
         }
         // console.log(studentResponse)
+        // console.log(typeof studentResponse.userId, typeof studentResponse.examId)
+        let res = await axios.post(`${SERVER_URL}/submit-answers`, {studentResponse})
+        toast.info(res.data)
         this.props.history.replace('/dashboard')
     }
 
@@ -528,22 +208,24 @@ class Exam extends Component {
         return (
             <div>
                 <div className="container" style={{marginTop: "8vh"}}>
-                    <div className="box is-flex" style={{flexDirection: "column", alignItems: "center"}}>
-                        <div className="column is-flex" style={{flexDirection: "column", justifyContent: "space-between", alignItems: "center"}}> 
-                            <p className="title">{sampleExam.courseName}</p>
-                            <p className="subtitle">Semester : {sampleExam.semester}</p>
-                            <p className="subtitle">Faculty Name : {sampleExam.assignedFaculty}</p>
-                            {/* {
-                                this.past ? (
-                                    <div>
-                                        <p className="subtitle">Obtained Marks : {samplePastExam.result.obtainedMarks}</p>
-                                        <p className="subtitle">Total Marks : {samplePastExam.result.totalMarks}</p>
-                                    </div>
-                                ) : (
-                                    <p className="subtitle">Total Marks : {samplePaper.totalMarks}</p>
-                                )
-                            } */}
+                    <div className="box is-flex" style={{}}>
+                        <div className="column is-flex" style={{flexDirection: "column", justifyContent: "space-between"}}> 
+                            <p className="title" style={{margin: "0px"}}>{sampleExam.courseName}</p>
+                            <p className="subtitle" style={{margin: "0px"}}>Semester : {sampleExam.semester}</p>
+                            <p className="subtitle" style={{margin: "0px"}}>Faculty Name : {sampleExam.assignedFaculty}</p>
                         </div>
+                        {
+                            this.past && this.props.user.type === "student" ? (
+                                <div className="column is-flex" style={{flexDirection: "column", justifyContent: "flex-end", alignItems: "flex-end"}}> 
+                                    <p className="subtitle" style={{margin: "0px"}}>Total Marks : {paper.result.totalMarks}</p>
+                                    <p className="subtitle" style={{margin: "0px"}}>Obtained Marks : {paper.result.obtainedMarks}</p>
+                                </div>
+                            ) : (
+                                <div className="column is-flex" style={{flexDirection: "column", justifyContent: "flex-end", alignItems: "flex-end"}}> 
+                                    <p className="subtitle" style={{margin: "0px"}}>Total Marks : {paper.totalMarks}</p>
+                                </div>
+                            )
+                        }
                     </div>
                     {/* {console.log(studentAnswers.filter(answer => answer.id === question.id))} */}
                     <div className="box">
@@ -571,7 +253,10 @@ class Exam extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user : state.auth.user
+    isAuthenticated: state.auth.isAuthenticated,
+    user : state.auth.user,
+    exams: state.auth.exams,
+    pastExams: state.auth.pastExams
 });
 
 export default withRouter(connect(mapStateToProps)(Exam))

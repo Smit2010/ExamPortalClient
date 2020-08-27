@@ -9,6 +9,10 @@ import { Divider } from '@material-ui/core';
 import { addQuestion } from '../../actions/question';
 import SideBar from '../SideBar';
 import { toast } from 'react-toastify';
+import DeleteIcon from '@material-ui/icons/Delete';
+import axios from 'axios';
+const bson = require('bson');
+const SERVER_URL = "http://127.0.0.1:5000";
 
 class Paper extends Component {
 
@@ -18,10 +22,12 @@ class Paper extends Component {
         this.state = {
             flag: false,
             showModal: false,
+            showInstructionModal: false,
             subjectName: "",
             duration: "",
             date: "",
-            time: ""
+            time: "",
+            instructions: new Map()
         }
     }
 
@@ -51,7 +57,49 @@ class Paper extends Component {
         }
     }
 
-    handleCreatePaper = () => {
+    handleShowInstructionModal = (val) => {
+        this.setState({...this.state, showInstructionModal: val})
+    }
+
+    handleAddInstruction = () => {
+        this.setState(prevState => {
+            let _id = new bson.ObjectID().toString()
+            return {
+                ...prevState,
+                instructions: prevState.instructions.set(_id, {
+                    _id,
+                    text: ""
+                })
+            }
+        })
+    }
+
+    handleChangeInstruction = (e) => {
+        let _id = e.target.id
+        let text = e.target.value
+        this.setState(prevState => {
+            prevState.instructions.set(_id, {
+                _id,
+                text
+            })
+            return {
+                ...prevState,
+                instructions: prevState.instructions
+            }
+        })
+    }
+
+    handleRemoveInstruction = (id) => {
+        this.setState(prevState => {
+            prevState.instructions.delete(id)
+            return {
+                ...prevState,
+                instructions: prevState.instructions
+            }
+        })
+    }
+
+    handleCreatePaper = async () => {
         
         let questions = []
         questions = (Array.from(this.props.question_set.values()).map(question => {
@@ -66,19 +114,21 @@ class Paper extends Component {
                 _id: question.id,
                 questionText: question.output,
                 type: question.type,
-                marks: [{
-                    correcAnswer: question.positiveMarks,
+                marks: {
+                    correctAnswer: question.positiveMarks,
                     wrongAnswer: question.negativeMarks,
                     partialEnabled: question.partialEnabled,
                     partiallyCorrect: question.partialMarks
-                }],
+                },
                 options,
-                answer: Array.from(question.answer)
+                answer: Array.from(question.answer).map(elem => {
+                    return {text: elem}
+                })
             }
         }))
         
         //upload this paper object
-        let paper = {
+        let exam = {
             courseName: this.state.subjectName,
             facultyId: this.props.user._id,
             questions,
@@ -87,9 +137,13 @@ class Paper extends Component {
                 time: this.state.time,
             },
             duration: this.state.duration,
+            instructions: Array.from(this.state.instructions.values())
         }
-        // console.log(paper)
+        // console.log(exam)
+        let res = await axios.post(`${SERVER_URL}/create-exam`, {exam})
 
+        toast.info(res.data)
+        this.props.question_set.clear()
         this.setState({
             flag: false,
             showModal: false,
@@ -250,7 +304,7 @@ class Paper extends Component {
                                         count = count + 1
                                         return <QuestionCardSubjective click={() => this.handleclick()} calcId={calcId} show={true} id={elem} num={count} 
                                         output={this.props.question_set.get(elem.toString()).output} 
-                                        marks={{correcAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
+                                        marks={{correctAnswer: this.props.question_set.get(elem.toString()).positiveMarks,
                                             wrongAnswer: this.props.question_set.get(elem.toString()).negativeMarks,
                                             partiallyCorrect: this.props.question_set.get(elem.toString()).partialMarks,
                                             partialEnabled: this.props.question_set.get(elem.toString()).partialEnabled}}
@@ -308,8 +362,38 @@ class Paper extends Component {
                             </div>
                         </section>
                         <footer className="modal-card-foot" style={{justifyContent: "flex-end"}}>
+                            <button className="button is-success" onClick={() => this.handleShowInstructionModal(true)}>Add Instructions</button>
                             <button className="button is-success" onClick={this.handleCreatePaper}>Create</button>
                             <button className="button" onClick={() => this.handleshow(false)}>Cancel</button>
+                        </footer>
+                    </div>
+                </div>
+
+                {/* Modal for Instructions */}
+                <div className={`modal is-clipped ${this.state.showInstructionModal ? "is-active" : ""}`}>
+                    <div className="modal-background"></div>
+                    <div className="modal-card">
+                        <header className="modal-card-head">
+                            <p className="modal-card-title">Instructions</p>
+                            <button className="delete" aria-label="close" onClick={() => this.handleShowInstructionModal(false)}></button>
+                        </header>
+                        <section className="modal-card-body is-flex" style={{justifyContent: "center"}}>
+                            <div className="column is-flex" style={{flexDirection: "column"}}>
+                                {
+                                    // console.log(Array.from(this.state.instructions.values()))
+                                    Array.from(this.state.instructions.values()).map(elem => (
+                                        <div className="is-flex" style={{alignItems: "center"}}>
+                                            <textarea className="textarea" type="text" id={elem._id} style={{marginBottom: "20px"}} placeholder="Please add each instruction on new textarea by clicking on add instruction button..."
+                                                onChange={(e) => this.handleChangeInstruction(e)} value={this.state.instructions.get(elem._id).text}/>
+                                            <DeleteIcon id={elem._id} style={{marginBottom: "20px", cursor: "pointer"}} onClick={(e) => this.handleRemoveInstruction(e.currentTarget.id)}/>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </section>
+                        <footer className="modal-card-foot" style={{justifyContent: "flex-end"}}>
+                            <button className="button is-success" onClick={this.handleAddInstruction}>Add Instruction</button>
+                            <button className="button is-success" onClick={() => this.handleShowInstructionModal(false)}>Done</button>
                         </footer>
                     </div>
                 </div>

@@ -31,6 +31,8 @@ const SideBar = ({list, user}) => {
             history.push('/me');
         } else if(item === "Create New Exam") {
             history.push('/question-paper');
+        } else if(item === "View Past Exams") {
+            history.push('/pastexams');
         }
     }
     

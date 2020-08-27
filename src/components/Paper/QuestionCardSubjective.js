@@ -86,18 +86,17 @@ class QuestionCardSubjective extends Component {
                         {
                             this.props.user.type === "student" ? (
                                 <div className="is-flex" style={{flexDirection: "column", marginLeft: "20px"}}>
-                                    <p>Your Answer : </p>
+                                    <p className="subtitle" style={{marginBottom: "0px"}}>Your Answer</p>
                                     <div className="is-flex" style={{alignItems: "center"}}>
                                         <ArrowForwardIcon /><div dangerouslySetInnerHTML={this.show(this.props.studentAnswer[0].text)}></div>
                                     </div>
-                                    <p>Correct Answer : </p>
+                                    <p className="subtitle" style={{marginBottom: "0px", marginTop: "10px"}}>Correct Answer</p>
                                     <div className="is-flex" style={{alignItems: "center"}}>
                                         <ArrowForwardIcon /><div dangerouslySetInnerHTML={this.show(this.props.correctAnswer[0].text)}></div>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="is-flex" style={{flexDirection: "column", marginLeft: "20px"}}>
-                                    <p>Correct Answer : </p>
                                     <div className="is-flex" style={{alignItems: "center"}}>
                                         <ArrowForwardIcon /><div dangerouslySetInnerHTML={this.show(this.props.correctAnswer[0].text)}></div>
                                     </div>
@@ -126,7 +125,7 @@ class QuestionCardSubjective extends Component {
                             </div>
                         ) : ""
                     }
-                    <div>
+                    <div style={{display: "flex", flexDirection: "column", width: "270px", alignItems: "flex-end", justifyContent: "flex-end"}}>
                         <p>Correct Answer Marks : {this.props.marks.correctAnswer}</p>
                         <p>Wrong Answer Marks : {this.props.marks.wrongAnswer}</p>
                         {
