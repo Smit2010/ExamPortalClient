@@ -48,7 +48,8 @@ class Profile extends Component {
                             <StudentProfile name={this.props.user.firstName + " " + this.props.user.lastName} 
                             photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 
                             student_id={this.props.user.studentId} email={this.props.user.email}
-                            results={this.props.results.results} /> 
+                            results={this.props.results.results} 
+                            from={this.props.from}/> 
                             : 
                             <FacultyProfile name={this.props.user.firstName + " " + this.props.user.lastName} 
                             photo={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} 

@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import { withRouter } from 'react-router-dom';
 
 const check = () => {
     if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
@@ -12,7 +13,7 @@ const check = () => {
     }
 }
 
-const FacultyProfile = ({name,photo,student_id,email,results}) => {
+const FacultyProfile = ({name,photo,student_id,email,results,history}) => {
     
     useEffect(() => {
         window.addEventListener('scroll' , check)
@@ -20,6 +21,10 @@ const FacultyProfile = ({name,photo,student_id,email,results}) => {
             window.removeEventListener('scroll', check)
         }
     }, [])
+
+    const handleExamClick = (id) => {
+        history.push(`/exam?${id}`)
+    }
 
     return (
         <div className="column" style={{display: "flex", justifyContent: "center", alignItems: "stretch", flexDirection: "column"}}>
@@ -62,7 +67,7 @@ const FacultyProfile = ({name,photo,student_id,email,results}) => {
                         </thead>
                         <tbody>
                             {results ? results.map((data) => (
-                                <tr>
+                                <tr id={data._id} onClick={(e) => handleExamClick(e.currentTarget.id)}>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.scheduledDate}</td>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.courseName}</td>
                                     <td style={{textAlign:"center", fontSize:"20px"}}>{data.result.totalMarks}</td>
