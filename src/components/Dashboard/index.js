@@ -4,6 +4,10 @@ import ExamCard from './examCard';
 import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
 import { fetchCourses } from '../../actions/auth';
+import { getRegisteredCourses } from '../../actions/courses';
+import Loader from 'react-loader-spinner'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import { findByLabelText } from '@testing-library/react';
 
 const cmp = (a,b) => {
     let temp1 = new Date(), temp2 = new Date()
@@ -28,12 +32,17 @@ class Dashboard extends React.Component {
     
     constructor(props) {
         super(props)
-
         this.sampleExam = []
+        this.state = {
+            loading: true
+        }
     }
-
+    
     componentDidMount = () => {
-        this.props.fetchCourses(7)
+        new Promise(() => {
+            this.props.fetchCourses(7);
+            this.props.getRegisteredCourses();
+        }).then(this.setState({loading: false}))
     }
 
     today = new Date()
@@ -89,8 +98,6 @@ class Dashboard extends React.Component {
         let upcomingExams = [], pastExams = [], onGoingExams = []
         pastExams = this.props.pastExams
         let ids = pastExams.map(exam => exam._id)
-        // console.log(typeof ids[0])
-        // console.log(this.props.exams, this.props.pastExams)
         if(this.props.user.type === "student")
             this.sampleExam = this.sampleExam.filter(exam => !ids.includes(exam._id))
         else
@@ -121,9 +128,14 @@ class Dashboard extends React.Component {
             return cmp(a,b)})
         onGoingExams.sort((a,b) => {
             return cmp(a,b)})
-        // pastExams.sort((a,b) => {
-        //     return !cmp(a,b)})
-            
+        pastExams.sort((a,b) => {
+            return cmp(a,b)})
+        
+        if(this.state.loading) {
+            return (
+                <Loader type="Puff" color="darkslateblue" height={80} width={80} style={{height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}/>
+            )
+        }   
         return(
             <div style={{backgroundColor: "#fff", height:"100%", display: "flex"}}>
                 {this.renderDrawer()}
@@ -160,7 +172,7 @@ class Dashboard extends React.Component {
                             ) : ""
                         } 
                         {  
-                            pastExams.length == 0 ? (
+                            pastExams.length === 0 ? (
                                 this.props.from === "pastExams" ? (
                                     <div>
                                         {
@@ -202,12 +214,14 @@ const mapStateToProps = (state) => ({
     isDrawerOpen: state.drawer.isDrawerOpen,
     user : state.auth.user,
     exams: state.auth.exams,
-    pastExams: state.auth.pastExams
+    pastExams: state.auth.pastExams,
+    courses: state.auth.courses
 });
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-        fetchCourses: (semester) => dispatch(fetchCourses(semester))
+        fetchCourses: (semester) => dispatch(fetchCourses(semester)),
+        getRegisteredCourses: () => dispatch(getRegisteredCourses())
 	};
 };
 

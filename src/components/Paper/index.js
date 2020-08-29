@@ -10,9 +10,9 @@ import { addQuestion } from '../../actions/question';
 import SideBar from '../SideBar';
 import { toast } from 'react-toastify';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { SERVER_URL } from '../../utils/constants';
 import axios from 'axios';
 const bson = require('bson');
-const SERVER_URL = "http://127.0.0.1:5000";
 
 class Paper extends Component {
 
@@ -50,7 +50,7 @@ class Paper extends Component {
     }
 
     handleModalVisible = () => {
-        if(this.props.question_set.size == 0) {
+        if(this.props.question_set.size === 0) {
             toast.error("Please Add Some Question In Paper")
         } else {
             this.handleshow(true)

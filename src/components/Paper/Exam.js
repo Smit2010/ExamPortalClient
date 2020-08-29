@@ -7,9 +7,7 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
-const SERVER_URL = "http://127.0.0.1:5000";
-
+import { SERVER_URL } from '../../utils/constants';
 //import from course model in both the cases
 const sampleExam = {
     courseName : "Maths",
@@ -34,7 +32,7 @@ class Exam extends Component {
 
         if(typeof paper === "undefined" || this.props.user.type === "faculty") {
             paper = this.props.exams.filter(exam => JSON.stringify(exam._id) === JSON.stringify(id))[0]
-
+            console.log(this.props.exams, id)
             //set end exam time
             pastDate.setDate(paper.scheduledTime.date.split("-")[0])
             pastDate.setMonth(parseInt(paper.scheduledTime.date.split("-")[1])-1)
@@ -62,7 +60,7 @@ class Exam extends Component {
 
             interval = setInterval(() => {
                 this.setState(prevState => {
-                    return {total: prevState.total - 1}
+                    return {total: Math.floor((pastDate.getTime()-new Date().getTime())/1000)}
                 })
             }, 1000)
         }
@@ -77,7 +75,7 @@ class Exam extends Component {
     }
 
     findTimeLeft = () => {
-        if(this.state.total == -1) {
+        if(this.state.total === -1) {
             //submit paper
             alert('Times up!!')
             this.handleSubmit()
@@ -112,6 +110,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question._id} num={num} output={question.questionText} optionList={question.options} show={true} past={this.past} correctAnswer={question.answer} from="exam" marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question._id} num={num} output={question.questionText} show={true} past={this.past} correctAnswer={question.answer} from="exam" marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })
         }
@@ -127,6 +127,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question.questionId} num={num} output={question.questionText} from="exam" optionList={question.options} show={true} past={this.past} correctAnswer={question.answer} studentAnswer={question.studentAnswer} correctFlag={question.correctFlag} marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question.questionId} num={num} output={question.questionText} from="exam" show={true} past={this.past} correctAnswer={question.answer} studentAnswer={question.studentAnswer} correctFlag={question.correctFlag} marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })  
         } else {
@@ -145,6 +147,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question._id} num={num} output={question.questionText} from="exam" optionList={question.options} show={false} past={this.past} handleAddAnswer={this.handleAddAnswer} marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question._id} num={num} output={question.questionText} from="exam" show={false} past={this.past} handleAddAnswer={this.handleAddAnswer} marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })
         }

@@ -17,12 +17,14 @@ const studentList = [
     {"icon" : "far fa-user fa-lg",
     "title" : "Profile"},
     {"icon" : "fas fa-archive fa-lg",
-    "title" : "View Past Exams"}
+    "title" : "View Past Exams"},
+    {"icon" : "fas fa-poll fa-lg",	
+    "title" : "View Results"}
 ];
 
 let t = [];
 
-const SideBar = ({list, user}) => {
+const SideBar = ({list, user, registeredCourses}) => {
     const history = useHistory();
     const handleClick = (item) => {
         if(item === "Profile"){
@@ -31,6 +33,8 @@ const SideBar = ({list, user}) => {
             history.push('/question-paper');
         } else if(item === "View Past Exams") {
             history.push('/pastexams');
+        } else if(item === "View Results") {
+            history.push('/result')
         }
     }
     
@@ -63,7 +67,7 @@ const SideBar = ({list, user}) => {
                         </div>
                     </div>
                 ))}
-                <MultipleSelect user={user}/>
+                <MultipleSelect user={user} registeredCourses={registeredCourses}/>
             </div>
         </div>
     )
@@ -72,7 +76,8 @@ const SideBar = ({list, user}) => {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    user: state.auth.user,
+    registeredCourses: state.registeredCourses
 });
 
 export default withRouter(

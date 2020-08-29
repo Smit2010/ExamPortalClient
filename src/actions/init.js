@@ -1,10 +1,8 @@
 import axios from 'axios'
 
 import setAuthToken from "../utils/SetAuthToken";
-//import { SERVER_URL } from '../utils/constants'
+import { SERVER_URL } from '../utils/constants'
 import {setCurrentUser} from './auth';
-
-const SERVER_URL = "http://127.0.0.1:5000"
 
 export const init = (history) => {
 	return(dispatch) => {

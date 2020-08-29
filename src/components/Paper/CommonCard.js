@@ -48,9 +48,9 @@ class CommonCard extends Component {
                     }
                     pos = pos - 1
                     len = len + 1
-                    if(flag == 1)
+                    if(flag === 1)
                         count = count + 1
-                    else if(flag == 0)
+                    else if(flag === 0)
                         count = count - 1
                 }
                 else {
