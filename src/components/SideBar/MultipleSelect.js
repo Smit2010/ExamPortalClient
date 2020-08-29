@@ -11,7 +11,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { fetchExams } from '../../actions/auth';
 import { addRegisteredCourse } from '../../actions/courses';
-import { SERVER_URL } from '../utils/constants';
+import { SERVER_URL } from '../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {

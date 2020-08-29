@@ -10,7 +10,7 @@ import { addQuestion } from '../../actions/question';
 import SideBar from '../SideBar';
 import { toast } from 'react-toastify';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { SERVER_URL } from '../utils/constants';
+import { SERVER_URL } from '../../utils/constants';
 import axios from 'axios';
 const bson = require('bson');
 

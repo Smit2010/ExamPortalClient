@@ -7,8 +7,7 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { SERVER_URL } from '../utils/constants';
-
+import { SERVER_URL } from '../../utils/constants';
 //import from course model in both the cases
 const sampleExam = {
     courseName : "Maths",
