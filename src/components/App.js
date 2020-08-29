@@ -54,7 +54,10 @@ class App extends React.Component{
                                 <SignUp/>
                             </Route>
                             <Route exact path="/me">
-                                <Profile/>
+                                <Profile from="profile"/>
+                            </Route>
+                            <Route exact path="/result">
+                                <Profile from="result"/>
                             </Route>
                             <Route exact path="/question-paper">
                                 <Paper/>

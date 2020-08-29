@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
+import { withRouter } from 'react-router-dom';
 
 const check = () => {
     if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
@@ -12,14 +13,25 @@ const check = () => {
     }
 }
 
-const StudentProfile = ({name,photo,student_id,email,results}) => {
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)
+
+const StudentProfile = ({name,photo,student_id,email,results,from,history}) => {
     
+    const myRef = useRef(null)
+
     useEffect(() => {
         window.addEventListener('scroll' , check)
+        if(from === "result") {
+            scrollToRef(myRef) 
+        }
         return () => {
             window.removeEventListener('scroll', check)
         }
     }, [])
+
+    const handleExamClick = (id) => {
+        history.push(`/exam?${id}`)
+    }
 
     return (
         <div className="column" style={{display: "flex", justifyContent: "center", alignItems: "stretch", flexDirection: "column"}}>
@@ -51,7 +63,7 @@ const StudentProfile = ({name,photo,student_id,email,results}) => {
                 </div>
             </div>
 
-            <div className = "container" style={{marginTop: "100px", marginBottom: "20px"}}>
+            <div className = "container" ref={myRef} style={{marginTop: "100px", marginBottom: "20px"}}>
                 <div style={{textAlign:"center", fontWeight:"bold", fontSize:"40px", marginTop:"20px"}}>
                     PAST EXAMS PERFORMANCE
                 </div>
@@ -67,7 +79,8 @@ const StudentProfile = ({name,photo,student_id,email,results}) => {
                         </thead>
                         <tbody>
                             {results ? results.map((data) => (
-                                <tr>
+                                <tr id={data._id} onClick={(e) => handleExamClick(e.currentTarget.id)}>
+                                    {console.log(data)}
                                     <td style={{textAlign:"center", fontSize:"16px"}}>{data.scheduledDate}</td>
                                     <td style={{textAlign:"center", fontSize:"16px"}}>{data.courseName}</td>
                                     <td style={{textAlign:"center", fontSize:"16px"}}>{data.result.obtainedMarks}</td>
@@ -83,4 +96,4 @@ const StudentProfile = ({name,photo,student_id,email,results}) => {
     )
 }
 
-export default StudentProfile;
+export default withRouter(StudentProfile);

@@ -75,7 +75,7 @@ const ExamCard = ({exam, user, past}) => {
                 <img src={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} alt="" className="card__photo" style={{height: 150}} />
             </div>
             <div className="column" style={{marginTop: 25}}>
-                <div style={{width: "fit-content", margin: "0px auto"}}>
+                <div style={{width: "fit-content"}}>
                     <p>Subject : {exam.courseName}</p>
                     <p>Duration : {exam.duration}</p>
                     <p>Date : {exam.scheduledTime.date}</p>

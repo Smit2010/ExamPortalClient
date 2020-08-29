@@ -18,7 +18,7 @@ const studentList = [
     "title" : "Profile"},
     {"icon" : "fas fa-archive fa-lg",
     "title" : "View Past Exams"},
-    {"icon" : "fas fa-poll fa-lg",
+    {"icon" : "fas fa-poll fa-lg",	
     "title" : "View Results"}
 ];
 
@@ -33,6 +33,8 @@ const SideBar = ({list, user, registeredCourses}) => {
             history.push('/question-paper');
         } else if(item === "View Past Exams") {
             history.push('/pastexams');
+        } else if(item === "View Results") {
+            history.push('/result')
         }
     }
     
