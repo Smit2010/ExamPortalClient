@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SideBar from '../SideBar';
 import { withRouter } from 'react-router-dom'
-import { removeQuestion, toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, setQuestionType, toggleQuestionModal, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, addOption, setAnswer } from '../../actions/question';
+import { removeQuestion, toggleQuestionBoldFlag, toggleQuestionItalicFlag, toggleQuestionUnderlineFlag, setQuestionType, setQuestion, setQuestionImgSrc, setQuestionAlternative, setQuestionHeight, setQuestionWidth, addOption, setAnswer } from '../../actions/question';
 import CommonCard from './CommonCard'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -181,7 +181,7 @@ class Question extends Component {
                         {
                             this.props.question_set.get(this.state.id.toString()).type !== "SUBJECTIVE" ?
                             <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add option</button> : 
-                            this.props.question_set.get(this.state.id.toString()).optionList.size == 0 ? 
+                            this.props.question_set.get(this.state.id.toString()).optionList.size === 0 ? 
                             <button className="button is-outlined is-rounded is-link" onClick={() => this.handleAddOption()} style={{margin: "10px 50px"}}>Add answer</button> : ""
                         } 
                     {/* {console.log(this.props.question_set.get(this.props.currQuestionId.toString()))} */}

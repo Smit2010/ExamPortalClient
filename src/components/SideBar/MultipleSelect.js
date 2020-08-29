@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { fetchExams } from '../../actions/auth';
+import { addRegisteredCourse } from '../../actions/courses';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -43,19 +44,22 @@ const MenuProps = {
 const SERVER_URL = "http://127.0.0.1:5000";
 
 function getStyles(name, personName, theme) {
-    return {
-        fontWeight:
-        personName.indexOf(name) === -1
-            ? theme.typography.fontWeightRegular
-            : theme.typography.fontWeightMedium,
-    };
+    if(personName){
+        return {
+            fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+        };
+    }
 }
 
-const MultipleSelect = ({user, courses, fetchExams}) => {
+const MultipleSelect = ({user, courses, fetchExams, registeredCourses}) => {
+
     const classes = useStyles();
     const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
-    const names = courses
+    const [personName, setPersonName] = React.useState(registeredCourses);
+    const names = courses;
 
     const handleChange = (event) => {
         setPersonName(event.target.value);
@@ -83,7 +87,7 @@ const MultipleSelect = ({user, courses, fetchExams}) => {
                 labelId="demo-mutiple-chip-label"
                 id="demo-mutiple-chip"
                 multiple
-                value={personName}
+                value={personName ? personName : []}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 input={<Input id="select-multiple-chip" />}
@@ -114,7 +118,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-        fetchExams: (user) => dispatch(fetchExams(user))
+        fetchExams: (user) => dispatch(fetchExams(user)),
+        addCourse: (courseName) => dispatch(addRegisteredCourse(courseName))
 	};
 };
 

@@ -24,7 +24,7 @@ const studentList = [
 
 let t = [];
 
-const SideBar = ({list, user}) => {
+const SideBar = ({list, user, registeredCourses}) => {
     const history = useHistory();
     const handleClick = (item) => {
         if(item === "Profile"){
@@ -65,7 +65,7 @@ const SideBar = ({list, user}) => {
                         </div>
                     </div>
                 ))}
-                <MultipleSelect user={user}/>
+                <MultipleSelect user={user} registeredCourses={registeredCourses}/>
             </div>
         </div>
     )
@@ -74,7 +74,8 @@ const SideBar = ({list, user}) => {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    user: state.auth.user,
+    registeredCourses: state.registeredCourses
 });
 
 export default withRouter(

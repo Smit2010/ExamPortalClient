@@ -6,10 +6,8 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { connect } from 'react-redux'
-import {removeQuestion, swapQuestion, addQuestionInPaper, removeQuestionFromPaper } from '../../actions/question';
+import {removeQuestion, swapQuestion } from '../../actions/question';
 import { withRouter } from 'react-router-dom';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 

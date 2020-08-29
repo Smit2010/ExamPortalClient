@@ -122,11 +122,12 @@ class NormalLoginForm extends React.Component {
                                                 style={{backgroundColor: "DarkSlateBlue"}}>
                                                 <p style={{color: "white", width: "150px"}}>Login</p>
                                             </button>
-                                            <a className="is-pulled-right is-center"
+                                            <button className="is-pulled-right is-center"
+                                                style={{border: "none", background: "none", cursor: "pointer", borderWidth: 0}}
                                                 onClick={this.toggleForget} >
                                                 {" "}
                                                 Forgot Password?
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

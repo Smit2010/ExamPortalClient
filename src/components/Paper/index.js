@@ -50,7 +50,7 @@ class Paper extends Component {
     }
 
     handleModalVisible = () => {
-        if(this.props.question_set.size == 0) {
+        if(this.props.question_set.size === 0) {
             toast.error("Please Add Some Question In Paper")
         } else {
             this.handleshow(true)

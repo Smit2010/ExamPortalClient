@@ -19,11 +19,11 @@ const ExamCard = ({exam, user, past}) => {
     let diff
     if(examDate.getFullYear() > currDate.getFullYear()) {
         diff = examDate.getFullYear() - currDate.getFullYear() + " Years"
-    } else if(examDate.getFullYear() == currDate.getFullYear() && examDate.getMonth() > currDate.getMonth()) {
+    } else if(examDate.getFullYear() === currDate.getFullYear() && examDate.getMonth() > currDate.getMonth()) {
         diff = examDate.getMonth() - currDate.getMonth() + " Months"
-    } else if(examDate.getFullYear() == currDate.getFullYear() && examDate.getMonth() == currDate.getMonth() && examDate.getDate() > currDate.getDate()) {
+    } else if(examDate.getFullYear() === currDate.getFullYear() && examDate.getMonth() === currDate.getMonth() && examDate.getDate() > currDate.getDate()) {
         diff = examDate.getDate() - currDate.getDate() + " Days"
-    } else if(examDate.getFullYear() == currDate.getFullYear() && examDate.getMonth() == currDate.getMonth() && examDate.getDate() == currDate.getDate() && examDate.getTime() > currDate.getTime()){
+    } else if(examDate.getFullYear() === currDate.getFullYear() && examDate.getMonth() === currDate.getMonth() && examDate.getDate() === currDate.getDate() && examDate.getTime() > currDate.getTime()){
         diffInTimeFlag = 2
     } else {
         diffInTimeFlag = 1
@@ -41,9 +41,9 @@ const ExamCard = ({exam, user, past}) => {
     }
 
     const findTimeLeft = () => {
-        if(diffInTimeFlag == 2) {
+        if(diffInTimeFlag === 2) {
             return `Paper will be shown in ${new Date(total * 1000).toISOString().substr(11, 8)}`
-        } else if(diffInTimeFlag == 0){
+        } else if(diffInTimeFlag === 0){
             return `Paper will be shown in ${diff}`
         } else {
             diffInTimeFlag = 1
@@ -61,10 +61,10 @@ const ExamCard = ({exam, user, past}) => {
     }
     
     useEffect(() => {
-        if(diffInTimeFlag == 2)
+        if(diffInTimeFlag === 2)
             interval = setInterval(() => setTotal(total => total-1), 1000)
         return () => {
-            if(diffInTimeFlag == 2)
+            if(diffInTimeFlag === 2)
                 clearInterval(interval)
         }
     }, [])
@@ -72,7 +72,7 @@ const ExamCard = ({exam, user, past}) => {
     return[
         <div className="columns is-centered question" style={{height: 200, padding: 0, width: "100%", margin: 0, cursor: "pointer"}} onClick={() => handleFlag()}>
             <div className="column is-narrow" style={{display: "flex", justifyContent: "center", flexDirection: "column", padding: "0 5%"}}>
-                <img src={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} className="card__photo" style={{height: 150}} />
+                <img src={"https://toppng.com/uploads/preview/person-vector-11551054765wbvzeoxz2c.png"} alt="" className="card__photo" style={{height: 150}} />
             </div>
             <div className="column" style={{marginTop: 25}}>
                 <div style={{width: "fit-content", margin: "0px auto"}}>

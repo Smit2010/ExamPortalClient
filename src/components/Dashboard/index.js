@@ -4,6 +4,7 @@ import ExamCard from './examCard';
 import { withRouter, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
 import { fetchCourses } from '../../actions/auth';
+import { getRegisteredCourses } from '../../actions/courses';
 
 const cmp = (a,b) => {
     let temp1 = new Date(), temp2 = new Date()
@@ -33,7 +34,8 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount = () => {
-        this.props.fetchCourses(7)
+        this.props.fetchCourses(7);
+        this.props.getRegisteredCourses();
     }
 
     today = new Date()
@@ -160,7 +162,7 @@ class Dashboard extends React.Component {
                             ) : ""
                         } 
                         {  
-                            pastExams.length == 0 ? (
+                            pastExams.length === 0 ? (
                                 this.props.from === "pastExams" ? (
                                     <div>
                                         {
@@ -207,7 +209,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-        fetchCourses: (semester) => dispatch(fetchCourses(semester))
+        fetchCourses: (semester) => dispatch(fetchCourses(semester)),
+        getRegisteredCourses: () => dispatch(getRegisteredCourses())
 	};
 };
 

@@ -77,7 +77,7 @@ class Exam extends Component {
     }
 
     findTimeLeft = () => {
-        if(this.state.total == -1) {
+        if(this.state.total === -1) {
             //submit paper
             alert('Times up!!')
             this.handleSubmit()
@@ -112,6 +112,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question._id} num={num} output={question.questionText} optionList={question.options} show={true} past={this.past} correctAnswer={question.answer} from="exam" marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question._id} num={num} output={question.questionText} show={true} past={this.past} correctAnswer={question.answer} from="exam" marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })
         }
@@ -127,6 +129,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question.questionId} num={num} output={question.questionText} from="exam" optionList={question.options} show={true} past={this.past} correctAnswer={question.answer} studentAnswer={question.studentAnswer} correctFlag={question.correctFlag} marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question.questionId} num={num} output={question.questionText} from="exam" show={true} past={this.past} correctAnswer={question.answer} studentAnswer={question.studentAnswer} correctFlag={question.correctFlag} marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })  
         } else {
@@ -145,6 +149,8 @@ class Exam extends Component {
                         return <QuestionCardDiagram id={question._id} num={num} output={question.questionText} from="exam" optionList={question.options} show={false} past={this.past} handleAddAnswer={this.handleAddAnswer} marks={question.marks}/>
                     case "SUBJECTIVE":
                         return <QuestionCardSubjective id={question._id} num={num} output={question.questionText} from="exam" show={false} past={this.past} handleAddAnswer={this.handleAddAnswer} marks={question.marks}/>
+                    default:
+                        return ""
                 }
             })
         }
