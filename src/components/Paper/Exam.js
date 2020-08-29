@@ -56,11 +56,9 @@ class Exam extends Component {
     componentDidMount = async () => {
         if(!(this.past) && this.props.user.type === "student") {
             
-            this.setState({...this.state, total: Math.floor((pastDate.getTime()-currDate.getTime())/1000)})
-
             interval = setInterval(() => {
                 this.setState(prevState => {
-                    return {total: prevState.total - 1}
+                    return {total: Math.floor((pastDate.getTime()-new Date().getTime())/1000)}
                 })
             }, 1000)
         }
