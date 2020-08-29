@@ -3,8 +3,7 @@ import axios from 'axios';
 import setAuthToken from "../utils/SetAuthToken";
 import {AUTH} from './types';
 import { toast } from 'react-toastify';
-
-const SERVER_URL = "http://127.0.0.1:5000";
+import { SERVER_URL } from '../utils/constants'
 
 export const login = (email,password,history) => {
 	return(dispatch) => {
