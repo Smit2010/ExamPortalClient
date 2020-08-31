@@ -82,4 +82,4 @@ const FacultyProfile = ({name,photo,student_id,email,results,history}) => {
     )
 }
 
-export default FacultyProfile;
+export default withRouter(FacultyProfile);
