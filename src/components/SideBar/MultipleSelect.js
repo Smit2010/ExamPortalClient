@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -64,6 +64,11 @@ const MultipleSelect = ({user, courses, fetchExams, registeredCourses}) => {
         setPersonName(event.target.value);
     };
 
+    useEffect(() => {
+        setPersonName(registeredCourses);
+        fetchExams(user)
+    }, [registeredCourses])
+
     const handleBlur = (event) => {
         let flag = window.confirm("Please make sure to select all courses!!")
         if(flag) {
@@ -112,7 +117,8 @@ const MultipleSelect = ({user, courses, fetchExams, registeredCourses}) => {
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
-    courses: state.auth.courses
+    courses: state.auth.courses,
+    registeredCourses: state.courses.registeredCourses
 });
 
 const mapDispatchToProps = (dispatch) => {

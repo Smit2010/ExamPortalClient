@@ -67,7 +67,7 @@ const SideBar = ({list, user, registeredCourses}) => {
                         </div>
                     </div>
                 ))}
-                <MultipleSelect user={user} registeredCourses={registeredCourses}/>
+                <MultipleSelect user={user}/>
             </div>
         </div>
     )
@@ -77,7 +77,6 @@ const SideBar = ({list, user, registeredCourses}) => {
 const mapStateToProps = (state) => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
-    registeredCourses: state.registeredCourses
 });
 
 export default withRouter(
